@@ -1,0 +1,35 @@
+diff -ru usr/src/nv/Makefile.kbuild usr/src/nv/Makefile.kbuild
+--- usr/src/nv/Makefile.kbuild	2008-08-08 14:34:33.000000000 -0400
++++ usr/src/nv/Makefile.kbuild	2008-08-08 14:19:03.000000000 -0400
+@@ -78,6 +78,15 @@
+ EXTRA_CFLAGS += -Wall -Wimplicit -Wreturn-type -Wswitch -Wformat -Wchar-subscripts -Wparentheses -Wpointer-arith -Wno-multichar -Werror -MD $(DEFINES) $(INCLUDES) -Wsign-compare -Wno-cast-qual -Wno-error
+ 
+ #
++# The PARAVIRT symbol was split up and marked GPL only in 2.6.27.
++# This lets us get around that. Only tested with Fedora x86_64.
++#
++
++PV_CPU := $(shell grep "D pv_cpu_ops" /boot/System.map-$(shell uname -r) | colrm 9)
++PV_LOCK := $(shell grep "D pv_lock_ops" /boot/System.map-$(shell uname -r) | colrm 9)
++EXTRA_LDFLAGS := --defsym pv_cpu_ops=0x$(PV_CPU) --defsym pv_lock_ops=0x$(PV_LOCK)
++
++#
+ # We rely on these two definitions below; if they aren't set, we set them to
+ # reasonable defaults (Linux 2.4's KBUILD, and top-level passes will not set
+ # these).
+diff -ru usr/src/nv/conftest.sh usr/src/nv/conftest.sh
+--- usr/src/nv/conftest.sh	2008-08-08 14:34:33.000000000 -0400
++++ usr/src/nv/conftest.sh	2008-08-08 14:33:28.000000000 -0400
+@@ -1407,6 +1407,12 @@
+             fi
+         done
+
++        if [ -n "$IGNORE_XEN_PRESENCE" ]; then
++	    echo "#ifdef CONFIG_XEN" >> conftest.h
++	    echo "#undef CONFIG_XEN" >> conftest.h
++	    echo "#endif"            >> conftest.h
++        fi
++
+         if [ -n "$SHOW_COMPILE_TEST_RESULTS" -a -f conftest.h ]; then
+             cat conftest.h
+         fi
