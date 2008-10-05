@@ -11,7 +11,7 @@ diff -ru usr/src/nv/Makefile.kbuild usr/src/nv/Makefile.kbuild
 +
 +PV_CPU := $(shell grep "D pv_cpu_ops" /boot/System.map-$(shell uname -r) | colrm 9)
 +PV_LOCK := $(shell grep "D pv_lock_ops" /boot/System.map-$(shell uname -r) | colrm 9)
-+EXTRA_LDFLAGS := --defsym pv_cpu_ops=0x$(PV_CPU) --defsym pv_lock_ops=0x$(PV_LOCK)
++#EXTRA_LDFLAGS := --defsym pv_cpu_ops=0x$(PV_CPU) --defsym pv_lock_ops=0x$(PV_LOCK)
 +
 +#
  # We rely on these two definitions below; if they aren't set, we set them to

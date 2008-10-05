@@ -8,7 +8,7 @@
 Name:          nvidia-kmod
 Version:       177.78
 # Taken over by kmodtool
-Release:       2%{?dist}.1
+Release:       3%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -99,7 +99,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Sun Oct 05 2008 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info - 177.78-2.1
+* Sun Oct 5 2008 Stewart Adam <s.adam at diffingo.com> - 177.78-3
+- Disable EXTRA_LDFLAGS in patches
+
+* Sun Oct 05 2008 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 177.78-2.1
 - rebuild for rpm fusion
 
 * Wed Oct 1 2008 Stewart Adam < s.adam at diffingo.com > - 177.78-1
