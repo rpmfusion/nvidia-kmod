@@ -6,9 +6,9 @@
 #define buildforkernels newest
 
 Name:          nvidia-kmod
-Version:       177.78
+Version:       177.80
 # Taken over by kmodtool
-Release:       3%{?dist}
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -18,13 +18,13 @@ URL:           http://www.nvidia.com/
 # http://us.download.nvidia.com/XFree86/Linux-x86_64/%{version}/NVIDIA-Linux-x86_64-%{version}-pkg0.run
 
 # <switch me> when sources are on kwizart's repo
-#Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version}.tar.bz2
-Source0:       http://www.diffingo.com/downloads/livna/kmod-data/nvidia-kmod-data-%{version}.tar.bz2
+Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version}.tar.bz2
+#Source0:       http://www.diffingo.com/downloads/livna/kmod-data/nvidia-kmod-data-%{version}.tar.bz2
 # </switch me>
-Source11:       nvidia-kmodtool-excludekernel-filterfile
 #http://www.nvnews.net/vbulletin/attachment.php?attachmentid=32570&d=1218222727
-Patch0:         nvidia-rawhide-noxen-x64.patch
-Patch1:         nvidia-rawhide-noxen-x86.patch
+
+Source11:       nvidia-kmodtool-excludekernel-filterfile
+
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 # needed for plague to make sure it builds for i586 and i686
@@ -54,11 +54,6 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 #    popd
 #done
 
-pushd nvidiapkg-x64
-%patch0 -b .noxen
-popd;pushd nvidiapkg-x86
-%patch1 -b .noxen
-popd
 
 for kernel_version  in %{?kernel_versions} ; do
 %ifarch %{ix86}
@@ -99,6 +94,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Oct 13 2008 kwizart < kwizart at gmail.com > - 177.80-1
+- Update to 177.80
+
 * Sun Oct 5 2008 Stewart Adam <s.adam at diffingo.com> - 177.78-3
 - Disable EXTRA_LDFLAGS in patches
 
