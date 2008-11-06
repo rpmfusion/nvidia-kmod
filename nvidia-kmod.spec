@@ -6,16 +6,16 @@
 #define buildforkernels newest
 
 Name:          nvidia-kmod
-Version:       173.14.12
+Version:       173.14.15
 # Taken over by kmodtool
-Release:       6%{?dist}.3
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
 URL:           http://www.nvidia.com/
 # Source is created from these files:
-# http://us.download.nvidia.com/XFree86/Linux-x86/%{version}/NVIDIA-Linux-x86-%{version}-pkg0.run
-# http://us.download.nvidia.com/XFree86/Linux-x86_64/%{version}/NVIDIA-Linux-x86_64-%{version}-pkg0.run
+#Source0:         ftp://download.nvidia.com/XFree86/Linux-x86/%{version}/NVIDIA-Linux-x86-%{version}-pkg0.run
+#Source1:         ftp://download.nvidia.com/XFree86/Linux-x86_64/%{version}/NVIDIA-Linux-x86_64-%{version}-pkg0.run
 
 # <switch me> when sources are on kwizart's repo
 Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version}.tar.bz2
@@ -93,6 +93,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Nov  6 2008 kwizart < kwizart at gmail.com > - 173.14.15-1
+- Update to 173.14.15 (beta) for 2.6.27 kernels
+
 * Thu Nov 06 2008 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 173.14.12-6.3
 - rebuild for latest Fedora kernel;
 
