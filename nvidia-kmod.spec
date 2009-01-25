@@ -8,7 +8,7 @@
 Name:          nvidia-kmod
 Version:       180.22
 # Taken over by kmodtool
-Release:       1%{?dist}.2
+Release:       1%{?dist}.3
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -94,6 +94,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Jan 25 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 180.22-1.3
+- rebuild for latest Fedora kernel;
+
 * Sun Jan 18 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 180.22-1.2
 - rebuild for latest Fedora kernel;
 
