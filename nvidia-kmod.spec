@@ -6,7 +6,7 @@
 #define buildforkernels newest
 
 Name:          nvidia-kmod
-Version:       180.25
+Version:       180.27
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -94,6 +94,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Jan 29 2009 kwizart < kwizart at gmail.com > - 180.27-1
+- Update to 180.27 (beta)
+
 * Tue Jan 27 2009 kwizart < kwizart at gmail.com > - 180.25-1
 - Update to 180.25 (beta)
 
