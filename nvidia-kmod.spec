@@ -96,9 +96,6 @@ rm -rf $RPM_BUILD_ROOT
 * Tue Feb 10 2009 kwizart < kwizart at gmail.com > - 180.29-1
 - Update to 180.29 (stable)
 
-* Fri Feb 13 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 180.27-1.1
-- rebuild for latest Fedora kernel;
-
 * Thu Jan 29 2009 kwizart < kwizart at gmail.com > - 180.27-1
 - Update to 180.27 (beta)
 
