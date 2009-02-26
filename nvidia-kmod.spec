@@ -3,12 +3,12 @@
 # "buildforkernels newest" macro for just that build; immediately after
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
-%define buildforkernels newest
+%define buildforkernels akmod
 
 Name:          nvidia-kmod
 Version:       180.35
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -33,7 +33,7 @@ ExclusiveArch:  i586 i686 x86_64
 BuildRequires:  %{_bindir}/kmodtool
 %{!?kernels:BuildRequires: buildsys-build-rpmfusion-kerneldevpkgs-%{?buildforkernels:%{buildforkernels}}%{!?buildforkernels:current}-%{_target_cpu} }
 # kmodtool does its magic here
-%{expand:%(kmodtool --target %{_target_cpu} --repo rpmfusion --kmodname %{name} --filterfile %{SOURCE11} %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null) }
+%{expand:%(kmodtool --target %{_target_cpu} --repo rpmfusion --kmodname %{name} --filterfile %{SOURCE11} %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels --obsolete-name nvidia-beta --obsolete-version "180.35" "%{?kernels}"} 2>/dev/null) }
 
 %description
 The nvidia %{version} display driver kernel module for kernel %{kversion}.
@@ -93,6 +93,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Feb 26 2009 kwizart < kwizart at gmail.com > - 180.35-2
+- Handle Obsoletes/Provides in nvidia-kmod for nvidia-beta-kmod
+
 * Wed Feb 25 2009 kwizart < kwizart at gmail.com > - 180.35-1
 - Update to 180.35 (stable)
 
