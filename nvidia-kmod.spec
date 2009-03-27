@@ -6,7 +6,7 @@
 %define buildforkernels newest
 
 Name:          nvidia-kmod
-Version:       180.35
+Version:       180.29
 # Taken over by kmodtool
 Release:       1%{?dist}.1
 Summary:       NVIDIA display driver kernel module
@@ -93,12 +93,6 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Wed Mar 25 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 180.35-1.1
-- rebuild for new kernels
-
-* Wed Feb 25 2009 kwizart < kwizart at gmail.com > - 180.35-1
-- Update to 180.35 (stable)
-
 * Tue Feb 24 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 180.29-1.1
 - rebuild for latest Fedora kernel;
 
