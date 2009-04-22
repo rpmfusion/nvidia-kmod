@@ -5,10 +5,22 @@
 # a new akmod package will only get build when a new one is actually needed
 %define buildforkernels newest
 
+BuildRequires: kernel-devel = 2.6.27.21-170.2.56.fc10
+%ifarch i586
+%define kernels 2.6.27.21-170.2.56.fc10.i586
+%endif
+%ifarch i686
+%define kernels 2.6.27.21-170.2.56.fc10.i686
+%endif
+%ifarch x86_64
+%define kernels 2.6.27.21-170.2.56.fc10.x86_64
+%endif
+
+
 Name:          nvidia-kmod
 Version:       180.51
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       0.1%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
