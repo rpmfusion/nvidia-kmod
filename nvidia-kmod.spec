@@ -8,7 +8,7 @@
 Name:          nvidia-kmod
 Version:       173.14.15
 # Taken over by kmodtool
-Release:       1%{?dist}.15
+Release:       1%{?dist}.16
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -93,6 +93,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Jun 22 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 173.14.15-1.16
+- rebuild for new kernels
+
 * Sun May 24 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 173.14.15-1.15
 - rebuild for new kernels
 
