@@ -6,9 +6,9 @@
 %define buildforkernels newest
 
 Name:          nvidia-kmod
-Version:       180.51
+Version:       185.18.14
 # Taken over by kmodtool
-Release:       1%{?dist}.9
+Release:       1%{?dist}.1
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -93,11 +93,14 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Sun Jun 21 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 180.51-1.9
+* Mon Jun 22 2009 kwizart < kwizart at gmail.com > - 185.18.14-1.1
 - rebuild for new kernels
 
-* Sun Jun 21 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 180.51-1.8
-- rebuild for new kernels
+* Fri Jun  5 2009 kwizart < kwizart at gmail.com > - 185.18.14-1
+- Update to 185.18.14 (final)
+
+* Fri Jun 05 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 180.51-1.8
+- rebuild for final F11 kernel
 
 * Thu May 28 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 180.51-1.7
 - rebuild for new kernels
