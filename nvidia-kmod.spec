@@ -8,7 +8,7 @@
 Name:          nvidia-kmod
 Version:       185.18.14
 # Taken over by kmodtool
-Release:       1%{?dist}.4
+Release:       1%{?dist}.5
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -93,6 +93,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Aug 15 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 185.18.14-1.5
+- rebuild for new kernels
+
 * Fri Aug 14 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 185.18.14-1.4
 - rebuild for new kernels
 
