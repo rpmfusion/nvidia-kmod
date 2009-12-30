@@ -3,12 +3,12 @@
 # "buildforkernels newest" macro for just that build; immediately after
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
-%define buildforkernels newest
+#define buildforkernels newest
 
 Name:          nvidia-kmod
-Version:       190.42
+Version:       190.53
 # Taken over by kmodtool
-Release:       1%{?dist}.9
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -23,6 +23,8 @@ Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version
 # </switch me>
 
 Source11:       nvidia-kmodtool-excludekernel-filterfile
+#http://www.nvnews.net/vbulletin/showthread.php?t=142656
+Patch0:         nvidia-kmod-no-vgaarb.patch
 
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -46,12 +48,12 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 %setup -q -c -T -a 0
 
 # patch loop
-#for arch in x86 x64
-#do
-#    pushd nvidiapkg-${arch}
-# empty
-#    popd
-#done
+for arch in x86 x64
+do
+    pushd nvidiapkg-${arch}
+%patch0 -p0 -b .vgaarb
+    popd
+done
 
 
 for kernel_version  in %{?kernel_versions} ; do
@@ -93,6 +95,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Dec 30 2009 Nicolas Chauvet <kwizart@fedoraproject.org> - 190.53-1
+- Update to 190.53
+- Add patch for VGA_ARB
+
 * Sat Dec 26 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.42-1.9
 - rebuild for new kernel
 
