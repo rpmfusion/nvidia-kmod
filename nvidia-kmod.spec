@@ -3,12 +3,12 @@
 # "buildforkernels newest" macro for just that build; immediately after
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
-#define buildforkernels newest
+%define buildforkernels newest
 
 Name:          nvidia-kmod
 Version:       190.53
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       1%{?dist}.1
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -95,6 +95,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Jan 20 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.53-1.1
+- rebuild for new kernel
+
 * Wed Dec 30 2009 Nicolas Chauvet <kwizart@fedoraproject.org> - 190.53-1
 - Update to 190.53
 - Add patch for VGA_ARB
