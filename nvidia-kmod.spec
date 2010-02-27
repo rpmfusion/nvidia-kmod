@@ -23,8 +23,6 @@ Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version
 # </switch me>
 
 Source11:       nvidia-kmodtool-excludekernel-filterfile
-#http://www.nvnews.net/vbulletin/showthread.php?t=142656
-Patch0:         nvidia-kmod-no-vgaarb.patch
 
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
