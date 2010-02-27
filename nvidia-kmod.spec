@@ -6,7 +6,7 @@
 #define buildforkernels newest
 
 Name:          nvidia-kmod
-Version:       190.53
+Version:       195.36.08
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -23,8 +23,6 @@ Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version
 # </switch me>
 
 Source11:       nvidia-kmodtool-excludekernel-filterfile
-#http://www.nvnews.net/vbulletin/showthread.php?t=142656
-Patch0:         nvidia-kmod-no-vgaarb.patch
 
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -51,7 +49,7 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 for arch in x86 x64
 do
     pushd nvidiapkg-${arch}
-%patch0 -p0 -b .vgaarb
+#disabled
     popd
 done
 
@@ -95,9 +93,42 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Feb 27 2010 Nicolas Chauvet <kwizart@fedoraproject.org> - 195.36.08-1
+- Update to 195.36.08
+
+* Sat Feb 20 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.53-1.6
+- rebuild for new kernel
+
+* Sat Feb 20 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.53-1.5
+- rebuild for new kernel
+
+* Thu Feb 11 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.53-1.4
+- rebuild for new kernel
+
+* Wed Feb 10 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.53-1.3
+- rebuild for new kernel
+
+* Sat Jan 30 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.53-1.2
+- rebuild for new kernel
+
+* Wed Jan 20 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.53-1.1
+- rebuild for new kernel
+
 * Wed Dec 30 2009 Nicolas Chauvet <kwizart@fedoraproject.org> - 190.53-1
 - Update to 190.53
 - Add patch for VGA_ARB
+
+* Sat Dec 26 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.42-1.9
+- rebuild for new kernel
+
+* Thu Dec 10 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.42-1.8
+- rebuild for new kernel
+
+* Sun Dec 06 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.42-1.7
+- rebuild for new kernel
+
+* Wed Nov 25 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.42-1.6
+- rebuild for new kernel
 
 * Sun Nov 22 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.42-1.5
 - rebuild for new kernel, disable i586 builds
