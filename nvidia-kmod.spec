@@ -6,9 +6,9 @@
 %define buildforkernels newest
 
 Name:          nvidia-kmod
-Version:       195.36.08
+Version:       190.53
 # Taken over by kmodtool
-Release:       1%{?dist}.3
+Release:       1%{?dist}.6
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -23,6 +23,8 @@ Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version
 # </switch me>
 
 Source11:       nvidia-kmodtool-excludekernel-filterfile
+#http://www.nvnews.net/vbulletin/showthread.php?t=142656
+Patch0:         nvidia-kmod-no-vgaarb.patch
 
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -49,7 +51,7 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 for arch in x86 x64
 do
     pushd nvidiapkg-${arch}
-#disabled
+%patch0 -p0 -b .vgaarb
     popd
 done
 
@@ -93,18 +95,6 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Fri Mar 05 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 195.36.08-1.3
-- rebuild for new kernel
-
-* Mon Mar 01 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 195.36.08-1.2
-- rebuild for new kernel
-
-* Sun Feb 28 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 195.36.08-1.1
-- rebuild for new kernel
-
-* Sat Feb 27 2010 Nicolas Chauvet <kwizart@fedoraproject.org> - 195.36.08-1
-- Update to 195.36.08
-
 * Sat Feb 20 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.53-1.6
 - rebuild for new kernel
 
