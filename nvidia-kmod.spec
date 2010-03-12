@@ -6,9 +6,10 @@
 #define buildforkernels newest
 
 Name:          nvidia-kmod
+Epoch:         1
 Version:       190.53
 # Taken over by kmodtool
-Release:       2%{?dist}
+Release:       3%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -95,6 +96,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Mar 12 2010 Nicolas Chauvet <kwizart@fedoraproject.org> - 190.53-3
+- Bump Epoch - Fan problem in recent release
+
 * Mon Mar 08 2010 Nicolas Chauvet <kwizart@fedoraproject.org> - 190.53-2
 - Revert to 190.53 version 
   http://www.nvnews.net/vbulletin/announcement.php?f=14
