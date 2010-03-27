@@ -6,7 +6,8 @@
 #define buildforkernels newest
 
 Name:          nvidia-kmod
-Version:       195.36.08
+Epoch:         1
+Version:       195.36.15
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -93,6 +94,16 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Mar 27 2010 Nicolas Chauvet <kwizart@fedoraproject.org> - 1:195.36.15-1
+- Update to 195.36.15
+
+* Fri Mar 12 2010 Nicolas Chauvet <kwizart@fedoraproject.org> - 1:190.53-3
+- Bump Epoch - Fan problem in recent release
+
+* Mon Mar 08 2010 Nicolas Chauvet <kwizart@fedoraproject.org> - 1:190.53-2
+- Revert to 190.53 version 
+  http://www.nvnews.net/vbulletin/announcement.php?f=14
+
 * Sat Feb 27 2010 Nicolas Chauvet <kwizart@fedoraproject.org> - 195.36.08-1
 - Update to 195.36.08
 
