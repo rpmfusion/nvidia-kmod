@@ -7,9 +7,9 @@
 
 Name:          nvidia-kmod
 Epoch:         1
-Version:       190.53
+Version:       195.36.15
 # Taken over by kmodtool
-Release:       3%{?dist}
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -24,8 +24,6 @@ Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version
 # </switch me>
 
 Source11:       nvidia-kmodtool-excludekernel-filterfile
-#http://www.nvnews.net/vbulletin/showthread.php?t=142656
-Patch0:         nvidia-kmod-no-vgaarb.patch
 
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -52,7 +50,7 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 for arch in x86 x64
 do
     pushd nvidiapkg-${arch}
-%patch0 -p0 -b .vgaarb
+#disabled
     popd
 done
 
@@ -96,12 +94,18 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Fri Mar 12 2010 Nicolas Chauvet <kwizart@fedoraproject.org> - 190.53-3
+* Sat Mar 27 2010 Nicolas Chauvet <kwizart@fedoraproject.org> - 1:195.36.15-1
+- Update to 195.36.15
+
+* Fri Mar 12 2010 Nicolas Chauvet <kwizart@fedoraproject.org> - 1:190.53-3
 - Bump Epoch - Fan problem in recent release
 
-* Mon Mar 08 2010 Nicolas Chauvet <kwizart@fedoraproject.org> - 190.53-2
+* Mon Mar 08 2010 Nicolas Chauvet <kwizart@fedoraproject.org> - 1:190.53-2
 - Revert to 190.53 version 
   http://www.nvnews.net/vbulletin/announcement.php?f=14
+
+* Sat Feb 27 2010 Nicolas Chauvet <kwizart@fedoraproject.org> - 195.36.08-1
+- Update to 195.36.08
 
 * Sat Feb 20 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.53-1.6
 - rebuild for new kernel
