@@ -9,7 +9,7 @@ Name:          nvidia-kmod
 Epoch:         1
 Version:       195.36.24
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -25,6 +25,7 @@ Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version
 
 Source11:       nvidia-kmodtool-excludekernel-filterfile
 
+Patch0:        NVIDIA_kernel-195.36.24-6120611.diff.txt
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 # needed for plague to make sure it builds for i586 and i686
@@ -50,7 +51,9 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 for arch in x86 x64
 do
     pushd nvidiapkg-${arch}
-#disabled
+    pushd usr/src/nv
+%patch0 -p3
+    popd
     popd
 done
 
@@ -94,6 +97,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Jun 13 2010 Nicolas Chauvet <kwizart@gmail.com> - 1:195.36.24-2
+- Backport IOMMU - http://www.nvnews.net/vbulletin/showthread.php?t=151791
+
 * Sat Apr 24 2010 Nicolas Chauvet <kwizart@fedoraproject.org> - 1:195.36.24-1
 - Update to 195.36.24
 
