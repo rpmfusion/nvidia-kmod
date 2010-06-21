@@ -7,9 +7,9 @@
 
 Name:          nvidia-kmod
 Epoch:         1
-Version:       195.36.24
+Version:       195.36.31
 # Taken over by kmodtool
-Release:       2%{?dist}
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -25,7 +25,10 @@ Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version
 
 Source11:       nvidia-kmodtool-excludekernel-filterfile
 
+#http://www.nvnews.net/vbulletin/showthread.php?t=151791
 Patch0:        NVIDIA_kernel-195.36.24-6120611.diff.txt
+#http://bugs.gentoo.org/show_bug.cgi?id=301318 
+#Patch1:        nvidia-190.53-2.6.33.patch
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 # needed for plague to make sure it builds for i586 and i686
@@ -52,7 +55,8 @@ for arch in x86 x64
 do
     pushd nvidiapkg-${arch}
     pushd usr/src/nv
-%patch0 -p3
+%patch0 -p3 -b .iommu
+#%patch1 -p3 -b .acpi
     popd
     popd
 done
@@ -97,6 +101,11 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Jun 17 2010 Nicolas Chaubvet <kwizart@gmail.com> - 1:195.36.31-1
+- Update to 195.36.31
+- Fix acpi_walk_namespace call with kernel 2.6.33 and later.
+  http://bugs.gentoo.org/show_bug.cgi?id=301318 
+
 * Sun Jun 13 2010 Nicolas Chauvet <kwizart@gmail.com> - 1:195.36.24-2
 - Backport IOMMU - http://www.nvnews.net/vbulletin/showthread.php?t=151791
 
