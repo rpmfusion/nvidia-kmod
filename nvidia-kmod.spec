@@ -3,12 +3,13 @@
 # "buildforkernels newest" macro for just that build; immediately after
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
-%define buildforkernels newest
+#define buildforkernels newest
 
 Name:          nvidia-kmod
-Version:       190.53
+Epoch:         1
+Version:       195.36.31
 # Taken over by kmodtool
-Release:       1%{?dist}.4
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -24,10 +25,14 @@ Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version
 
 Source11:       nvidia-kmodtool-excludekernel-filterfile
 
+#http://www.nvnews.net/vbulletin/showthread.php?t=151791
+Patch0:        NVIDIA_kernel-195.36.24-6120611.diff.txt
+#http://bugs.gentoo.org/show_bug.cgi?id=301318 
+#Patch1:        nvidia-190.53-2.6.33.patch
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 # needed for plague to make sure it builds for i586 and i686
-ExclusiveArch:  i586 i686 x86_64
+ExclusiveArch:  i686 x86_64
 
 # get the needed BuildRequires (in parts depending on what we build for)
 BuildRequires:  %{_bindir}/kmodtool
@@ -46,12 +51,15 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 %setup -q -c -T -a 0
 
 # patch loop
-#for arch in x86 x64
-#do
-#    pushd nvidiapkg-${arch}
-# empty
-#    popd
-#done
+for arch in x86 x64
+do
+    pushd nvidiapkg-${arch}
+    pushd usr/src/nv
+%patch0 -p3 -b .iommu
+#%patch1 -p3 -b .acpi
+    popd
+    popd
+done
 
 
 for kernel_version  in %{?kernel_versions} ; do
@@ -93,31 +101,77 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Jun 17 2010 Nicolas Chaubvet <kwizart@gmail.com> - 1:195.36.31-1
+- Update to 195.36.31
+- Fix acpi_walk_namespace call with kernel 2.6.33 and later.
+  http://bugs.gentoo.org/show_bug.cgi?id=301318 
+
+* Sun Jun 13 2010 Nicolas Chauvet <kwizart@gmail.com> - 1:195.36.24-2
+- Backport IOMMU - http://www.nvnews.net/vbulletin/showthread.php?t=151791
+
+* Sat Apr 24 2010 Nicolas Chauvet <kwizart@fedoraproject.org> - 1:195.36.24-1
+- Update to 195.36.24
+
+* Sat Mar 27 2010 Nicolas Chauvet <kwizart@fedoraproject.org> - 1:195.36.15-1
+- Update to 195.36.15
+
+* Fri Mar 12 2010 Nicolas Chauvet <kwizart@fedoraproject.org> - 1:190.53-3
+- Bump Epoch - Fan problem in recent release
+
+* Mon Mar 08 2010 Nicolas Chauvet <kwizart@fedoraproject.org> - 1:190.53-2
+- Revert to 190.53 version 
+  http://www.nvnews.net/vbulletin/announcement.php?f=14
+
+* Sat Feb 27 2010 Nicolas Chauvet <kwizart@fedoraproject.org> - 195.36.08-1
+- Update to 195.36.08
+
+* Sat Feb 20 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.53-1.6
+- rebuild for new kernel
+
+* Sat Feb 20 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.53-1.5
+- rebuild for new kernel
+
 * Thu Feb 11 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.53-1.4
 - rebuild for new kernel
 
-* Mon Feb 08 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.53-1.3
+* Wed Feb 10 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.53-1.3
 - rebuild for new kernel
 
-* Thu Feb 04 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.53-1.2
+* Sat Jan 30 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.53-1.2
 - rebuild for new kernel
 
-* Fri Jan 22 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.53-1.1
+* Wed Jan 20 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.53-1.1
 - rebuild for new kernel
 
 * Wed Dec 30 2009 Nicolas Chauvet <kwizart@fedoraproject.org> - 190.53-1
 - Update to 190.53
+- Add patch for VGA_ARB
 
-* Sat Dec 26 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.42-1.4
+* Sat Dec 26 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.42-1.9
 - rebuild for new kernel
 
-* Sun Dec 06 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.42-1.3
+* Thu Dec 10 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.42-1.8
 - rebuild for new kernel
 
-* Sun Nov 22 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.42-1.2
+* Sun Dec 06 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.42-1.7
+- rebuild for new kernel
+
+* Wed Nov 25 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.42-1.6
+- rebuild for new kernel
+
+* Sun Nov 22 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.42-1.5
+- rebuild for new kernel, disable i586 builds
+
+* Tue Nov 10 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.42-1.4
+- rebuild for F12 release kernel
+
+* Mon Nov 09 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.42-1.3
 - rebuild for new kernels
 
-* Thu Nov 05 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.42-1.1
+* Fri Nov 06 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.42-1.2
+- rebuild for new kernels
+
+* Wed Nov 04 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 190.42-1.1
 - rebuild for new kernels
 
 * Sat Oct 31 2009 Nicolas Chauvet <kwizart@fedoraproject.org> - 190.42-1
