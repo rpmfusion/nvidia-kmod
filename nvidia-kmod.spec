@@ -3,13 +3,13 @@
 # "buildforkernels newest" macro for just that build; immediately after
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
-%define buildforkernels newest
+#define buildforkernels newest
 
 Name:          nvidia-kmod
 Epoch:         1
-Version:       195.36.31
+Version:       256.53
 # Taken over by kmodtool
-Release:       1%{?dist}.6
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -24,9 +24,6 @@ Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version
 # </switch me>
 
 Source11:       nvidia-kmodtool-excludekernel-filterfile
-
-#http://www.nvnews.net/vbulletin/showthread.php?t=151791
-Patch0:        NVIDIA_kernel-195.36.24-6120611.diff.txt
 
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -49,16 +46,6 @@ The nvidia %{version} display driver kernel module for kernel %{kversion}.
 kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterfile %{SOURCE11} --obsolete-name nvidia-newest --obsolete-version "%{version}" %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 %setup -q -c -T -a 0
 
-# patch loop
-for arch in x86 x64
-do
-    pushd nvidiapkg-${arch}
-    pushd usr/src/nv
-%patch0 -p3 -b .iommu
-    popd
-    popd
-done
-
 
 for kernel_version  in %{?kernel_versions} ; do
 %ifarch %{ix86}
@@ -71,7 +58,7 @@ done
 
 %build
 for kernel_version in %{?kernel_versions}; do
-    pushd _kmod_build_${kernel_version%%___*}/usr/src/nv/
+    pushd _kmod_build_${kernel_version%%___*}/kernel/
     ln -s -f Makefile.kbuild Makefile
         if [[ "${kernel_version%%___*}" = *xen ]] ; then
             CC="cc -D__XEN_TOOLS__ \
@@ -89,7 +76,7 @@ done
 %install
 rm -rf $RPM_BUILD_ROOT
 for kernel_version in %{?kernel_versions}; do
-    install -D -m 0755 _kmod_build_${kernel_version%%___*}/usr/src/nv/nvidia.ko $RPM_BUILD_ROOT/%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/nvidia.ko
+    install -D -m 0755 _kmod_build_${kernel_version%%___*}/kernel/nvidia.ko $RPM_BUILD_ROOT/%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/nvidia.ko
 done
 %{?akmod_install}
 
@@ -99,26 +86,19 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Sat Aug 28 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 1:195.36.31-1.6
-- rebuild for new kernel
+* Wed Sep 01 2010 Nicolas Chauvet <kwizart@gmail.com> - 1:256.53-1
+- Update to 256.53
 
-* Fri Aug 20 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 1:195.36.31-1.5
-- rebuild for new kernel
+* Thu Aug 05 2010 Nicolas Chauvet <kwizart@gmail.com> - 1:256.44-1
+- Update to 256.44
 
-* Wed Aug 11 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 1:195.36.31-1.4
-- rebuild for new kernel
-
-* Sun Aug 08 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 1:195.36.31-1.3
-- rebuild for new kernel
-
-* Tue Jul 27 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 1:195.36.31-1.2
-- rebuild for new kernel
-
-* Wed Jul 07 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 1:195.36.31-1.1
-- rebuild for new kernel
+* Wed Jun 18 2010 Vallimar de Morieve <vallimar@gmail.com> - 1:256.35-1
+- update to 256.35
 
 * Thu Jun 17 2010 Nicolas Chaubvet <kwizart@gmail.com> - 1:195.36.31-1
 - Update to 195.36.31
+- Fix acpi_walk_namespace call with kernel 2.6.33 and later.
+  http://bugs.gentoo.org/show_bug.cgi?id=301318 
 
 * Sun Jun 13 2010 Nicolas Chauvet <kwizart@gmail.com> - 1:195.36.24-2
 - Backport IOMMU - http://www.nvnews.net/vbulletin/showthread.php?t=151791
