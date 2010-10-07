@@ -7,7 +7,7 @@
 
 Name:          nvidia-kmod
 Epoch:         1
-Version:       256.53
+Version:       260.19.06
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -86,6 +86,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Oct 07 2010 Nicolas Chauvet <kwizart@gmail.com> - 1:260.19.06-1
+- Update to 260.19.06 beta
+
 * Wed Sep 01 2010 Nicolas Chauvet <kwizart@gmail.com> - 1:256.53-1
 - Update to 256.53
 
