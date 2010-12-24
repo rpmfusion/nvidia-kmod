@@ -9,7 +9,7 @@ Name:          nvidia-kmod
 Epoch:         1
 Version:       260.19.29
 # Taken over by kmodtool
-Release:       1%{?dist}.3
+Release:       1%{?dist}.4
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -86,6 +86,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Dec 24 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 1:260.19.29-1.4
+- rebuild for updated kernel
+
 * Wed Dec 22 2010 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 1:260.19.29-1.3
 - rebuild for updated kernel
 
