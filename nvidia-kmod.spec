@@ -51,7 +51,7 @@ for kernel_version  in %{?kernel_versions} ; do
 %ifarch %{ix86}
     cp -a nvidiapkg-x86 _kmod_build_${kernel_version%%___*}
 %else
-    cp -a nvidiapkg-x64 _kmod_build_${kernel_version%%___*}
+    cp -a nvidiapkg-x86_64 _kmod_build_${kernel_version%%___*}
 %endif
 done
 
