@@ -7,7 +7,7 @@
 
 Name:          nvidia-kmod
 Epoch:         1
-Version:       275.09.07
+Version:       270.41.19
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -51,7 +51,7 @@ for kernel_version  in %{?kernel_versions} ; do
 %ifarch %{ix86}
     cp -a nvidiapkg-x86 _kmod_build_${kernel_version%%___*}
 %else
-    cp -a nvidiapkg-x86_64 _kmod_build_${kernel_version%%___*}
+    cp -a nvidiapkg-x64 _kmod_build_${kernel_version%%___*}
 %endif
 done
 
@@ -86,9 +86,6 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Tue Jun 14 2011 Nicolas Chauvet <kwizart@gmail.com> - 1:275.09.07-1
-- Update to 275.09.07
-
 * Wed Jun 08 2011 Nicolas Chauvet <kwizart@gmail.com> - 1:270.41.19-1
 - Update to 270.41.19
 
