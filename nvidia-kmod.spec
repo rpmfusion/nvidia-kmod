@@ -3,13 +3,13 @@
 # "buildforkernels newest" macro for just that build; immediately after
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
-%define buildforkernels newest
+#define buildforkernels akmod
 
 Name:          nvidia-kmod
 Epoch:         1
-Version:       275.21
+Version:       280.13
 # Taken over by kmodtool
-Release:       1%{?dist}.1
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -51,7 +51,7 @@ for kernel_version  in %{?kernel_versions} ; do
 %ifarch %{ix86}
     cp -a nvidiapkg-x86 _kmod_build_${kernel_version%%___*}
 %else
-    cp -a nvidiapkg-x64 _kmod_build_${kernel_version%%___*}
+    cp -a nvidiapkg-x86_64 _kmod_build_${kernel_version%%___*}
 %endif
 done
 
@@ -86,35 +86,20 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Sun Jul 31 2011 Nicolas Chauvet <kwizart@gmail.com> - 1:275.21-1.1
-- rebuild for updated kernel
+* Tue Aug 02 2011 Nicolas Chauvet <kwizart@gmail.com> - 1:280.13-1
+- Update to 280.13
 
-* Fri Jul 22 2011 Nicolas Chauvet <kwizart@gmail.com> - 1:275.21-1
-- Update to 275.21
+* Sun Jul 24 2011 Nicolas Chauvet <kwizart@gmail.com> - 1:280.11-1
+- Update to 280.11
 
-* Sun Jul 17 2011 Nicolas Chauvet <kwizart@gmail.com> - 1:275.19-1
-- Update to 275.19
-
-* Tue Jul 12 2011 Nicolas Chauvet <kwizart@gmail.com> - 1:275.09.07-1.2
-- Rebuild for updated kernel
-
-* Wed Jun 15 2011 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 1:275.09.07-1.1
-- rebuild for updated kernel
+* Fri Jul 01 2011 Nicolas Chauvet <kwizart@gmail.com> - 1:280.04-1
+- Update to 280.04 (beta)
 
 * Tue Jun 14 2011 Nicolas Chauvet <kwizart@gmail.com> - 1:275.09.07-1
 - Update to 275.09.07
 
 * Wed Jun 08 2011 Nicolas Chauvet <kwizart@gmail.com> - 1:270.41.19-1
 - Update to 270.41.19
-
-* Sat Jun 04 2011 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 1:270.41.06-2.1
-- rebuild for updated kernel
-
-* Sun May 29 2011 Nicolas Chauvet <kwizart@gmail.com> - 1:270.41.06-2
-- Build for current
-
-* Sat May 28 2011 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 1:270.41.06-1.1
-- rebuild for updated kernel
 
 * Sat Apr 30 2011 Nicolas Chauvet <kwizart@gmail.com> - 1:270.41.06-1
 - Update to 270.41.06
