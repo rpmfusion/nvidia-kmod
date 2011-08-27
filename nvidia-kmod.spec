@@ -7,9 +7,9 @@
 
 Name:          nvidia-kmod
 Epoch:         1
-Version:       280.13
+Version:       285.03
 # Taken over by kmodtool
-Release:       2%{?dist}
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -58,18 +58,9 @@ done
 
 %build
 for kernel_version in %{?kernel_versions}; do
-    pushd _kmod_build_${kernel_version%%___*}/kernel/
-    ln -s -f Makefile.kbuild Makefile
-        if [[ "${kernel_version%%___*}" = *xen ]] ; then
-            CC="cc -D__XEN_TOOLS__ \
-            -I${kernel_version##*___}/include/asm/mach-xen" \
-            IGNORE_XEN_PRESENCE=1 \
-            make %{?_smp_mflags}  SYSSRC="${kernel_version##*___}" module
-        else
-            IGNORE_XEN_PRESENCE=1 \
-            make %{?_smp_mflags}  SYSSRC="${kernel_version##*___}" module
-        fi
-    popd
+  pushd _kmod_build_${kernel_version%%___*}/kernel/
+    make %{?_smp_mflags}  SYSSRC="${kernel_version##*___}" module
+  popd
 done
 
 
@@ -86,6 +77,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Aug 27 2011 Nicolas Chauvet <kwizart@gmail.com> - 1:285.03-1
+- Update to 285.03
+- Remove kernel-xen filter
+
 * Tue Aug 02 2011 Nicolas Chauvet <kwizart@gmail.com> - 1:280.13-2
 - Update to 280.13
 
