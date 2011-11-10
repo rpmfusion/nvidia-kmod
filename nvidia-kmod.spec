@@ -9,7 +9,7 @@ Name:          nvidia-kmod
 Epoch:         1
 Version:       285.05.09
 # Taken over by kmodtool
-Release:       1%{?dist}.1
+Release:       1%{?dist}.4
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -77,6 +77,15 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Nov 02 2011 Nicolas Chauvet <kwizart@gmail.com> - 1:285.05.09-1.4
+- Rebuild for F-16 kernel
+
+* Tue Nov 01 2011 Nicolas Chauvet <kwizart@gmail.com> - 1:285.05.09-1.3
+- Rebuild for F-16 kernel
+
+* Fri Oct 28 2011 Nicolas Chauvet <kwizart@gmail.com> - 1:285.05.09-1.2
+- Rebuild for F-16 kernel
+
 * Sun Oct 23 2011 Nicolas Chauvet <kwizart@gmail.com> - 1:285.05.09-1.1
 - Rebuild for F-16 kernel
 
