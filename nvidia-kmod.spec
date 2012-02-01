@@ -3,11 +3,11 @@
 # "buildforkernels newest" macro for just that build; immediately after
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
-%define buildforkernels akmod
+#define buildforkernels newest
 
 Name:          nvidia-kmod
 Epoch:         1
-Version:       295.09
+Version:       295.17
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -19,7 +19,7 @@ URL:           http://www.nvidia.com/
 #ftp://download.nvidia.com/XFree86/Linux-x86_64/%{version}/NVIDIA-Linux-x86_64-%{version}-pkg0.run
 
 # <switch me> when sources are on kwizart's repo
-Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version}.tar.bz2
+Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version}.tar.xz
 #Source0:       http://www.diffingo.com/downloads/livna/kmod-data/nvidia-kmod-data-%{version}.tar.bz2
 # </switch me>
 
@@ -51,7 +51,7 @@ for kernel_version  in %{?kernel_versions} ; do
 %ifarch %{ix86}
     cp -a nvidiapkg-x86 _kmod_build_${kernel_version%%___*}
 %else
-    cp -a nvidiapkg-x86_64 _kmod_build_${kernel_version%%___*}
+    cp -a nvidiapkg-x64 _kmod_build_${kernel_version%%___*}
 %endif
 done
 
@@ -77,6 +77,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Feb 01 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.17-1
+- Update to 295.17 (beta)
+
 * Sat Dec 31 2011 Nicolas Chauvet <kwizart@gmail.com> - 1:295.09-1
 - Update to 295.09 (beta)
 
