@@ -49,7 +49,7 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 %setup -q -c -T -a 0
 
 # patch loop
-for arch in x86 x86_64
+for arch in x86 x64
 do
 pushd nvidiapkg-${arch}
 %patch0 -p1
