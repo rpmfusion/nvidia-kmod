@@ -1,0 +1,11 @@
+--- a/kernel/conftest.sh
++++ b/kernel/conftest.sh
+@@ -126,7 +126,7 @@
+     CFLAGS="$BASE_CFLAGS $MACH_CFLAGS $OUTPUT_CFLAGS -I$HEADERS $AUTOCONF_CFLAGS"
+ 
+     if [ "$ARCH" = "i386" -o "$ARCH" = "x86_64" ]; then
+-        CFLAGS="$CFLAGS -I$SOURCES/arch/x86/include"
++        CFLAGS="$CFLAGS -I$SOURCES/arch/x86/include -I$SOURCES/arch/x86/include/generated"
+     elif [ "$ARCH" = "ARMv7" ]; then
+         CFLAGS="$CFLAGS -I$SOURCES/arch/arm/include"
+     fi
