@@ -7,9 +7,9 @@
 
 Name:          nvidia-kmod
 Epoch:         1
-Version:       290.10
+Version:       295.33
 # Taken over by kmodtool
-Release:       2%{?dist}.2
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -24,8 +24,6 @@ Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version
 # </switch me>
 
 Source11:       nvidia-kmodtool-excludekernel-filterfile
-
-Patch0:         kernel-3.3.patch
 
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -47,14 +45,7 @@ The nvidia %{version} display driver kernel module for kernel %{kversion}.
 # print kmodtool output for debugging purposes:
 kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterfile %{SOURCE11} --obsolete-name nvidia-newest --obsolete-version "%{version}" %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 %setup -q -c -T -a 0
-
-# patch loop
-for arch in x86 x86_64
-do
-pushd nvidiapkg-${arch}
-%patch0 -p1
-popd
-done 
+ 
 
 for kernel_version  in %{?kernel_versions} ; do
 %ifarch %{ix86}
@@ -85,6 +76,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Mar 25 2012 leigh scott <leigh123linux@googlemail.com> - 1:295.33-1
+- Update to 295.33
+
 * Thu Mar 22 2012 leigh scott <leigh123linux@googlemail.com> - 1:290.10-2.2
 - rebuild for updated kernel
 
