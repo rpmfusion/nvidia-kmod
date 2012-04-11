@@ -1,0 +1,34 @@
+diff -ur kernel/nv.c kernel/nv.c
+--- kernel/nv.c	2012-04-05 14:45:07.000000000 -0500
++++ kernel/nv.c	2012-04-05 14:45:07.000000000 -0500
+@@ -2279,6 +2279,12 @@
+     /* NV reg space */
+     if (IS_REG_OFFSET(nv, NV_VMA_OFFSET(vma), NV_VMA_SIZE(vma)))
+     {
++        if (IS_BLACKLISTED_REG_OFFSET(nv, NV_VMA_OFFSET(vma), NV_VMA_SIZE(vma)))
++        {
++            status = -EINVAL;
++            goto done;
++        }
++
+         if (nv_encode_caching(&vma->vm_page_prot,
+                               NV_MEMORY_UNCACHED,
+                               NV_MEMORY_TYPE_REGISTERS))
+diff -ur kernel/nv.h kernel/nv.h
+--- kernel/nv.h	2012-04-05 14:45:07.000000000 -0500
++++ kernel/nv.h	2012-04-05 14:45:07.000000000 -0500
+@@ -435,6 +435,14 @@
+              ((offset) >= (nv)->agp.address) &&                                \
+              (((offset) + ((length)-1)) <= (nv)->agp.address + ((nv)->agp.size-1)))
+ 
++#define IS_REG_RANGE_WITHIN_MAPPING(nv, roffset, rlength, moffset, mlength)    \
++             (((moffset) <= ((nv)->regs->address + ((roffset) + (rlength)-1))) &&\
++             (((moffset) + (mlength)-1) >= ((nv)->regs->address + (roffset))))
++
++#define IS_BLACKLISTED_REG_OFFSET(nv, offset, length)                          \
++             ((IS_REG_RANGE_WITHIN_MAPPING(nv, 0x1000, 0x1000, offset, length)) ||\
++             (IS_REG_RANGE_WITHIN_MAPPING(nv, 0x700000, 0x100000, offset, length)))
++
+ /* duplicated from nvos.h for external builds */
+ #ifndef NVOS_AGP_CONFIG_DISABLE_AGP
+ #  define NVOS_AGP_CONFIG_DISABLE_AGP (0x00000000)

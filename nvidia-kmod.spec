@@ -9,7 +9,7 @@ Name:          nvidia-kmod
 Epoch:         1
 Version:       280.13
 # Taken over by kmodtool
-Release:       3%{?dist}
+Release:       4%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -26,6 +26,8 @@ Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version
 Source11:       nvidia-kmodtool-excludekernel-filterfile
 
 Patch0:         kernel-3.3.patch
+#http://nvidia.custhelp.com/app/answers/detail/a_id/3109
+Patch1:         nvidia-blacklist-register-mapping-256-285.diff
 
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -53,6 +55,7 @@ for arch in x86 x64
 do
 pushd nvidiapkg-${arch}
 %patch0 -p1
+%patch1 -p0
 popd
 done
 
@@ -95,6 +98,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Apr 11 2012 leigh scott <leigh123linux@googlemail.com> - 1:280.13-4
+- patch for CVE-2012-0946
+
 * Tue Apr 03 2012 leigh scott <leigh123linux@googlemail.com> - 1:280.13-3
 - patched to build with 3.3.0 kernel
 
