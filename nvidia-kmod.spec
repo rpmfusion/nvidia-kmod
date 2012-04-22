@@ -9,7 +9,7 @@ Name:          nvidia-kmod
 Epoch:         1
 Version:       280.13
 # Taken over by kmodtool
-Release:       4%{?dist}.2
+Release:       4%{?dist}.3
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -98,6 +98,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Apr 22 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:280.13-4.3
+- rebuild for updated kernel
+
 * Sat Apr 14 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:280.13-4.2
 - rebuild for updated kernel
 
