@@ -3,11 +3,11 @@
 # "buildforkernels newest" macro for just that build; immediately after
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
-%define buildforkernels akmod
+%define buildforkernels current
 
 Name:          nvidia-kmod
 Epoch:         1
-Version:       295.20
+Version:       302.11
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -24,6 +24,7 @@ Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version
 # </switch me>
 
 Source11:       nvidia-kmodtool-excludekernel-filterfile
+
 
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -55,7 +56,6 @@ for kernel_version  in %{?kernel_versions} ; do
 %endif
 done
 
-
 %build
 for kernel_version in %{?kernel_versions}; do
   pushd _kmod_build_${kernel_version%%___*}/kernel/
@@ -77,6 +77,51 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue May 22 2012 leigh scott <leigh123linux@googlemail.com> - 1:302.11-1
+- Update to 302.11
+
+* Tue May 22 2012 leigh scott <leigh123linux@googlemail.com> - 1:295.53-1
+- Update to 295.53
+
+* Sun May 13 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.49-1.4
+- Rebuilt for release kernel
+
+* Wed May 09 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.49-1.3
+- rebuild for updated kernel
+
+* Sun May 06 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.49-1.2
+- rebuild for updated kernel
+
+* Sat May 05 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.49-1.1
+- rebuild for updated kernel
+
+* Thu May 03 2012 leigh scott <leigh123linux@googlemail.com> - 1:295.49-1
+- Update to 295.49
+
+* Wed May 02 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.40-1.5
+- rebuild for updated kernel
+
+* Sat Apr 28 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.40-1.4
+- rebuild for updated kernel
+
+* Sun Apr 22 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.40-1.3
+- rebuild for updated kernel
+
+* Mon Apr 16 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.40-1.2
+- rebuild for updated kernel
+
+* Thu Apr 12 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.40-1.1
+- rebuild for beta kernel
+
+* Wed Apr 11 2012 leigh scott <leigh123linux@googlemail.com> - 1:295.40-1
+- Update to 295.40
+
+* Thu Mar 22 2012 leigh scott <leigh123linux@googlemail.com> - 1:295.33-1
+- Update to 295.33
+
+* Thu Mar 22 2012 leigh scott <leigh123linux@googlemail.com> - 1:295.20-2
+- patched to build with 3.3.0 kernel
+
 * Tue Feb 14 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.20-1
 - Update to 295.20
 
