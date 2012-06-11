@@ -3,13 +3,13 @@
 # "buildforkernels newest" macro for just that build; immediately after
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
-%define buildforkernels newest
+%define buildforkernels current
 
 Name:          nvidia-kmod
 Epoch:         1
-Version:       295.53
+Version:       295.59
 # Taken over by kmodtool
-Release:       1%{?dist}.3
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -77,6 +77,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Jun 11 2012 leigh scott <leigh123linux@googlemail.com> - 1:295.59-1
+- Update to 295.59
+
 * Tue Jun 05 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.53-1.3
 - Rebuilt for updated kernel
 
