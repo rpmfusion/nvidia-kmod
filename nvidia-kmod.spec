@@ -7,9 +7,9 @@
 
 Name:          nvidia-kmod
 Epoch:         1
-Version:       280.13
+Version:       295.59
 # Taken over by kmodtool
-Release:       4%{?dist}.7
+Release:       1%{?dist}.1
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -19,15 +19,12 @@ URL:           http://www.nvidia.com/
 #ftp://download.nvidia.com/XFree86/Linux-x86_64/%{version}/NVIDIA-Linux-x86_64-%{version}-pkg0.run
 
 # <switch me> when sources are on kwizart's repo
-Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version}.tar.bz2
+Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version}.tar.xz
 #Source0:       http://www.diffingo.com/downloads/livna/kmod-data/nvidia-kmod-data-%{version}.tar.bz2
 # </switch me>
 
 Source11:       nvidia-kmodtool-excludekernel-filterfile
 
-Patch0:         kernel-3.3.patch
-#http://nvidia.custhelp.com/app/answers/detail/a_id/3109
-Patch1:         nvidia-blacklist-register-mapping-256-285.diff
 
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -50,14 +47,6 @@ The nvidia %{version} display driver kernel module for kernel %{kversion}.
 kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterfile %{SOURCE11} --obsolete-name nvidia-newest --obsolete-version "%{version}" %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 %setup -q -c -T -a 0
 
-# patch loop
-for arch in x86 x64
-do
-pushd nvidiapkg-${arch}
-%patch0 -p1
-%patch1 -p0
-popd
-done
 
 for kernel_version  in %{?kernel_versions} ; do
 %ifarch %{ix86}
@@ -67,21 +56,11 @@ for kernel_version  in %{?kernel_versions} ; do
 %endif
 done
 
-
 %build
 for kernel_version in %{?kernel_versions}; do
-    pushd _kmod_build_${kernel_version%%___*}/kernel/
-    ln -s -f Makefile.kbuild Makefile
-        if [[ "${kernel_version%%___*}" = *xen ]] ; then
-            CC="cc -D__XEN_TOOLS__ \
-            -I${kernel_version##*___}/include/asm/mach-xen" \
-            IGNORE_XEN_PRESENCE=1 \
-            make %{?_smp_mflags}  SYSSRC="${kernel_version##*___}" module
-        else
-            IGNORE_XEN_PRESENCE=1 \
-            make %{?_smp_mflags}  SYSSRC="${kernel_version##*___}" module
-        fi
-    popd
+  pushd _kmod_build_${kernel_version%%___*}/kernel/
+    make %{?_smp_mflags}  SYSSRC="${kernel_version##*___}" module
+  popd
 done
 
 
@@ -98,11 +77,20 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Thu Jun 28 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:280.13-4.7
+* Sat Jun 23 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.59-1.1
 - Rebuilt for updated kernel
 
-* Tue Jun 26 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:280.13-4.6
+* Mon Jun 11 2012 leigh scott <leigh123linux@googlemail.com> - 1:295.59-1
+- Update to 295.59
+
+* Tue Jun 05 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.53-1.2
 - Rebuilt for updated kernel
+
+* Thu May 24 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.53-1.1
+- Rebuilt for updated kernel
+
+* Tue May 22 2012 leigh scott <leigh123linux@googlemail.com> - 1:295.53-1
+- Update to 295.53
 
 * Wed May 09 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:280.13-4.5
 - rebuild for updated kernel
