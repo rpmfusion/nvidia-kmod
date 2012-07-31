@@ -25,6 +25,8 @@ Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version
 
 Source11:       nvidia-kmodtool-excludekernel-filterfile
 
+Patch0:         3.6_kernel.patch
+
 
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -46,6 +48,14 @@ The nvidia %{version} display driver kernel module for kernel %{kversion}.
 # print kmodtool output for debugging purposes:
 kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterfile %{SOURCE11} --obsolete-name nvidia-newest --obsolete-version "%{version}" %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 %setup -q -c -T -a 0
+
+# patch loop
+for arch in x86 x64
+do
+pushd nvidiapkg-${arch}
+%patch0 -p1
+popd
+done
 
 
 for kernel_version  in %{?kernel_versions} ; do
