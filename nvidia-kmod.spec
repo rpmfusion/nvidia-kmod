@@ -9,7 +9,7 @@ Name:          nvidia-kmod
 Epoch:         1
 Version:       304.30
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -87,6 +87,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Jul 31 2012 Leigh Scott <leigh123linux@googlemail.com> - 1:304.30-2
+- add some conditionals to the 3.6 kernel patch
+
 * Tue Jul 31 2012 Leigh Scott <leigh123linux@googlemail.com> - 1:304.30-1
 - Update to 304.30
 
