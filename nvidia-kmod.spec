@@ -7,7 +7,7 @@
 
 Name:          nvidia-kmod
 Epoch:         1
-Version:       304.37
+Version:       304.43
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -24,8 +24,6 @@ Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version
 # </switch me>
 
 Source11:       nvidia-kmodtool-excludekernel-filterfile
-
-Patch0:         3.6_kernel.patch
 
 
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -53,7 +51,7 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 for arch in x86 x64
 do
 pushd nvidiapkg-${arch}
-%patch0 -p1
+ echo "NoPatch"
 popd
 done
 
@@ -87,6 +85,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Sep 05 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.43-1
+- Update to 304.43
+
 * Tue Aug 14 2012 Leigh Scott <leigh123linux@googlemail.com> - 1:304.37-1
 - Update to 304.37 release
 
