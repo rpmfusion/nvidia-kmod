@@ -3,13 +3,13 @@
 # "buildforkernels newest" macro for just that build; immediately after
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
-%define buildforkernels newest
+#define buildforkernels newest
 
 Name:          nvidia-kmod
 Epoch:         1
-Version:       304.37
+Version:       304.51
 # Taken over by kmodtool
-Release:       1%{?dist}.7
+Release:       1%{?dist}.1
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -77,22 +77,31 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Thu Oct 18 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.37-1.7
+* Thu Oct 18 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.51-1.1
 - Rebuilt for updated kernel
 
-* Wed Oct 17 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.37-1.6
+* Thu Oct 11 2012 Leigh Scott <leigh123linux@googlemail.com> - 1:304.51-1
+- Update to 304.51 release
+
+* Thu Oct 11 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.37-1.8
 - Rebuilt for updated kernel
 
-* Thu Oct 11 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.37-1.5
+* Mon Oct 08 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.37-1.7
 - Rebuilt for updated kernel
 
-* Wed Oct 03 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.37-1.4
+* Wed Oct 03 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.37-1.6
 - Rebuilt for updated kernel
 
-* Mon Sep 17 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.37-1.3
+* Thu Sep 27 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.37-1.5
 - Rebuilt for updated kernel
 
-* Sun Aug 26 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.37-1.2
+* Mon Sep 17 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.37-1.4
+- Rebuilt for updated kernel
+
+* Fri Aug 31 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.37-1.3
+- Rebuilt for updated kernel
+
+* Wed Aug 22 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.37-1.2
 - Rebuilt for updated kernel
 
 * Thu Aug 16 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.37-1.1
@@ -101,28 +110,31 @@ rm -rf $RPM_BUILD_ROOT
 * Tue Aug 14 2012 Leigh Scott <leigh123linux@googlemail.com> - 1:304.37-1
 - Update to 304.37 release
 
-* Sat Aug 04 2012 Leigh Scott <leigh123linux@googlemail.com> - 1:304.32-2
-- build again as the build system lost the first one
+* Sat Aug 11 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.32-1.1
+- Rebuilt for updated kernel
 
 * Sat Aug 04 2012 Leigh Scott <leigh123linux@googlemail.com> - 1:304.32-1
 - Update to 304.32
 
-* Fri Aug 01 2012 Leigh Scott <leigh123linux@googlemail.com> - 1:295.59-1.7
+* Wed Aug 01 2012 Leigh Scott <leigh123linux@googlemail.com> - 1:304.30-1
+- Update to 304.30
+
+* Tue Jul 31 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.59-1.7
 - Rebuilt for updated kernel
 
-* Tue Jul 31 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.59-1.6
+* Sat Jul 21 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.59-1.6
 - Rebuilt for updated kernel
 
-* Thu Jul 26 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.59-1.5
+* Tue Jul 17 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.59-1.5
 - Rebuilt for updated kernel
 
-* Tue Jul 17 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.59-1.4
+* Fri Jul 06 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.59-1.4
 - Rebuilt for updated kernel
 
-* Fri Jul 06 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.59-1.3
+* Thu Jun 28 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.59-1.3
 - Rebuilt for updated kernel
 
-* Thu Jun 28 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.59-1.2
+* Thu Jun 21 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.59-1.2
 - Rebuilt for updated kernel
 
 * Sun Jun 17 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.59-1.1
@@ -131,125 +143,68 @@ rm -rf $RPM_BUILD_ROOT
 * Mon Jun 11 2012 leigh scott <leigh123linux@googlemail.com> - 1:295.59-1
 - Update to 295.59
 
-* Tue Jun 05 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.53-1.2
+* Tue Jun 05 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.53-1.3
 - Rebuilt for updated kernel
 
-* Wed May 23 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.53-1.1
+* Sun May 27 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.53-1.2
 - Rebuilt for updated kernel
+
+* Sat May 26 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.53-1.1
+- Rebuilt for release kernel
 
 * Tue May 22 2012 leigh scott <leigh123linux@googlemail.com> - 1:295.53-1
 - Update to 295.53
 
-* Fri May 18 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.49-1.3
+* Sun May 13 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.49-1.4
 - Rebuilt for release kernel
 
-* Wed May 09 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.49-1.2
+* Wed May 09 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.49-1.3
 - rebuild for updated kernel
 
-* Fri May 04 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.49-1.1
+* Sun May 06 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.49-1.2
+- rebuild for updated kernel
+
+* Sat May 05 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.49-1.1
 - rebuild for updated kernel
 
 * Thu May 03 2012 leigh scott <leigh123linux@googlemail.com> - 1:295.49-1
 - Update to 295.49
 
-* Wed May 02 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.40-2.3
+* Wed May 02 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.40-1.5
 - rebuild for updated kernel
 
-* Sun Apr 22 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.40-2.2
+* Sat Apr 28 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.40-1.4
 - rebuild for updated kernel
 
-* Mon Apr 16 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.40-2.1
+* Sun Apr 22 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.40-1.3
 - rebuild for updated kernel
 
-* Wed Apr 11 2012 leigh scott <leigh123linux@googlemail.com> - 1:295.40-2
+* Mon Apr 16 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.40-1.2
+- rebuild for updated kernel
+
+* Thu Apr 12 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.40-1.1
+- rebuild for beta kernel
+
+* Wed Apr 11 2012 leigh scott <leigh123linux@googlemail.com> - 1:295.40-1
 - Update to 295.40
 
-* Sat Apr 07 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.33-2.3
-- rebuild for updated kernel
-
-* Tue Apr 03 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.33-2.2
-- rebuild for updated kernel
-
-* Fri Mar 30 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.33-2.1
-- rebuild for updated kernel
-
-* Sun Mar 25 2012 leigh scott <leigh123linux@googlemail.com> - 1:295.33-2
-- Change nvidia-kmod-data archive to xz compression
-
-* Sun Mar 25 2012 leigh scott <leigh123linux@googlemail.com> - 1:295.33-1
+* Thu Mar 22 2012 leigh scott <leigh123linux@googlemail.com> - 1:295.33-1
 - Update to 295.33
 
-* Thu Mar 22 2012 leigh scott <leigh123linux@googlemail.com> - 1:290.10-2.2
-- rebuild for updated kernel
-
-* Thu Mar 22 2012 leigh scott <leigh123linux@googlemail.com> - 1:290.10-2.1
-- build akmod
-
-* Thu Mar 22 2012 leigh scott <leigh123linux@googlemail.com> - 1:290.10-2
+* Thu Mar 22 2012 leigh scott <leigh123linux@googlemail.com> - 1:295.20-2
 - patched to build with 3.3.0 kernel
 
-* Wed Mar 21 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:290.10-1.21
-- rebuild for updated kernel
+* Tue Feb 14 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.20-1
+- Update to 295.20
 
-* Sat Mar 17 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:290.10-1.20
-- rebuild for updated kernel
+* Tue Feb 07 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.17-1.1
+- Rebuild for UsrMove
 
-* Thu Mar 15 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:290.10-1.19
-- rebuild for updated kernel
+* Wed Feb 01 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.17-1
+- Update to 295.17 (beta)
 
-* Thu Mar 08 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:290.10-1.18
-- rebuild for updated kernel
-
-* Fri Mar 02 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:290.10-1.17
-- rebuild for updated kernel
-
-* Thu Mar 01 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:290.10-1.16
-- rebuild for updated kernel
-
-* Wed Feb 22 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:290.10-1.15
-- rebuild for updated kernel
-
-* Tue Feb 14 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:290.10-1.14
-- rebuild for updated kernel
-
-* Thu Feb 09 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:290.10-1.13
-- rebuild for updated kernel
-
-* Fri Feb 03 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:290.10-1.12
-- rebuild for updated kernel
-
-* Fri Jan 27 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:290.10-1.11
-- rebuild for updated kernel
-
-* Tue Jan 24 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:290.10-1.10
-- rebuild for updated kernel
-
-* Sun Jan 15 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:290.10-1.9
-- rebuild for updated kernel
-
-* Mon Jan 09 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:290.10-1.8
-- rebuild for updated kernel
-
-* Wed Jan 04 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:290.10-1.7
-- rebuild for updated kernel
-
-* Fri Dec 23 2011 Nicolas Chauvet <kwizart@gmail.com> - 1:290.10-1.6
-- rebuild for updated kernel
-
-* Sat Dec 17 2011 Nicolas Chauvet <kwizart@gmail.com> - 1:290.10-1.5
-- rebuild for updated kernel
-
-* Tue Dec 13 2011 Nicolas Chauvet <kwizart@gmail.com> - 1:290.10-1.4
-- rebuild for updated kernel
-
-* Sat Dec 10 2011 Nicolas Chauvet <kwizart@gmail.com> - 1:290.10-1.3
-- rebuild for updated kernel
-
-* Thu Dec 01 2011 Nicolas Chauvet <kwizart@gmail.com> - 1:290.10-1.2
-- rebuild for updated kernel
-
-* Wed Nov 23 2011 Nicolas Chauvet <kwizart@gmail.com> - 1:290.10-1.1
-- rebuild for updated kernel
+* Sat Dec 31 2011 Nicolas Chauvet <kwizart@gmail.com> - 1:295.09-1
+- Update to 295.09 (beta)
 
 * Tue Nov 22 2011 Nicolas Chauvet <kwizart@gmail.com> - 1:290.10-1
 - Update to 290.10
