@@ -3,13 +3,13 @@
 # "buildforkernels newest" macro for just that build; immediately after
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
-%global buildforkernels current
+%define buildforkernels current
 
 Name:          nvidia-kmod
 Epoch:         1
-Version:       304.60
+Version:       304.64
 # Taken over by kmodtool
-Release:       1%{?dist}.4
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -47,6 +47,14 @@ The nvidia %{version} display driver kernel module for kernel %{kversion}.
 kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterfile %{SOURCE11} --obsolete-name nvidia-newest --obsolete-version "%{version}" %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 %setup -q -c -T -a 0
 
+# patch loop
+for arch in x86 x64
+do
+pushd nvidiapkg-${arch}
+ echo "NoPatch"
+popd
+done
+
 
 for kernel_version  in %{?kernel_versions} ; do
 %ifarch %{ix86}
@@ -77,98 +85,44 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Wed Nov 21 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.60-1.4
-- Rebuilt for updated kernel
+* Thu Nov 08 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-1
+- Update to 304.64
 
-* Tue Nov 20 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.60-1.3
-- Rebuilt for updated kernel
-
-* Thu Nov 08 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.60-1.2
-- Rebuilt for updated kernel
-
-* Thu Nov 01 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.60-1.1
-- Rebuilt for updated kernel
-
-* Thu Oct 23 2012 Leigh Scott <leigh123linux@googlemail.com> - 1:304.60-1
+* Thu Oct 18 2012 Leigh Scott <leigh123linux@googlemail.com> - 1:304.60-1
 - Update to 304.60
 
-* Tue Oct 23 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.51-1.2
-- Rebuilt for updated kernel
+* Mon Sep 24 2012 Leigh Scott <leigh123linux@googlemail.com> - 1:304.51-1
+- Update to 304.51
 
-* Thu Oct 18 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.51-1.1
-- Rebuilt for updated kernel
+* Sat Sep 15 2012 Leigh Scott <leigh123linux@googlemail.com> - 1:304.48-1
+- Update to 304.48
 
-* Thu Oct 11 2012 Leigh Scott <leigh123linux@googlemail.com> - 1:304.51-1
-- Update to 304.51 release
-
-* Thu Oct 11 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.37-1.8
-- Rebuilt for updated kernel
-
-* Mon Oct 08 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.37-1.7
-- Rebuilt for updated kernel
-
-* Wed Oct 03 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.37-1.6
-- Rebuilt for updated kernel
-
-* Thu Sep 27 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.37-1.5
-- Rebuilt for updated kernel
-
-* Mon Sep 17 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.37-1.4
-- Rebuilt for updated kernel
-
-* Fri Aug 31 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.37-1.3
-- Rebuilt for updated kernel
-
-* Wed Aug 22 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.37-1.2
-- Rebuilt for updated kernel
-
-* Thu Aug 16 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.37-1.1
-- Rebuilt for updated kernel
+* Wed Sep 05 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.43-1
+- Update to 304.43
 
 * Tue Aug 14 2012 Leigh Scott <leigh123linux@googlemail.com> - 1:304.37-1
 - Update to 304.37 release
 
-* Sat Aug 11 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.32-1.1
-- Rebuilt for updated kernel
+* Sat Aug 04 2012 Leigh Scott <leigh123linux@googlemail.com> - 1:304.32-2
+- build again as the build system lost the first one
 
 * Sat Aug 04 2012 Leigh Scott <leigh123linux@googlemail.com> - 1:304.32-1
 - Update to 304.32
 
-* Wed Aug 01 2012 Leigh Scott <leigh123linux@googlemail.com> - 1:304.30-1
+* Tue Jul 31 2012 Leigh Scott <leigh123linux@googlemail.com> - 1:304.30-2
+- add some conditionals to the 3.6 kernel patch
+
+* Tue Jul 31 2012 Leigh Scott <leigh123linux@googlemail.com> - 1:304.30-1
 - Update to 304.30
 
-* Tue Jul 31 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.59-1.7
-- Rebuilt for updated kernel
+* Fri Jul 13 2012 Leigh Scott <leigh123linux@googlemail.com> - 1:304.22-1
+- Update to 304.22
 
-* Sat Jul 21 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.59-1.6
-- Rebuilt for updated kernel
+* Sat Jun 16 2012 leigh scott <leigh123linux@googlemail.com> - 1:302.17-1
+- Update to 302.17
 
-* Tue Jul 17 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.59-1.5
-- Rebuilt for updated kernel
-
-* Fri Jul 06 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.59-1.4
-- Rebuilt for updated kernel
-
-* Thu Jun 28 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.59-1.3
-- Rebuilt for updated kernel
-
-* Thu Jun 21 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.59-1.2
-- Rebuilt for updated kernel
-
-* Sun Jun 17 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.59-1.1
-- Rebuilt for updated kernel
-
-* Mon Jun 11 2012 leigh scott <leigh123linux@googlemail.com> - 1:295.59-1
-- Update to 295.59
-
-* Tue Jun 05 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.53-1.3
-- Rebuilt for updated kernel
-
-* Sun May 27 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.53-1.2
-- Rebuilt for updated kernel
-
-* Sat May 26 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:295.53-1.1
-- Rebuilt for release kernel
+* Tue May 22 2012 leigh scott <leigh123linux@googlemail.com> - 1:302.11-1
+- Update to 302.11
 
 * Tue May 22 2012 leigh scott <leigh123linux@googlemail.com> - 1:295.53-1
 - Update to 295.53
