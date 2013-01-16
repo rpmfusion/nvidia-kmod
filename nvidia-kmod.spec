@@ -7,7 +7,7 @@
 
 Name:          nvidia-kmod
 Epoch:         1
-Version:       310.19
+Version:       313.18
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -24,7 +24,7 @@ Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version
 # </switch me>
 
 Source11:       nvidia-kmodtool-excludekernel-filterfile
-
+Patch0:         3.8_kernel.patch
 
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -51,7 +51,7 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 for arch in x86 x64
 do
 pushd nvidiapkg-${arch}
-echo "no patch to apply"
+%patch0 -p1
 popd
 done
 
@@ -85,6 +85,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Jan 16 2013 Leigh Scott <leigh123linux@googlemail.com> - 1:313.18-1
+- Update to 313.18 (adds xorg-server 1.14 ABI support)
+- patch for 3.8rc kernel
+
 * Fri Nov 16 2012 Leigh Scott <leigh123linux@googlemail.com> - 1:310.19-1
 - rebuilt
 
