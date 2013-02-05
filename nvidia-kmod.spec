@@ -3,13 +3,13 @@
 # "buildforkernels newest" macro for just that build; immediately after
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
-%define buildforkernels newest
+%define buildforkernels current
 
 Name:          nvidia-kmod
 Epoch:         1
 Version:       304.64
 # Taken over by kmodtool
-Release:       2%{?dist}.6
+Release:       3%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -25,6 +25,7 @@ Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version
 
 Source11:       nvidia-kmodtool-excludekernel-filterfile
 Patch0:         3.7_kernel.patch
+Patch1:         conftest.patch
 
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -52,6 +53,7 @@ for arch in x86 x64
 do
 pushd nvidiapkg-${arch}
 %patch0 -p1
+%patch1 -p1
 popd
 done
 
@@ -85,6 +87,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Feb 05 2013 Leigh Scott <leigh123linux@googlemail.com> - 1:304.64-3
+- patch for 3.7.6 kernel compile issue
+
 * Tue Feb 05 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-2.6
 - Rebuilt for kernel
 
