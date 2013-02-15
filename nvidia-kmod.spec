@@ -9,7 +9,7 @@ Name:          nvidia-kmod
 Epoch:         1
 Version:       304.64
 # Taken over by kmodtool
-Release:       4%{?dist}.1
+Release:       5%{?dist}.1
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -88,6 +88,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Feb 15 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-5.1
+- Fix with a better patch from gentoo
+
 * Wed Feb 13 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-4.1
 - Rebuilt for kernel
 
