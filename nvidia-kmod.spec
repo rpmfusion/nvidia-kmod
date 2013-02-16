@@ -3,13 +3,13 @@
 # "buildforkernels newest" macro for just that build; immediately after
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
-%define buildforkernels newest
+#define buildforkernels newest
 
 Name:          nvidia-kmod
 Epoch:         1
 Version:       304.64
 # Taken over by kmodtool
-Release:       3%{?dist}.2
+Release:       6%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -26,6 +26,7 @@ Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version
 Source11:       nvidia-kmodtool-excludekernel-filterfile
 Patch0:         3.7_kernel.patch
 Patch1:         conftest.patch
+
 
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -87,11 +88,14 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Sat Feb 16 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-3.2
+* Fri Feb 15 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-6
+- Fix with a better patch from gentoo
+
+* Wed Feb 13 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-4.1
 - Rebuilt for kernel
 
-* Sat Feb 16 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-3.1
-- Rebuilt for kernel
+* Tue Feb 05 2013 Leigh Scott <leigh123linux@googlemail.com> - 1:304.64-4
+- Rebuilt as I forgot to change to current
 
 * Tue Feb 05 2013 Leigh Scott <leigh123linux@googlemail.com> - 1:304.64-3
 - patch for 3.7.6 kernel compile issue
@@ -99,47 +103,35 @@ rm -rf $RPM_BUILD_ROOT
 * Tue Feb 05 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-2.6
 - Rebuilt for kernel
 
-* Mon Feb 04 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-2.5
-- Rebuilt for akmod
-
-* Wed Jan 30 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-2.4
-- Rebuilt for akmod
-
-* Wed Jan 30 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-2.3
+* Wed Jan 30 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-2.5
 - Rebuilt for updated kernel
 
-* Fri Jan 25 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-2.2
+* Fri Jan 25 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-2.4
 - Rebuilt for updated kernel
 
-* Sat Jan 19 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-2.1
+* Thu Jan 17 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-2.3
 - Rebuilt for updated kernel
 
-* Sat Jan 19 2013 Leigh Scott <leigh123linux@googlemail.com> - 1:304.64-2
-- patch for 3.7 kernel
-
-* Thu Jan 17 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-1.8
+* Mon Jan 14 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-2.2
 - Rebuilt for updated kernel
 
-* Wed Jan 09 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-1.7
+* Sun Jan 13 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-2.1
 - Rebuilt for updated kernel
 
-* Sun Dec 23 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-1.6
-- Rebuilt for updated kernel
+* Sun Jan 06 2013 Leigh Scott <leigh123linux@googlemail.com> - 1:304.64-2
+- patched and rebuilt for 3.7 kernel
 
-* Sat Dec 22 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-1.5
-- Rebuilt for updated kernel
+* Thu Jan 03 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-1.4
+- Rebuilt for f18 final kernel
 
-* Tue Dec 18 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-1.4
-- Rebuilt for updated kernel
+* Fri Dec 21 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-1.3
+- Rebuilt for current f18 kernel
 
-* Wed Dec 12 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-1.3
-- Rebuilt for updated kernel
+* Sun Nov 25 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-1.2
+- Rebuilt for current f18 kernel
 
-* Wed Dec 05 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-1.2
-- Rebuilt for updated kernel
-
-* Wed Nov 28 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-1.1
-- Rebuilt for updated kernel
+* Sun Nov 25 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-1.1
+- Rebuilt for Fedora 18 Beta kernel
 
 * Thu Nov 08 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-1
 - Update to 304.64
