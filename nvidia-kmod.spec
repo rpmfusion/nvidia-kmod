@@ -3,13 +3,13 @@
 # "buildforkernels newest" macro for just that build; immediately after
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
-%global buildforkernels newest
+#global buildforkernels newest
 
 Name:          nvidia-kmod
 Epoch:         1
-Version:       304.64
+Version:       304.88
 # Taken over by kmodtool
-Release:       7%{?dist}.9
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -24,8 +24,6 @@ Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version
 # </switch me>
 
 Source11:       nvidia-kmodtool-excludekernel-filterfile
-Patch0:         3.7_kernel.patch
-Patch1:         conftest.patch
 
 
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -53,8 +51,7 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 for arch in x86 x64
 do
 pushd nvidiapkg-${arch}
-%patch0 -p1
-%patch1 -p1
+echo "Nothing to patch"
 popd
 done
 
@@ -88,34 +85,40 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Sun Mar 24 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-7.9
+* Thu Apr 04 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.88-1
+- Update to 304.88
+
+* Tue Apr 02 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-7.5
 - Rebuilt for kernel
 
-* Sat Mar 23 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-7.8
-- Rebuilt for akmod
-
-* Mon Mar 18 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-7.7
+* Fri Mar 22 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-7.4
 - Rebuilt for kernel
 
-* Fri Mar 15 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-7.6
+* Mon Mar 18 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-7.3
 - Rebuilt for kernel
 
-* Sun Mar 10 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-7.5
-Rebuilt for kernel
+* Fri Mar 15 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-7.2
+- Rebuilt for kernel
 
-* Sun Mar 10 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-7.4
-Rebuilt for kernel
+* Mon Mar 11 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-7.1
+- Rebuilt for kernel
 
-* Wed Mar 06 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-7.3
+* Fri Mar 01 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-7
 - Modify 3.7 patch for 3.8 kernel
 
-* Sat Mar 02 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-6.3
+* Thu Feb 28 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-6.5
 - Rebuilt for kernel
 
-* Tue Feb 26 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-6.2
+* Tue Feb 26 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-6.4
 - Rebuilt for kernel
 
-* Tue Feb 19 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-6.1
+* Thu Feb 21 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-6.3
+- Rebuilt for kernel
+
+* Sat Feb 16 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-6.2
+- Rebuilt for kernel
+
+* Sat Feb 16 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-6.1
 - Rebuilt for kernel
 
 * Fri Feb 15 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:304.64-6
