@@ -3,13 +3,13 @@
 # "buildforkernels newest" macro for just that build; immediately after
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
-%global buildforkernels akmod
+%global buildforkernels current
 
 Name:          nvidia-kmod
 Epoch:         1
-Version:       313.30
+Version:       319.12
 # Taken over by kmodtool
-Release:       2%{?dist}
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -18,10 +18,7 @@ URL:           http://www.nvidia.com/
 #ftp://download.nvidia.com/XFree86/Linux-x86/%{version}/NVIDIA-Linux-x86-%{version}-pkg0.run
 #ftp://download.nvidia.com/XFree86/Linux-x86_64/%{version}/NVIDIA-Linux-x86_64-%{version}-pkg0.run
 
-# <switch me> when sources are on kwizart's repo
-Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version}.tar.xz
-#Source0:       http://www.diffingo.com/downloads/livna/kmod-data/nvidia-kmod-data-%{version}.tar.bz2
-# </switch me>
+Source0:       nvidia-kmod-data-%{version}.tar.xz
 
 Source11:       nvidia-kmodtool-excludekernel-filterfile
 
@@ -84,8 +81,11 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed May 01 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:319.12-1
+- Update to 319.12
+
 * Mon Apr 15 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:313.30-2
-- Build for akmod
+- Build for kernel akmods
 
 * Thu Apr 04 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:313.30-1
 - Update to 313.30
