@@ -3,7 +3,7 @@
 # "buildforkernels newest" macro for just that build; immediately after
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
-%global buildforkernels akmods
+%global buildforkernels akmod
 
 Name:          nvidia-kmod
 Epoch:         1
