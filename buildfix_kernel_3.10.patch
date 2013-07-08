@@ -3,29 +3,26 @@
 diff -ur -X - a/kernel/nv-i2c.c b/kernel/nv-i2c.c
 --- a/kernel/nv-i2c.c	2013-04-26 00:22:30.000000000 -0400
 +++ b/kernel/nv-i2c.c	2013-05-13 05:20:55.571981365 -0400
-@@ -311,8 +311,6 @@
+@@ -243,21 +243,14 @@
  BOOL NV_API_CALL nv_i2c_del_adapter(nv_state_t *nv, void *data)
  {
      struct i2c_adapter *pI2cAdapter = (struct i2c_adapter *)data;
 -    int osstatus = 0;
 -    BOOL wasReleased = FALSE;
  
- #if defined(KERNEL_2_4)
-     if (!NV_WEAK_SYMBOL_PRESENT(i2c_add_adapter))
-@@ -324,15 +322,10 @@
      if (!pI2cAdapter) return FALSE;
  
      // attempt release with the OS
 -    osstatus = i2c_del_adapter(pI2cAdapter);
-+    i2c_del_adapter(pI2cAdapter);
-+    os_free_mem(pI2cAdapter);
- 
+-
 -    if (!osstatus)
 -    {
 -        os_free_mem(pI2cAdapter);
 -        wasReleased = TRUE;
 -    }
--
++    i2c_del_adapter(pI2cAdapter);
++    os_free_mem(pI2cAdapter);
+ 
 -    return wasReleased;
 +    return TRUE;
  }
@@ -207,11 +204,15 @@ diff -ur -X - a/kernel/nv-procfs.c b/kernel/nv-procfs.c
 +nv_procfs_open_gpu_info(
 +    struct inode *inode,
 +    struct file *file
-+)
-+{
+ )
+ {
+-    int len = 0;
+-    *eof = 1;
 +    return single_open(file, nv_procfs_show_gpu_info, PDE_DATA(inode));
 +}
-+
+ 
+-    len += sprintf(page+len, "NVRM version: %s\n", pNVRM_ID);
+-    len += sprintf(page+len, "GCC version:  %s\n", NV_COMPILER);
 +static const struct file_operations nv_procfs_gpu_info_fops = {
 +    .owner   = THIS_MODULE,
 +    .open    = nv_procfs_open_gpu_info,
@@ -219,7 +220,8 @@ diff -ur -X - a/kernel/nv-procfs.c b/kernel/nv-procfs.c
 +    .llseek  = seq_lseek,
 +    .release = single_release,
 +};
-+
+ 
+-    return len;
 +static int
 +nv_procfs_show_version(
 +    struct seq_file *m,
@@ -275,10 +277,8 @@ diff -ur -X - a/kernel/nv-procfs.c b/kernel/nv-procfs.c
 +    const char __user *buffer,
 +    size_t             count,
 +    loff_t            *pos
- )
- {
--    int len = 0;
--    *eof = 1;
++)
++{
 +    int status = 0;
 +    nv_file_private_t *nvfp = NV_GET_FILE_PRIVATE(file);
 +    char *proc_buffer;
@@ -311,13 +311,10 @@ diff -ur -X - a/kernel/nv-procfs.c b/kernel/nv-procfs.c
 +        nvfp->proc_data = PDE_DATA(file->f_inode);
 +        nvfp->off += count;
 +    }
- 
--    len += sprintf(page+len, "NVRM version: %s\n", pNVRM_ID);
--    len += sprintf(page+len, "GCC version:  %s\n", NV_COMPILER);
++
 +done:
 +    up(&nvfp->fops_sp_lock[NV_FOPS_STACK_INDEX_PROCFS]);
- 
--    return len;
++
 +    return ((status < 0) ? status : count);
  }
  
@@ -341,7 +338,7 @@ diff -ur -X - a/kernel/nv-procfs.c b/kernel/nv-procfs.c
      nvfp = NV_GET_FILE_PRIVATE(file);
      if (nvfp == NULL)
          return 0;
-@@ -346,122 +424,81 @@
+@@ -346,121 +424,80 @@
      return rc;
  }
  
@@ -383,7 +380,6 @@ diff -ur -X - a/kernel/nv-procfs.c b/kernel/nv-procfs.c
 -    len += sprintf(page+len, "RmMsg: \"%s\"\n",
 +    seq_printf(m, "RmMsg: \"%s\"\n",
                  (NVreg_RmMsg != NULL) ? NVreg_RmMsg : "");
- 
 -    return len;
 +    return 0;
  }
@@ -443,8 +439,7 @@ diff -ur -X - a/kernel/nv-procfs.c b/kernel/nv-procfs.c
 -    down(&nvfp->fops_sp_lock[NV_FOPS_STACK_INDEX_PROCFS]);
 -
 -    bytes_left = (NV_PROC_WRITE_BUFFER_SIZE - nvfp->off - 1);
-+    seq_printf(m, "%s", (char *)m->private);
- 
+-
 -    if (count == 0)
 -    {
 -        status = -EINVAL;
@@ -471,7 +466,8 @@ diff -ur -X - a/kernel/nv-procfs.c b/kernel/nv-procfs.c
 -
 -done:
 -    up(&nvfp->fops_sp_lock[NV_FOPS_STACK_INDEX_PROCFS]);
--
++    seq_printf(m, "%s", (char *)m->private);
+ 
 -    return ((status < 0) ? status : (int)count);
 +    return 0;
  }
@@ -505,7 +501,7 @@ diff -ur -X - a/kernel/nv-procfs.c b/kernel/nv-procfs.c
  static void
  nv_procfs_add_text_file(
      struct proc_dir_entry *parent,
-@@ -469,22 +506,7 @@
+@@ -468,22 +505,7 @@
      const char *text
  )
  {
@@ -529,7 +525,7 @@ diff -ur -X - a/kernel/nv-procfs.c b/kernel/nv-procfs.c
  }
  #endif
  
-@@ -513,26 +535,11 @@
+@@ -512,26 +534,11 @@
      if (!proc_nvidia)
          goto failed;
  
@@ -558,7 +554,7 @@ diff -ur -X - a/kernel/nv-procfs.c b/kernel/nv-procfs.c
      if (!entry)
          goto failed;
  
-@@ -553,8 +560,7 @@
+@@ -552,8 +559,7 @@
  
      nv_procfs_add_text_file(proc_nvidia_patches, "README", __README_patches);
  
@@ -568,7 +564,7 @@ diff -ur -X - a/kernel/nv-procfs.c b/kernel/nv-procfs.c
      if (!entry)
          goto failed;
  
-@@ -571,15 +577,11 @@
+@@ -570,15 +576,11 @@
          if (!proc_nvidia_gpu)
              goto failed;
  
@@ -586,7 +582,7 @@ diff -ur -X - a/kernel/nv-procfs.c b/kernel/nv-procfs.c
          if (!entry)
              goto failed;
      }
-@@ -587,7 +589,7 @@
+@@ -586,7 +588,7 @@
      return 0;
  #if defined(CONFIG_PROC_FS)
  failed:
@@ -595,7 +591,7 @@ diff -ur -X - a/kernel/nv-procfs.c b/kernel/nv-procfs.c
      return -1;
  #endif
  }
-@@ -595,6 +597,6 @@
+@@ -594,6 +596,6 @@
  void nv_unregister_procfs(void)
  {
  #if defined(CONFIG_PROC_FS)
