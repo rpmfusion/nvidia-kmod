@@ -3,13 +3,13 @@
 # "buildforkernels newest" macro for just that build; immediately after
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
-%global buildforkernels newest
+#global buildforkernels newest
 
 Name:          nvidia-kmod
 Epoch:         1
-Version:       319.23
+Version:       319.32
 # Taken over by kmodtool
-Release:       1%{?dist}.7
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -18,17 +18,14 @@ URL:           http://www.nvidia.com/
 #ftp://download.nvidia.com/XFree86/Linux-x86/%{version}/NVIDIA-Linux-x86-%{version}-pkg0.run
 #ftp://download.nvidia.com/XFree86/Linux-x86_64/%{version}/NVIDIA-Linux-x86_64-%{version}-pkg0.run
 
-# <switch me> when sources are on kwizart's repo
-Source0:       http://rpms.kwizart.net/fedora/SOURCES/nvidia-kmod-data-%{version}.tar.xz
-#Source0:       http://www.diffingo.com/downloads/livna/kmod-data/nvidia-kmod-data-%{version}.tar.bz2
-# </switch me>
+Source0:       nvidia-kmod-data-%{version}.tar.xz
 
 Source11:       nvidia-kmodtool-excludekernel-filterfile
 
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 # needed for plague to make sure it builds for i586 and i686
-ExclusiveArch:  i686 x86_64
+ExclusiveArch:  i686 x86_64 armv7hl
 
 # get the needed BuildRequires (in parts depending on what we build for)
 BuildRequires:  %{_bindir}/kmodtool
@@ -47,7 +44,7 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 %setup -q -c -T -a 0
 
 # patch loop
-for arch in x86 x64
+for arch in x86_64 i686 armv7hl
 do
 pushd nvidiapkg-${arch}
 echo "Nothing to patch"
@@ -56,11 +53,7 @@ done
 
 
 for kernel_version  in %{?kernel_versions} ; do
-%ifarch %{ix86}
-    cp -a nvidiapkg-x86 _kmod_build_${kernel_version%%___*}
-%else
-    cp -a nvidiapkg-x64 _kmod_build_${kernel_version%%___*}
-%endif
+    cp -a nvidiapkg-%{_target_cpu} ${kernel_version%%___*}
 done
 
 %build
@@ -84,6 +77,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Jul 13 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:319.32-1
+- Update to 319.32
+- Add support for armv7hl
+
 * Sat Jul 13 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:319.23-1.7
 - Rebuilt for kernel
 
