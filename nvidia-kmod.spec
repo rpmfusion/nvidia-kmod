@@ -53,7 +53,7 @@ done
 
 
 for kernel_version  in %{?kernel_versions} ; do
-    cp -a nvidiapkg-%{_target_cpu} ${kernel_version%%___*}
+    cp -a nvidiapkg-%{_target_cpu} _kmod_build_${kernel_version%%___*}
 done
 
 %build
