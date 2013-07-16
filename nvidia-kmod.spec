@@ -3,7 +3,7 @@
 # "buildforkernels newest" macro for just that build; immediately after
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
-%global buildforkernels current
+%global buildforkernels akmod
 
 Name:          nvidia-kmod
 Epoch:         1
@@ -86,7 +86,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 * Tue Jul 16 2013 leigh scott <leigh123linux@googlemail.com> - 1:325.08-3
-- add better patch for 3.10 kernel
+- add better patch for 3.10 and 3.11 git kernels
 
 * Mon Jul 08 2013 leigh scott <leigh123linux@googlemail.com> - 1:325.08-2
 - build for current

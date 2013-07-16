@@ -34,7 +34,7 @@
  #endif
  
  #if !defined(NV_VMWARE)
-+#if LINUX_VERSION_CODE >= KERNEL_VERSION(3, 10, 0)
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3, 11, 0)
 +#define NV_NUM_PHYSPAGES                get_num_physpages()
 +#else
  #define NV_NUM_PHYSPAGES                num_physpages
