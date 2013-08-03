@@ -81,9 +81,6 @@ rm -rf $RPM_BUILD_ROOT
 * Fri Jul 26 2013 Leigh Scott <leigh123linux@googlemail.com> - 1:319.32-2
 - patch for 3.10 kernel
 
-* Sat Aug 03 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:319.32-1.1
-- Rebuilt for kernel
-
 * Sat Jul 13 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:319.32-1
 - Update to 319.32
 - Add support for armv7hl
