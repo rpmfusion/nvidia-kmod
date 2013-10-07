@@ -1,4 +1,3 @@
-
 --- a/kernel/nv-linux.h
 +++ b/kernel/nv-linux.h
 @@ -957,7 +957,11 @@ static inline int nv_execute_on_all_cpus
@@ -44,18 +43,3 @@
  
      ret = drm_gem_handle_create(file_priv, &nv_obj->base, handle);
      if (ret)
---- a/kernel/nv.c
-+++ b/kernel/nv.c
-@@ -16,8 +16,12 @@
- #include "rmil.h"
- 
- #if defined(MODULE_LICENSE)
-+#if LINUX_VERSION_CODE >= KERNEL_VERSION(3, 12, 0)
-+MODULE_LICENSE("GPL");
-+#else
- MODULE_LICENSE("NVIDIA");
- #endif
-+#endif
- #if defined(MODULE_INFO)
- MODULE_INFO(supported, "external");
- #endif
