@@ -342,10 +342,10 @@ rm -rf $RPM_BUILD_ROOT
 * Thu Aug 05 2010 Nicolas Chauvet <kwizart@gmail.com> - 1:256.44-1
 - Update to 256.44
 
-* Wed Jun 18 2010 Vallimar de Morieve <vallimar@gmail.com> - 1:256.35-1
+* Fri Jun 18 2010 Vallimar de Morieve <vallimar@gmail.com> - 1:256.35-1
 - update to 256.35
 
-* Thu Jun 17 2010 Nicolas Chaubvet <kwizart@gmail.com> - 1:195.36.31-1
+* Thu Jun 17 2010 Nicolas Chauvet <kwizart@gmail.com> - 1:195.36.31-1
 - Update to 195.36.31
 - Fix acpi_walk_namespace call with kernel 2.6.33 and later.
   http://bugs.gentoo.org/show_bug.cgi?id=301318 
@@ -615,7 +615,7 @@ rm -rf $RPM_BUILD_ROOT
 * Wed Mar 19 2008 kwizart < kwizart at gmail.com > - 171.06-2
 - Add Patch for 2.6.25rc kernels
 
-* Fri Mar  8 2008 kwizart < kwizart at gmail.com > - 171.06-1
+* Sat Mar  8 2008 kwizart < kwizart at gmail.com > - 171.06-1
 - Update to 171.06 (beta)
 
 * Wed Feb 27 2008 kwizart < kwizart at gmail.com > - 169.12-1
