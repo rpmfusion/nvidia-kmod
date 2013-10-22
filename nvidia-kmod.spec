@@ -9,7 +9,7 @@ Name:          nvidia-kmod
 Epoch:         1
 Version:       325.15
 # Taken over by kmodtool
-Release:       1%{?dist}.4
+Release:       1%{?dist}.5
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -78,6 +78,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Oct 22 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:325.15-1.5
+- Rebuilt for kernel
+
 * Mon Oct 14 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:325.15-1.4
 - Rebuilt for kernel
 
