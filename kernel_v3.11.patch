@@ -1,10 +1,79 @@
+This patch will work on installers for the following versions of the
+NVIDIA Linux driver:
+
+325.15
+331.13
+331.17
+
+It will not apply cleanly against older 325 drivers, but can be made to
+work with some minor changes.
+
+--- /dev/null
++++ b/kernel/patch-get_num_physpages.h
+@@ -0,0 +1,10 @@
++#define NV_PATCH_get_num_physpages_DESCRIPTION \
++"This patch adds support for kernels such as Linux 3.11, which use the "\
++"get_num_physpages() function instead of the num_physpages variable to "\
++"report the number of physical pages. In order to avoid compatibility "\
++"problems that would otherwise result from differences between what "\
++"the removed num_physpages variable reported versus what is reported "\
++"by get_num_physpages(), the driver will fall back to a different memory "\
++"allocation strategy on systems where num_phsypages is not available, when "\
++"the amount of system memory matches or exceeds the upper bound of a given "\
++"GPU's physical address space.\n"
+
+--- a/kernel/Makefile
++++ b/kernel/Makefile
+@@ -180,6 +180,7 @@ COMPILE_TESTS = \
+ 	file_operations \
+ 	sg_init_table \
+ 	pci_get_domain_bus_and_slot \
++	get_num_physpages \
+ 	efi_enabled \
+ 	dom0_kernel_present \
+ 	drm_available \
+
+--- a/kernel/conftest.sh
++++ b/kernel/conftest.sh
+@@ -1665,6 +1665,30 @@ compile_test() {
+             fi
+         ;;
+ 
++        get_num_physpages)
++            #
++            # Determine if the get_num_physpages() function is
++            # present.
++            #
++            echo "$CONFTEST_PREAMBLE
++            #include <linux/mm.h>
++            void conftest_get_num_physpages(void) {
++                get_num_physpages(NULL);
++            }" > conftest$$.c
++
++            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
++            rm -f conftest$$.c
++
++            if [ -f conftest$$.o ]; then
++                echo "#undef NV_GET_NUM_PHYSPAGES_PRESENT" | append_conftest "functions"
++                rm -f conftest$$.o
++                return
++            else
++                echo "#define NV_GET_NUM_PHYSPAGES_PRESENT" | append_conftest "functions"
++                return
++            fi
++        ;;
++
+         proc_remove)
+             #
+             # Determine if the proc_remove() function is present.
+
 --- a/kernel/nv-linux.h
 +++ b/kernel/nv-linux.h
-@@ -957,7 +957,11 @@ static inline int nv_execute_on_all_cpus
+@@ -958,7 +958,11 @@ static inline int nv_execute_on_all_cpus(void (*func)(void *info), void *info)
  #endif
  
  #if !defined(NV_VMWARE)
-+#if LINUX_VERSION_CODE >= KERNEL_VERSION(3, 11, 0)
++#if defined(NV_GET_NUM_PHYSPAGES_PRESENT)
 +#define NV_NUM_PHYSPAGES                get_num_physpages()
 +#else
  #define NV_NUM_PHYSPAGES                num_physpages
@@ -12,6 +81,23 @@
  #define NV_GET_CURRENT_PROCESS()        current->tgid
  #define NV_IN_ATOMIC()                  in_atomic()
  #define NV_LOCAL_BH_DISABLE()           local_bh_disable()
+
+--- a/kernel/nv-vm.c
++++ b/kernel/nv-vm.c
+@@ -432,8 +432,13 @@ static unsigned int nv_compute_gfp_mask(
+     system_memory_size = (os_get_system_memory_size() * RM_PAGE_SIZE);
+     if (system_memory_size != 0)
+     {
++#if !defined(NV_GET_NUM_PHYSPAGES_PRESENT)
+         if (dev->dma_mask < (system_memory_size - 1))
+             gfp_mask = NV_GFP_DMA32;
++#else
++        if (dev->dma_mask <= (system_memory_size - 1))
++            gfp_mask = NV_GFP_DMA32;
++#endif
+     }
+     else if (dev->dma_mask < 0xffffffffffULL)
+     {
 --- a/kernel/nv-drm.c
 +++ b/kernel/nv-drm.c
 @@ -106,7 +106,11 @@ static const struct file_operations nv_d

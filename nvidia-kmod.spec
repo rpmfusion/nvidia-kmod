@@ -9,7 +9,7 @@ Name:          nvidia-kmod
 Epoch:         1
 Version:       325.15
 # Taken over by kmodtool
-Release:       3%{?dist}
+Release:       4%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -79,6 +79,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Nov 06 2013 Leigh Scott <leigh123linux@googlemail.com> - 1:325.15-4
+- use nvidia fix for get_num_physpages
+
 * Mon Sep 16 2013 Leigh Scott <leigh123linux@googlemail.com> - 1:325.15-3
 - patch for 3.12 git kernel
 
