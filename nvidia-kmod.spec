@@ -7,9 +7,9 @@
 
 Name:          nvidia-kmod
 Epoch:         1
-Version:       325.15
+Version:       331.20
 # Taken over by kmodtool
-Release:       4%{?dist}
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -22,7 +22,6 @@ URL:           http://www.nvidia.com/
 Source0:        nvidia-kmod-data-%{version}.tar.xz
 
 Source11:       nvidia-kmodtool-excludekernel-filterfile
-Patch0:         kernel_v3.11.patch
 
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -46,12 +45,12 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 %setup -q -c -T -a 0
 
 # patch loop
-for arch in x86_64 i686 armv7hl
-do
-pushd nvidiapkg-${arch}
-%patch0 -p1
-popd
-done
+#for arch in x86_64 i686 armv7hl
+#do
+#pushd nvidiapkg-${arch}
+#patch0 -p1
+#popd
+#done
 
 
 for kernel_version  in %{?kernel_versions} ; do
@@ -79,6 +78,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Nov 07 2013 Leigh Scott <leigh123linux@googlemail.com> - 1:331.20-1
+- Update to 331.20 release
+
 * Wed Nov 06 2013 Leigh Scott <leigh123linux@googlemail.com> - 1:325.15-4
 - use nvidia fix for get_num_physpages
 
