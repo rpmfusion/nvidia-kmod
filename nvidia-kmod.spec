@@ -3,13 +3,13 @@
 # "buildforkernels newest" macro for just that build; immediately after
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
-%global buildforkernels akmod
+#global buildforkernels akmod
 
 Name:          nvidia-kmod
 Epoch:         1
 Version:       331.20
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -18,6 +18,10 @@ URL:           http://www.nvidia.com/
 #ftp://download.nvidia.com/XFree86/Linux-x86/%{version}/NVIDIA-Linux-x86-%{version}-pkg0.run
 #ftp://download.nvidia.com/XFree86/Linux-x86_64/%{version}/NVIDIA-Linux-x86_64-%{version}-pkg0.run
 #ftp://download.nvidia.com/XFree86/Linux-32bit-ARM/%{version}/NVIDIA-Linux-armv7l-gnueabihf-%{version}.run
+#sh %{SOURCE0} --extract-only --target nvidiapkg-i686
+#sh %{SOURCE1} --extract-only --target nvidiapkg-x86_64
+#sh %{SOURCE4} --extract-only --target nvidiapkg-armv7hl
+#tar -cJf nvidia-kmod-data-%{version}.tar.xz nvidiapkg-*/LICENSE nvidiapkg-*/kernel
 
 Source0:        nvidia-kmod-data-%{version}.tar.xz
 
@@ -60,7 +64,10 @@ done
 %build
 for kernel_version in %{?kernel_versions}; do
   pushd _kmod_build_${kernel_version%%___*}/kernel/
-    make %{?_smp_mflags}  SYSSRC="${kernel_version##*___}" module
+    make %{?_smp_mflags}  KERNEL_UNAME="${kernel_version%%___*}" module
+  popd
+  pushd _kmod_build_${kernel_version%%___*}/kernel/uvm
+    make %{?_smp_mflags}  KERNEL_UNAME="${kernel_version%%___*}" module
   popd
 done
 
@@ -68,7 +75,9 @@ done
 %install
 rm -rf $RPM_BUILD_ROOT
 for kernel_version in %{?kernel_versions}; do
-    install -D -m 0755 _kmod_build_${kernel_version%%___*}/kernel/nvidia.ko $RPM_BUILD_ROOT/%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/nvidia.ko
+    mkdir -p  $RPM_BUILD_ROOT/%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/
+    install -D -m 0755 _kmod_build_${kernel_version%%___*}/kernel/{,uvm}/nvidia*.ko \
+         $RPM_BUILD_ROOT/%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/
 done
 %{?akmod_install}
 
@@ -78,6 +87,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Nov 11 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:331.20-2
+- Add nvidia-uvm
+- Fix build directory layout - rfbz#2907
+
 * Thu Nov 07 2013 Leigh Scott <leigh123linux@googlemail.com> - 1:331.20-1
 - Update to 331.20 release
 
