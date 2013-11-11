@@ -3,11 +3,11 @@
 # "buildforkernels newest" macro for just that build; immediately after
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
-%global buildforkernels current
+%global buildforkernels akmod
 
 Name:          nvidia-kmod
 Epoch:         1
-Version:       325.15
+Version:       331.20
 # Taken over by kmodtool
 Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -17,11 +17,15 @@ URL:           http://www.nvidia.com/
 # Source is created from these files:
 #ftp://download.nvidia.com/XFree86/Linux-x86/%{version}/NVIDIA-Linux-x86-%{version}-pkg0.run
 #ftp://download.nvidia.com/XFree86/Linux-x86_64/%{version}/NVIDIA-Linux-x86_64-%{version}-pkg0.run
+#ftp://download.nvidia.com/XFree86/Linux-32bit-ARM/%{version}/NVIDIA-Linux-armv7l-gnueabihf-%{version}.run
+#sh %{SOURCE0} --extract-only --target nvidiapkg-i686
+#sh %{SOURCE1} --extract-only --target nvidiapkg-x86_64
+#sh %{SOURCE4} --extract-only --target nvidiapkg-armv7hl
+#tar -cJf nvidia-kmod-data-%{version}.tar.xz nvidiapkg-*/LICENSE nvidiapkg-*/kernel
 
-Source0:       nvidia-kmod-data-%{version}.tar.xz
+Source0:        nvidia-kmod-data-%{version}.tar.xz
 
 Source11:       nvidia-kmodtool-excludekernel-filterfile
-Patch0:         3.11_kernel.patch
 
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -45,12 +49,12 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 %setup -q -c -T -a 0
 
 # patch loop
-for arch in x86_64 i686 armv7hl
-do
-pushd nvidiapkg-${arch}
-%patch0 -p1
-popd
-done
+#for arch in x86_64 i686 armv7hl
+#do
+#pushd nvidiapkg-${arch}
+#patch0 -p1
+#popd
+#done
 
 
 for kernel_version  in %{?kernel_versions} ; do
@@ -60,7 +64,10 @@ done
 %build
 for kernel_version in %{?kernel_versions}; do
   pushd _kmod_build_${kernel_version%%___*}/kernel/
-    make %{?_smp_mflags}  SYSSRC="${kernel_version##*___}" module
+    make %{?_smp_mflags}  KERNEL_UNAME="${kernel_version%%___*}" module
+  popd
+  pushd _kmod_build_${kernel_version%%___*}/kernel/uvm
+    make %{?_smp_mflags}  KERNEL_UNAME="${kernel_version%%___*}" module
   popd
 done
 
@@ -68,7 +75,9 @@ done
 %install
 rm -rf $RPM_BUILD_ROOT
 for kernel_version in %{?kernel_versions}; do
-    install -D -m 0755 _kmod_build_${kernel_version%%___*}/kernel/nvidia.ko $RPM_BUILD_ROOT/%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/nvidia.ko
+    mkdir -p  $RPM_BUILD_ROOT/%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/
+    install -D -m 0755 _kmod_build_${kernel_version%%___*}/kernel/{,uvm}/nvidia*.ko \
+         $RPM_BUILD_ROOT/%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/
 done
 %{?akmod_install}
 
@@ -78,99 +87,59 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Wed Nov 06 2013 Leigh Scott <leigh123linux@googlemail.com> - 1:325.15-2
+* Mon Nov 11 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:331.20-2
+- Add nvidia-uvm
+- Fix build directory layout - rfbz#2907
+
+* Thu Nov 07 2013 Leigh Scott <leigh123linux@googlemail.com> - 1:331.20-1
+- Update to 331.20 release
+
+* Wed Nov 06 2013 Leigh Scott <leigh123linux@googlemail.com> - 1:325.15-4
 - use nvidia fix for get_num_physpages
 
-* Mon Nov 04 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:325.15-1.7
-- Rebuilt for kernel
+* Mon Sep 16 2013 Leigh Scott <leigh123linux@googlemail.com> - 1:325.15-3
+- patch for 3.12 git kernel
 
-* Mon Nov 04 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:325.15-1.6
-- Rebuilt for kernel
+* Tue Aug 06 2013 Leigh Scott <leigh123linux@googlemail.com> - 1:325.15-2
+- rebuild for akmod as pae marco is broken
 
-* Tue Oct 22 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:325.15-1.5
-- Rebuilt for kernel
+* Tue Aug 06 2013 Leigh Scott <leigh123linux@googlemail.com> - 1:325.15-1
+- Update to 325.15 release
+- redo kernel patch
 
-* Mon Oct 14 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:325.15-1.4
-- Rebuilt for kernel
+* Sun Jul 21 2013 Leigh Scott <leigh123linux@googlemail.com> - 1:325.08-4
+- redo kernel patch
 
-* Fri Oct 11 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:325.15-1.3
-- Rebuilt for kernel
+* Tue Jul 16 2013 leigh scott <leigh123linux@googlemail.com> - 1:325.08-3
+- add better patch for 3.10 and 3.11 git kernels
 
-* Fri Oct 04 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:325.15-1.2
-- Rebuilt for kernel
+* Mon Jul 08 2013 leigh scott <leigh123linux@googlemail.com> - 1:325.08-2
+- build for current
 
-* Tue Oct 01 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:325.15-1.1
-- Rebuilt for current
+* Sun Jul 07 2013 leigh scott <leigh123linux@googlemail.com> - 1:325.08-1
+- Update to 325.08
 
-* Sun Sep 29 2013 Leigh Scott <leigh123linux@googlemail.com> - 1:325.15-1
-- Update to 325.15
-
-* Sun Sep 29 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:319.32-3.1
-- Rebuilt for kernel
-
-* Tue Sep 17 2013 Leigh Scott <leigh123linux@googlemail.com> - 1:319.32-3
-- patch for 3.11 kernel
-
-* Fri Aug 30 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:319.32-2.6
-- Rebuilt for kernel
-
-* Thu Aug 22 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:319.32-2.5
-- Rebuilt for kernel
-
-* Fri Aug 16 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:319.32-2.4
-- Rebuilt for kernel
-
-* Tue Aug 13 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:319.32-2.3
-- Rebuilt for kernel
-
-* Thu Aug 08 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:319.32-2.2
-- Rebuilt for kernel
-
-* Tue Jul 30 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:319.32-2.1
-- Rebuilt for kernel
-
-* Fri Jul 26 2013 Leigh Scott <leigh123linux@googlemail.com> - 1:319.32-2
-- patch for 3.10 kernel
-
-* Fri Jul 26 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:319.32-1.1
-- Rebuilt for kernel
-
-* Sat Jul 13 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:319.32-1
+* Fri Jun 28 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:319.32-1
 - Update to 319.32
 - Add support for armv7hl
 
-* Sat Jul 13 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:319.23-1.7
-- Rebuilt for kernel
+* Fri May 31 2013 leigh scott <leigh123linux@googlemail.com> - 1:319.23-3
+- Patch for 3.10 kernel
 
-* Sat Jul 06 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:319.23-1.6
-- Rebuilt for kernel
-
-* Sun Jun 30 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:319.23-1.5
-- Rebuilt for kernel
-
-* Sat Jun 29 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:319.23-1.4
-- Rebuilt for kernel
-
-* Fri Jun 14 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:319.23-1.3
-- Rebuilt for current f19 kernel
-
-* Wed Jun 12 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:319.23-1.2
-- Rebuilt for current f19 kernel
-
-* Wed Jun 12 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:319.23-1.1
-- Rebuilt for kernel
+* Thu May 30 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:319.23-2
+- Build for akmods
 
 * Thu May 23 2013 Leigh Scott <leigh123linux@googlemail.com> - 1:319.23-1
 - Update to 319.23
 
-* Tue May 14 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:319.17-1.1
-- Rebuilt for kernel
-
 * Sat May 11 2013 Leigh Scott <leigh123linux@googlemail.com> - 1:319.17-1
 - Update to 319.17
 
+* Wed May 01 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:319.12-1
+- Update to 319.12
+
 * Mon Apr 15 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:313.30-2
-- Build for akmod
+- Build for kernel akmods
 
 * Thu Apr 04 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:313.30-1
 - Update to 313.30
@@ -357,7 +326,7 @@ rm -rf $RPM_BUILD_ROOT
 * Fri Jun 18 2010 Vallimar de Morieve <vallimar@gmail.com> - 1:256.35-1
 - update to 256.35
 
-* Thu Jun 17 2010 Nicolas Chauvet <kwizart@gmail.com> - 1:195.36.31-1
+* Thu Jun 17 2010 Nicolas Chaubvet <kwizart@gmail.com> - 1:195.36.31-1
 - Update to 195.36.31
 - Fix acpi_walk_namespace call with kernel 2.6.33 and later.
   http://bugs.gentoo.org/show_bug.cgi?id=301318 
