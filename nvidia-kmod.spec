@@ -9,7 +9,7 @@ Name:          nvidia-kmod
 Epoch:         1
 Version:       331.20
 # Taken over by kmodtool
-Release:       2%{?dist}
+Release:       3%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -89,7 +89,7 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Mon Nov 11 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:331.20-2
+* Mon Nov 11 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:331.20-3
 - Add nvidia-uvm
 - Fix build directory layout - rfbz#2907
 
