@@ -64,10 +64,10 @@ done
 %build
 for kernel_version in %{?kernel_versions}; do
   pushd _kmod_build_${kernel_version%%___*}/kernel/
-    make %{?_smp_mflags}  KERNEL_UNAME="${kernel_version%%___*}" module
+    make %{?_smp_mflags} IGNORE_CC_MISMATCH=1  KERNEL_UNAME="${kernel_version%%___*}" module
   popd
   pushd _kmod_build_${kernel_version%%___*}/kernel/uvm
-    make %{?_smp_mflags}  KERNEL_UNAME="${kernel_version%%___*}" module
+    make %{?_smp_mflags} IGNORE_CC_MISMATCH=1 KERNEL_UNAME="${kernel_version%%___*}" module
   popd
 done
 
