@@ -9,7 +9,7 @@ Name:          nvidia-kmod
 Epoch:         1
 Version:       331.20
 # Taken over by kmodtool
-Release:       3%{?dist}
+Release:       4%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -38,6 +38,9 @@ BuildRequires:  %{_bindir}/kmodtool
 # kmodtool does its magic here
 %{expand:%(kmodtool --target %{_target_cpu} --repo rpmfusion --kmodname %{name} --filterfile %{SOURCE11} --obsolete-name nvidia-newest --obsolete-version "%{version}" %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null) }
 
+#Build the nvidia-cuda
+%{expand:%(kmodtool --target %{_target_cpu} --repo rpmfusion --kmodname %{name}-cuda --filterfile %{SOURCE11} %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null) }
+
 %description
 The nvidia %{version} display driver kernel module for kernel %{kversion}.
 
@@ -46,6 +49,7 @@ The nvidia %{version} display driver kernel module for kernel %{kversion}.
 %{?kmodtool_check}
 # print kmodtool output for debugging purposes:
 kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterfile %{SOURCE11} --obsolete-name nvidia-newest --obsolete-version "%{version}" %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
+kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name}-cuda --filterfile %{SOURCE11}  %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 %setup -q -c -T -a 0
 
 # patch loop
@@ -65,6 +69,7 @@ done
 for kernel_version in %{?kernel_versions}; do
   pushd _kmod_build_${kernel_version%%___*}/kernel/
     make %{?_smp_mflags} IGNORE_CC_MISMATCH=1  KERNEL_UNAME="${kernel_version%%___*}" \
+        %{?_nv_build_module_instances:NV_BUILD_MODULE_INSTANCES=%{?_nv_build_module_instances}} \
         SYSSRC="${kernel_version##*___}" module
   popd
   pushd _kmod_build_${kernel_version%%___*}/kernel/uvm
@@ -89,6 +94,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Nov 24 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:331.20-4
+- Allow akmod to build modules for cuda
+  Set %%_nv_build_module_instances 8 into /etc/rpm/cuda.dist
+
 * Mon Nov 11 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:331.20-3
 - Add nvidia-uvm
 - Fix build directory layout - rfbz#2907
