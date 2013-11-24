@@ -3,13 +3,13 @@
 # "buildforkernels newest" macro for just that build; immediately after
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
-%global buildforkernels newest
+#global buildforkernels newest
 
 Name:          nvidia-kmod
 Epoch:         1
 Version:       331.20
 # Taken over by kmodtool
-Release:       2%{?dist}.2
+Release:       3%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -65,6 +65,7 @@ done
 for kernel_version in %{?kernel_versions}; do
   pushd _kmod_build_${kernel_version%%___*}/kernel/
     make %{?_smp_mflags} IGNORE_CC_MISMATCH=1  KERNEL_UNAME="${kernel_version%%___*}" \
+        %{?_nv_build_module_instances:NV_BUILD_MODULE_INSTANCES=%{?_nv_build_module_instances}} \
         SYSSRC="${kernel_version##*___}" module
   popd
   pushd _kmod_build_${kernel_version%%___*}/kernel/uvm
@@ -89,6 +90,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Nov 24 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:331.20-3
+- Allow akmod to build modules for cuda
+  Set %%_nv_build_module_instances 8 into /etc/rpm/cuda.dist
+
 * Thu Nov 21 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:331.20-2.2
 - Rebuilt for kernel
 
