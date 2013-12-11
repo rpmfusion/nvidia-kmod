@@ -64,13 +64,17 @@ done
 %build
 for kernel_version in %{?kernel_versions}; do
   pushd _kmod_build_${kernel_version%%___*}/kernel/
-    make %{?_smp_mflags} IGNORE_CC_MISMATCH=1  KERNEL_UNAME="${kernel_version%%___*}" \
+    make %{?_smp_mflags} \
+        KERNEL_UNAME="${kernel_version%%___*}" SYSSRC="${kernel_version##*___}" \
+        IGNORE_CC_MISMATCH=1 IGNORE_XEN_PRESENCE=1 IGNORE_PREEMPT_RT_PRESENCE=1 \
         %{?_nv_build_module_instances:NV_BUILD_MODULE_INSTANCES=%{?_nv_build_module_instances}} \
-        SYSSRC="${kernel_version##*___}" module
+        module
   popd
   pushd _kmod_build_${kernel_version%%___*}/kernel/uvm
-    make %{?_smp_mflags} IGNORE_CC_MISMATCH=1 KERNEL_UNAME="${kernel_version%%___*}" \
-        SYSSRC="${kernel_version##*___}" module
+    make %{?_smp_mflags} \
+        KERNEL_UNAME="${kernel_version%%___*}" SYSSRC="${kernel_version##*___}" \
+        IGNORE_CC_MISMATCH=1 IGNORE_XEN_PRESENCE=1 IGNORE_PREEMPT_RT_PRESENCE=1 \
+        module
   popd
 done
 
@@ -90,6 +94,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Dec 11 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:331.20-9
+- Resort and IGNORE XEN/RT Checks
+
 * Tue Dec 03 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:331.20-3.1
 - Rebuilt for kernel
 
