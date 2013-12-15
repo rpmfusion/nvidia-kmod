@@ -9,7 +9,7 @@ Name:          nvidia-kmod
 Epoch:         1
 Version:       331.20
 # Taken over by kmodtool
-Release:       9%{?dist}
+Release:       10%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -24,6 +24,7 @@ URL:           http://www.nvidia.com/
 #tar -cJf nvidia-kmod-data-%{version}.tar.xz nvidiapkg-*/LICENSE nvidiapkg-*/kernel
 
 Source0:        nvidia-kmod-data-%{version}.tar.xz
+Patch0:         nv-linux-arm.patch
 
 Source11:       nvidia-kmodtool-excludekernel-filterfile
 
@@ -50,11 +51,12 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 
 # patch loop
 #for arch in x86_64 i686 armv7hl
-#do
-#pushd nvidiapkg-${arch}
-#patch0 -p1
-#popd
-#done
+for arch in armv7hl
+do
+pushd nvidiapkg-${arch}
+%patch0 -p1
+popd
+done
 
 
 for kernel_version  in %{?kernel_versions} ; do
@@ -94,6 +96,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Dec 15 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:331.20-10
+- Fix build with lpae kernel
+
 * Wed Dec 11 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:331.20-9
 - Resort and IGNORE XEN/RT Checks
 
