@@ -3,13 +3,13 @@
 # "buildforkernels newest" macro for just that build; immediately after
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
-#global buildforkernels newest
+%global buildforkernels current
 
 Name:          nvidia-kmod
 Epoch:         1
 Version:       331.20
 # Taken over by kmodtool
-Release:       9%{?dist}
+Release:       10%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -24,6 +24,7 @@ URL:           http://www.nvidia.com/
 #tar -cJf nvidia-kmod-data-%{version}.tar.xz nvidiapkg-*/LICENSE nvidiapkg-*/kernel
 
 Source0:        nvidia-kmod-data-%{version}.tar.xz
+Patch0:         nv-linux-arm.patch
 
 Source11:       nvidia-kmodtool-excludekernel-filterfile
 
@@ -50,11 +51,12 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 
 # patch loop
 #for arch in x86_64 i686 armv7hl
-#do
-#pushd nvidiapkg-${arch}
-#patch0 -p1
-#popd
-#done
+for arch in armv7hl
+do
+pushd nvidiapkg-${arch}
+%patch0 -p1
+popd
+done
 
 
 for kernel_version  in %{?kernel_versions} ; do
@@ -94,11 +96,23 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Dec 15 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:331.20-10
+- Fix build with lpae kernel
+
 * Wed Dec 11 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:331.20-9
 - Resort and IGNORE XEN/RT Checks
 
-* Tue Dec 03 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:331.20-3.1
-- Rebuilt for kernel
+* Tue Dec 10 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:331.20-8
+- Rebuilt for f20 final kernel
+
+* Sat Dec 07 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:331.20-7
+- Rebuilt for f20 final kernel
+
+* Sun Dec 01 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:331.20-6
+- Rebuilt for f20 final kernel
+
+* Sun Nov 24 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:331.20-5
+- Bump
 
 * Sun Nov 24 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:331.20-3
 - Allow akmod to build modules for cuda
