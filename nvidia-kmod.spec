@@ -7,9 +7,9 @@
 
 Name:          nvidia-kmod
 Epoch:         1
-Version:       331.20
+Version:       331.38
 # Taken over by kmodtool
-Release:       10%{?dist}
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -25,6 +25,7 @@ URL:           http://www.nvidia.com/
 
 Source0:        nvidia-kmod-data-%{version}.tar.xz
 Patch0:         nv-linux-arm.patch
+Patch1:         nvidia_3.13_kernel.patch
 
 Source11:       nvidia-kmodtool-excludekernel-filterfile
 
@@ -55,6 +56,12 @@ for arch in armv7hl
 do
 pushd nvidiapkg-${arch}
 %patch0 -p1
+popd
+done
+for arch in x86_64 i686 armv7hl
+do
+pushd nvidiapkg-${arch}
+%patch1 -p1
 popd
 done
 
@@ -96,6 +103,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Jan 13 2014 Leigh Scott <leigh123linux@googlemail.com> - 1:331.38-1
+- Update to 331.38 release
+- Patch for 3.13 kernel
+
 * Sun Dec 15 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:331.20-10
 - Fix build with lpae kernel
 
