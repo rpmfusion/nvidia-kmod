@@ -9,7 +9,7 @@ Name:          nvidia-kmod
 Epoch:         1
 Version:       331.38
 # Taken over by kmodtool
-Release:       4%{?dist}
+Release:       5%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -51,16 +51,10 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 %setup -q -c -T -a 0
 
 # patch loop
-#for arch in x86_64 i686 armv7hl
-for arch in armv7hl
-do
-pushd nvidiapkg-${arch}
-%patch0 -p1
-popd
-done
 for arch in x86_64 i686 armv7hl
 do
 pushd nvidiapkg-${arch}
+%patch0 -p1
 %patch1 -p1
 popd
 done
@@ -79,12 +73,14 @@ for kernel_version in %{?kernel_versions}; do
         %{?_nv_build_module_instances:NV_BUILD_MODULE_INSTANCES=%{?_nv_build_module_instances}} \
         module
   popd
+%{!?_nv_build_module_instances:
   pushd _kmod_build_${kernel_version%%___*}/kernel/uvm
     make %{?_smp_mflags} \
         KERNEL_UNAME="${kernel_version%%___*}" SYSSRC="${kernel_version##*___}" \
         IGNORE_CC_MISMATCH=1 IGNORE_XEN_PRESENCE=1 IGNORE_PREEMPT_RT_PRESENCE=1 \
         module
   popd
+}
 done
 
 
@@ -103,6 +99,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Jan 25 2014 Nicolas Chauvet <kwizart@gmail.com> - 1:331.38-5
+- Disable uvm when NV_BUILD_MODULE_INSTANCES is set
+- Simplify patch
+
 * Tue Jan 21 2014 Leigh Scott <leigh123linux@googlemail.com> - 1:331.38-4
 - make more changes to 3.13 kernel patch
 
