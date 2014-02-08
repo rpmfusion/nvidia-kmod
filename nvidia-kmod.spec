@@ -7,9 +7,9 @@
 
 Name:          nvidia-kmod
 Epoch:         1
-Version:       331.38
+Version:       334.16
 # Taken over by kmodtool
-Release:       5%{?dist}
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -25,7 +25,7 @@ URL:           http://www.nvidia.com/
 
 Source0:        nvidia-kmod-data-%{version}.tar.xz
 Patch0:         nv-linux-arm.patch
-Patch1:         nvidia_3.13_kernel.patch
+Patch1:         nvidia_3.14_kernel.patch
 
 Source11:       nvidia-kmodtool-excludekernel-filterfile
 
@@ -99,6 +99,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Feb 08 2014 Leigh Scott <leigh123linux@googlemail.com> - 1:334.16-1
+- Update to 334.16
+- Patch for 3.14 kernel
+
 * Sat Jan 25 2014 Nicolas Chauvet <kwizart@gmail.com> - 1:331.38-5
 - Disable uvm when NV_BUILD_MODULE_INSTANCES is set
 - Simplify patch
