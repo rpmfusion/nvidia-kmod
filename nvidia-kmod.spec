@@ -3,13 +3,13 @@
 # "buildforkernels newest" macro for just that build; immediately after
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
-#global buildforkernels newest
+%global buildforkernels current
 
 Name:          nvidia-kmod
 Epoch:         1
-Version:       331.38
+Version:       331.49
 # Taken over by kmodtool
-Release:       6%{?dist}.4
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -25,7 +25,6 @@ URL:           http://www.nvidia.com/
 
 Source0:        nvidia-kmod-data-%{version}.tar.xz
 Patch0:         nv-linux-arm.patch
-Patch1:         nvidia_3.13_kernel.patch
 
 Source11:       nvidia-kmodtool-excludekernel-filterfile
 
@@ -55,7 +54,6 @@ for arch in x86_64 i686 armv7hl
 do
 pushd nvidiapkg-${arch}
 %patch0 -p1
-%patch1 -p1
 popd
 done
 
@@ -99,6 +97,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Feb 19 2014 Leigh Scott <leigh123linux@googlemail.com> - 1:331.49-1
+- Update to 331.49 release
+
 * Mon Feb 17 2014 Nicolas Chauvet <kwizart@gmail.com> - 1:331.38-6.4
 - Rebuilt for kernel
 
