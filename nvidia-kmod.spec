@@ -9,7 +9,7 @@ Name:          nvidia-kmod
 Epoch:         1
 Version:       331.67
 # Taken over by kmodtool
-Release:       2%{?dist}.1
+Release:       2%{?dist}.2
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -25,7 +25,6 @@ URL:           http://www.nvidia.com/
 
 Source0:        nvidia-kmod-data-%{version}.tar.xz
 Patch0:         nv-linux-arm.patch
-Patch1:         nvidia_3.14_kernel.patch
 
 Source11:       nvidia-kmodtool-excludekernel-filterfile
 
@@ -55,7 +54,6 @@ for arch in x86_64 i686 armv7hl
 do
 pushd nvidiapkg-${arch}
 %patch0 -p1
-%patch1 -p1
 popd
 done
 
@@ -99,6 +97,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Apr 24 2014 Leigh Scott <leigh123linux@googlemail.com> - 1:331.67-2.2
+- drop patch
+
 * Wed Apr 16 2014 Nicolas Chauvet <kwizart@gmail.com> - 1:331.67-2.1
 - Rebuilt for kernel
 
