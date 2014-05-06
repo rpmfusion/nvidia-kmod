@@ -7,9 +7,9 @@
 
 Name:          nvidia-kmod
 Epoch:         1
-Version:       337.12
+Version:       337.19
 # Taken over by kmodtool
-Release:       3%{?dist}
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -97,6 +97,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue May 06 2014 Leigh Scott <leigh123linux@googlemail.com> - 1:337.19-1
+- Update to 337.19
+
 * Sat Apr 26 2014 Leigh Scott <leigh123linux@googlemail.com> - 1:337.12-3
 - remove kernel patch
 
