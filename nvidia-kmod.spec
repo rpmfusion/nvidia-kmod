@@ -9,29 +9,21 @@ Name:          nvidia-kmod
 Epoch:         1
 Version:       337.19
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
 URL:           http://www.nvidia.com/
-# Source is created from these files:
-#ftp://download.nvidia.com/XFree86/Linux-x86/%{version}/NVIDIA-Linux-x86-%{version}-pkg0.run
-#ftp://download.nvidia.com/XFree86/Linux-x86_64/%{version}/NVIDIA-Linux-x86_64-%{version}-pkg0.run
-#ftp://download.nvidia.com/XFree86/Linux-32bit-ARM/%{version}/NVIDIA-Linux-armv7l-gnueabihf-%{version}.run
-#sh %{SOURCE0} --extract-only --target nvidiapkg-i686
-#sh %{SOURCE1} --extract-only --target nvidiapkg-x86_64
-#sh %{SOURCE4} --extract-only --target nvidiapkg-armv7hl
-#tar -cJf nvidia-kmod-data-%{version}.tar.xz nvidiapkg-*/LICENSE nvidiapkg-*/kernel
 
-Source0:        nvidia-kmod-data-%{version}.tar.xz
-Patch0:         nv-linux-arm.patch
-
-Source11:       nvidia-kmodtool-excludekernel-filterfile
+Source11:      nvidia-kmodtool-excludekernel-filterfile
+Patch0:        nv-linux-arm.patch
 
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 # needed for plague to make sure it builds for i586 and i686
 ExclusiveArch:  i686 x86_64 armv7hl
+
+BuildRequires:  xorg-x11-drv-nvidia-kmodsrc >= %{version}
 
 # get the needed BuildRequires (in parts depending on what we build for)
 BuildRequires:  %{_bindir}/kmodtool
@@ -47,24 +39,19 @@ The nvidia %{version} display driver kernel module for kernel %{kversion}.
 %{?kmodtool_check}
 # print kmodtool output for debugging purposes:
 kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterfile %{SOURCE11} --obsolete-name nvidia-newest --obsolete-version "%{version}" %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
-%setup -q -c -T -a 0
-
+%setup -T -c
+tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{version}-%{_target_cpu}.tar.xz
 # patch loop
-for arch in x86_64 i686 armv7hl
-do
-pushd nvidiapkg-${arch}
 %patch0 -p1
-popd
-done
 
 
 for kernel_version  in %{?kernel_versions} ; do
-    cp -a nvidiapkg-%{_target_cpu} _kmod_build_${kernel_version%%___*}
+    cp -a kernel _kmod_build_${kernel_version%%___*}
 done
 
 %build
 for kernel_version in %{?kernel_versions}; do
-  pushd _kmod_build_${kernel_version%%___*}/kernel/
+  pushd _kmod_build_${kernel_version%%___*}/
     make %{?_smp_mflags} \
         KERNEL_UNAME="${kernel_version%%___*}" SYSSRC="${kernel_version##*___}" \
         IGNORE_CC_MISMATCH=1 IGNORE_XEN_PRESENCE=1 IGNORE_PREEMPT_RT_PRESENCE=1 \
@@ -72,7 +59,7 @@ for kernel_version in %{?kernel_versions}; do
         module
   popd
 %{!?_nv_build_module_instances:
-  pushd _kmod_build_${kernel_version%%___*}/kernel/uvm
+  pushd _kmod_build_${kernel_version%%___*}/uvm
     make %{?_smp_mflags} \
         KERNEL_UNAME="${kernel_version%%___*}" SYSSRC="${kernel_version##*___}" \
         IGNORE_CC_MISMATCH=1 IGNORE_XEN_PRESENCE=1 IGNORE_PREEMPT_RT_PRESENCE=1 \
@@ -86,7 +73,7 @@ done
 rm -rf $RPM_BUILD_ROOT
 for kernel_version in %{?kernel_versions}; do
     mkdir -p  $RPM_BUILD_ROOT/%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/
-    install -D -m 0755 _kmod_build_${kernel_version%%___*}/kernel/{,uvm}/nvidia*.ko \
+    install -D -m 0755 _kmod_build_${kernel_version%%___*}/{,uvm}/nvidia*.ko \
          $RPM_BUILD_ROOT/%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/
 done
 %{?akmod_install}
@@ -97,6 +84,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat May 17 2014 Nicolas Chauvet <kwizart@gmail.com> - 1:337.19-2
+- Use kmodsrc to bundle kmod sources
+
 * Tue May 06 2014 Leigh Scott <leigh123linux@googlemail.com> - 1:337.19-1
 - Update to 337.19
 
