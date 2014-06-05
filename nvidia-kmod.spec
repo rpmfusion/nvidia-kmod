@@ -9,7 +9,7 @@ Name:          nvidia-kmod
 Epoch:         1
 Version:       337.25
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -23,10 +23,10 @@ BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 # needed for plague to make sure it builds for i586 and i686
 ExclusiveArch:  i686 x86_64 armv7hl
 
-BuildRequires:  xorg-x11-drv-nvidia-kmodsrc >= %{version}
-
 # get the needed BuildRequires (in parts depending on what we build for)
-BuildRequires:  %{_bindir}/kmodtool
+%global AkmodsBuildRequires %{_bindir}/kmodtool, xorg-x11-drv-nvidia-kmodsrc >= %{version}
+BuildRequires:  %{AkmodsBuildRequires}
+
 %{!?kernels:BuildRequires: buildsys-build-rpmfusion-kerneldevpkgs-%{?buildforkernels:%{buildforkernels}}%{!?buildforkernels:current}-%{_target_cpu} }
 # kmodtool does its magic here
 %{expand:%(kmodtool --target %{_target_cpu} --repo rpmfusion --kmodname %{name} --filterfile %{SOURCE11} --obsolete-name nvidia-newest --obsolete-version "%{version}" %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null) }
@@ -84,6 +84,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Jun 05 2014 Leigh Scott <leigh123linux@googlemail.com> - 1:337.25-2
+- add missing requires to akmod-nvidia package
+
 * Sat May 31 2014 Leigh Scott <leigh123linux@googlemail.com> - 1:337.25-1
 - Update to 337.25
 
