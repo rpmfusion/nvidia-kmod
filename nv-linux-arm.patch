@@ -10,4 +10,4 @@ diff -up nvidiapkg-armv7hl/kernel/nv-linux.h.arm nvidiapkg-armv7hl/kernel/nv-lin
 +    !defined(NVCPU_ARM)
  #include <asm/maddr.h>
  #include <xen/interface/memory.h>
- #define NV_XEN_SUPPORT_OLD_STYLE_KERNEL
+ #define NV_XEN_SUPPORT_FULLY_VIRTUALIZED_KERNEL
