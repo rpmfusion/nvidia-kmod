@@ -1,7 +1,7 @@
 diff -up nvidiapkg-armv7hl/kernel/nv-linux.h.arm nvidiapkg-armv7hl/kernel/nv-linux.h
---- nvidiapkg-armv7hl/kernel/nv-linux.h.arm	2013-10-30 20:03:30.000000000 -0400
-+++ nvidiapkg-armv7hl/kernel/nv-linux.h	2013-12-15 06:57:24.857474273 -0500
-@@ -225,7 +225,8 @@ RM_STATUS nvos_forward_error_to_cray(str
+--- nvidiapkg-armv7hl/kernel/nv-linux.h.arm 2014-08-01 03:14:20.000000000 +0200
++++ nvidiapkg-armv7hl/kernel/nv-linux.h	2014-08-07 11:06:30.925997327 +0200
+@@ -230,7 +230,8 @@ RM_STATUS nvos_forward_error_to_cray(str
   * NVIDIA graphics driver has no way of knowing and is unlikely
   * to work correctly.
   */
@@ -10,4 +10,4 @@ diff -up nvidiapkg-armv7hl/kernel/nv-linux.h.arm nvidiapkg-armv7hl/kernel/nv-lin
 +    !defined(NVCPU_ARM)
  #include <asm/maddr.h>
  #include <xen/interface/memory.h>
- #define NV_XEN_SUPPORT_FULLY_VIRTUALIZED_KERNEL
+ #define NV_XEN_SUPPORT_OLD_STYLE_KERNEL
