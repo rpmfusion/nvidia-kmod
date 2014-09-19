@@ -7,7 +7,7 @@
 
 Name:          nvidia-kmod
 Epoch:         1
-Version:       343.13
+Version:       343.22
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -84,6 +84,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Sep 19 2014 Leigh Scott <leigh123linux@googlemail.com> - 1:343.22-1
+- Update to 343.22
+
 * Thu Aug 07 2014 Leigh Scott <leigh123linux@googlemail.com> - 1:343.13-1
 - Update to 343.13
 
