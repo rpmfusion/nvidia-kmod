@@ -68,8 +68,8 @@ for kernel_version in %{?kernel_versions}; do
         IGNORE_CC_MISMATCH=1 IGNORE_XEN_PRESENCE=1 IGNORE_PREEMPT_RT_PRESENCE=1 \
         module
   popd
-%endif
 }
+%endif
 done
 
 
