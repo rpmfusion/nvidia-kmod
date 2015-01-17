@@ -60,6 +60,7 @@ for kernel_version in %{?kernel_versions}; do
         %{?_nv_build_module_instances:NV_BUILD_MODULE_INSTANCES=%{?_nv_build_module_instances}} \
         module
   popd
+%ifarch x86_64
 %{!?_nv_build_module_instances:
   pushd _kmod_build_${kernel_version%%___*}/uvm
     make %{?_smp_mflags} \
@@ -67,6 +68,7 @@ for kernel_version in %{?kernel_versions}; do
         IGNORE_CC_MISMATCH=1 IGNORE_XEN_PRESENCE=1 IGNORE_PREEMPT_RT_PRESENCE=1 \
         module
   popd
+%endif
 }
 done
 
