@@ -77,7 +77,11 @@ done
 rm -rf $RPM_BUILD_ROOT
 for kernel_version in %{?kernel_versions}; do
     mkdir -p  $RPM_BUILD_ROOT/%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/
+%ifarch x86_64
     install -D -m 0755 _kmod_build_${kernel_version%%___*}/{,uvm}/nvidia*.ko \
+%else
+    install -D -m 0755 _kmod_build_${kernel_version%%___*}/nvidia.ko \
+%endif
          $RPM_BUILD_ROOT/%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/
 done
 %{?akmod_install}
