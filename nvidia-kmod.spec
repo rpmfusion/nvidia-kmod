@@ -17,8 +17,7 @@ URL:           http://www.nvidia.com/
 
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        nv-linux-arm.patch
-Patch1:        3.18_kernel.patch
-Patch2:        4.0.0_kernel.patch
+Patch1:        4.0.0_kernel.patch
 
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -46,7 +45,6 @@ tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{versi
 # patch loop
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 
 for kernel_version  in %{?kernel_versions} ; do
@@ -96,6 +94,7 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Tue Feb 24 2015 Leigh Scott <leigh123linux@googlemail.com> - 1:346.47-1
 - Update to 343.47
+- drop 3.18 kernel patch
 
 * Tue Feb 24 2015 Leigh Scott <leigh123linux@googlemail.com> - 1:346.35-2
 - Patch for 4.0.0 kernel
