@@ -1,0 +1,40 @@
+--- a/kernel/nv-frontend.c	2014-12-02 04:00:01.000000000 +0000
++++ b/kernel/nv-frontend.c	2015-03-31 15:08:42.084974240 +0100
+@@ -341,7 +341,11 @@ long nvidia_frontend_unlocked_ioctl(
+     unsigned long i_arg
+ )
+ {
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,19,0)
++    return nvidia_frontend_ioctl(file->f_path.dentry->d_inode, file, cmd, i_arg);
++#else
+     return nvidia_frontend_ioctl(file->f_dentry->d_inode, file, cmd, i_arg);
++#endif
+ }
+ 
+ long nvidia_frontend_compat_ioctl(
+@@ -350,7 +354,11 @@ long nvidia_frontend_compat_ioctl(
+     unsigned long i_arg
+ )
+ {
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,19,0)
++    return nvidia_frontend_ioctl(file->f_path.dentry->d_inode, file, cmd, i_arg);
++#else
+     return nvidia_frontend_ioctl(file->f_dentry->d_inode, file, cmd, i_arg);
++#endif
+ }
+ 
+ int nvidia_frontend_mmap(
+--- a/kernel/nv.c	2014-12-02 04:00:00.000000000 +0000
++++ b/kernel/nv.c	2015-03-31 15:11:52.889859631 +0100
+@@ -2024,7 +2024,11 @@ nvidia_unlocked_ioctl(
+     unsigned long i_arg
+ )
+ {
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,19,0)
++    return nvidia_ioctl(file->f_path.dentry->d_inode, file, cmd, i_arg);
++#else
+     return nvidia_ioctl(file->f_dentry->d_inode, file, cmd, i_arg);
++#endif
+ }
+ 
+ /*
