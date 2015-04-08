@@ -17,7 +17,6 @@ URL:           http://www.nvidia.com/
 
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        nv-linux-arm.patch
-Patch1:        4.0.0_kernel.patch
 
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -44,7 +43,6 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{version}-%{_target_cpu}.tar.xz
 # patch loop
 %patch0 -p1
-%patch1 -p1
 
 
 for kernel_version  in %{?kernel_versions} ; do
@@ -94,6 +92,7 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Wed Apr 08 2015 Leigh Scott <leigh123linux@googlemail.com> - 1:346.59-1
 - Update to 343.59
+- drop 4.0.0 kernel patch
 
 * Mon Mar 30 2015 Nicolas Chauvet <kwizart@gmail.com> - 1:346.47-2.4
 - Rebuilt for kernel
