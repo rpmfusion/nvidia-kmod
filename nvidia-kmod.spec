@@ -9,7 +9,7 @@ Name:          nvidia-kmod
 Epoch:         1
 Version:       352.30
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -17,6 +17,7 @@ URL:           http://www.nvidia.com/
 
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        nv-linux-arm.patch
+Patch1:        nv-linux-arm2.patch
 
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -43,6 +44,7 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{version}-%{_target_cpu}.tar.xz
 # patch loop
 %patch0 -p1
+%patch1 -p1
 
 
 for kernel_version  in %{?kernel_versions} ; do
@@ -90,6 +92,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Jul 29 2015 Nicolas Chauvet <kwizart@gmail.com> - 1:352.30-2
+- Fix build on arm - missing linux/swiotlb.h include
+
 * Wed Jul 29 2015 Leigh Scott <leigh123linux@googlemail.com> - 1:352.30-1
 - Update to 352.30
 
