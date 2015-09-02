@@ -7,7 +7,7 @@
 
 Name:          nvidia-kmod
 Epoch:         1
-Version:       352.41
+Version:       355.11
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -57,19 +57,8 @@ for kernel_version in %{?kernel_versions}; do
     make %{?_smp_mflags} \
         KERNEL_UNAME="${kernel_version%%___*}" SYSSRC="${kernel_version##*___}" \
         IGNORE_CC_MISMATCH=1 IGNORE_XEN_PRESENCE=1 IGNORE_PREEMPT_RT_PRESENCE=1 \
-        %{?_nv_build_module_instances:NV_BUILD_MODULE_INSTANCES=%{?_nv_build_module_instances}} \
         module
   popd
-%{!?_nv_build_module_instances:
-%ifarch x86_64
-  pushd _kmod_build_${kernel_version%%___*}/uvm
-    make %{?_smp_mflags} \
-        KERNEL_UNAME="${kernel_version%%___*}" SYSSRC="${kernel_version##*___}" \
-        IGNORE_CC_MISMATCH=1 IGNORE_XEN_PRESENCE=1 IGNORE_PREEMPT_RT_PRESENCE=1 \
-        module
-  popd
-%endif
-}
 done
 
 
@@ -77,11 +66,7 @@ done
 rm -rf $RPM_BUILD_ROOT
 for kernel_version in %{?kernel_versions}; do
     mkdir -p  $RPM_BUILD_ROOT/%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/
-%ifarch x86_64
-    install -D -m 0755 _kmod_build_${kernel_version%%___*}/{,uvm}/nvidia*.ko \
-%else
-    install -D -m 0755 _kmod_build_${kernel_version%%___*}/nvidia.ko \
-%endif
+    install -D -m 0755 _kmod_build_${kernel_version%%___*}/nvidia*.ko \
          $RPM_BUILD_ROOT/%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/
 done
 %{?akmod_install}
@@ -92,6 +77,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Aug 31 2015 Leigh Scott <leigh123linux@googlemail.com> - 1:355.11-1
+- Update to 355.11
+
 * Fri Aug 28 2015 Leigh Scott <leigh123linux@googlemail.com> - 1:352.41-1
 - Update to 352.41
 
