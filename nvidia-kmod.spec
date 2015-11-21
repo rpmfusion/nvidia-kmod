@@ -45,7 +45,6 @@ tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{versi
 # patch loop
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 
 for kernel_version  in %{?kernel_versions} ; do
