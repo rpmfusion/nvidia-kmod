@@ -1,0 +1,26 @@
+--- a/kernel/nvidia/nv-vm.c
++++ b/kernel/nvidia/nv-vm.c
+@@ -366,7 +366,11 @@ NV_STATUS nv_alloc_contig_pages(
+     nv_printf(NV_DBG_MEMINFO,
+             "NVRM: VM: %s: %u pages\n", __FUNCTION__, at->num_pages);
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(4,5,0)
++    //if (IS_VGX_HYPER())
++#else
+     if (IS_VGX_HYPER())
++#endif
+         return nv_alloc_coherent_pages(nv, at);
+ 
+     at->order = get_order(at->num_pages * PAGE_SIZE);
+@@ -440,7 +444,11 @@ void nv_free_contig_pages(
+     nv_printf(NV_DBG_MEMINFO,
+             "NVRM: VM: %s: %u pages\n", __FUNCTION__, at->num_pages);
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(4,5,0)
++    //if (IS_VGX_HYPER())
++#else
+     if (IS_VGX_HYPER())
++#endif
+         return nv_free_coherent_pages(at);
+ 
+     if (!NV_ALLOC_MAPPING_CACHED(at->flags))
