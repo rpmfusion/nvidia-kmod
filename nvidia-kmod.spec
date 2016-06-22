@@ -9,7 +9,7 @@ Name:          nvidia-kmod
 Epoch:         1
 Version:       358.16
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -18,11 +18,13 @@ URL:           http://www.nvidia.com/
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        nv-linux-arm.patch
 Patch1:        nv-linux-arm2.patch
+Patch2:        nv-linux-arm3.patch
 
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-# needed for plague to make sure it builds for i586 and i686
-ExclusiveArch:  i686 x86_64 armv7hl
+#ExclusiveArch:  i686 x86_64 armv7hl
+# common/inc/nv-linux.h:459:43: error: implicit declaration of function 'outer_sync'
+ExclusiveArch:  i686 x86_64
 
 # get the needed BuildRequires (in parts depending on what we build for)
 %global AkmodsBuildRequires %{_bindir}/kmodtool, xorg-x11-drv-nvidia-kmodsrc >= %{epoch}:%{version}
@@ -45,6 +47,7 @@ tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{versi
 # patch loop
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 
 for kernel_version  in %{?kernel_versions} ; do
@@ -77,6 +80,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Jun 22 2016 Nicolas Chauvet <kwizart@gmail.com> - 1:358.16-2
+- Attempt to fix build on armhfp - disabled for now
+
 * Sat Nov 21 2015 Nicolas Chauvet <kwizart@gmail.com> - 1:358.16-1
 - Update to 358.16
 
