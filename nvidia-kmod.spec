@@ -3,14 +3,13 @@
 # "buildforkernels newest" macro for just that build; immediately after
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
-%global buildforkernels akmod
-%global	debug_package %{nil}
+#global buildforkernels newest
 
 Name:          nvidia-kmod
 Epoch:         1
 Version:       367.27
 # Taken over by kmodtool
-Release:       2%{?dist}
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -23,7 +22,7 @@ Patch1:        nv-linux-arm2.patch
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 # needed for plague to make sure it builds for i586 and i686
-ExclusiveArch:  i686 x86_64
+ExclusiveArch:  i686 x86_64 armv7hl
 
 # get the needed BuildRequires (in parts depending on what we build for)
 %global AkmodsBuildRequires %{_bindir}/kmodtool, xorg-x11-drv-nvidia-kmodsrc >= %{epoch}:%{version}
@@ -78,9 +77,6 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Fri Jul 01 2016 Leigh Scott <leigh123linux@googlemail.com> - 1:367.27-2
-- Avoid armhfp for now
-
 * Fri Jul 01 2016 Leigh Scott <leigh123linux@googlemail.com> - 1:367.27-1
 - Update to 367.27
 
