@@ -4,6 +4,7 @@
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
 %global buildforkernels akmod
+%global debug_package %{nil}
 
 Name:          nvidia-kmod
 Epoch:         1
