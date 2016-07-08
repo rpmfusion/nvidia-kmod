@@ -19,7 +19,8 @@ URL:           http://www.nvidia.com/
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        nv-linux-arm.patch
 Patch1:        nv-linux-arm2.patch
-Patch2:        nvidia-4.7_kernel.patch
+Patch2:        nvidia-4.7_kernel-pt1.patch
+Patch3:        nvidia-4.7_kernel_pt2.patch
 
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -47,7 +48,10 @@ tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{versi
 # patch loop
 %patch0 -p1
 %patch1 -p1
+%ifarch x86_64
 %patch2 -p1
+%endif
+%patch3 -p1
 
 
 for kernel_version  in %{?kernel_versions} ; do
