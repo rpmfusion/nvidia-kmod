@@ -1,18 +1,3 @@
---- a/kernel/nvidia-uvm/uvm_linux.h
-+++ b/kernel/nvidia-uvm/uvm_linux.h
-@@ -563,7 +563,11 @@
-     INIT_RADIX_TREE(tree, GFP_NOWAIT);
- }
- 
-+#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 7, 0)
-+static bool radix_tree_is_empty(struct radix_tree_root *tree)
-+#else
- static bool radix_tree_empty(struct radix_tree_root *tree)
-+#endif
- {
-     void *dummy;
-     return radix_tree_gang_lookup(tree, &dummy, 0, 1) == 0;
-
 --- a/kernel/nvidia-drm/nvidia-drm-fb.c
 +++ b/kernel/nvidia-drm/nvidia-drm-fb.c
 @@ -24,6 +24,7 @@
