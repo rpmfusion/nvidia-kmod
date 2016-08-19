@@ -8,7 +8,7 @@
  #include "nvidia-drm-priv.h"
  #include "nvidia-drm-drv.h"
  #include "nvidia-drm-fb.h"
-@@ -36,7 +37,9 @@
+@@ -37,7 +38,9 @@
  #include "nvidia-drm-ioctl.h"
  
  #include <drm/drmP.h>
@@ -19,7 +19,7 @@
  #include <drm/drm_crtc_helper.h>
  
  #if defined(NV_DRM_DRM_GEM_H_PRESENT)
-@@ -419,7 +422,11 @@
+@@ -420,7 +423,11 @@
  
  static
  void nvidia_drm_master_drop(struct drm_device *dev,
@@ -31,7 +31,7 @@
  {
      struct nvidia_drm_device *nv_dev = dev->dev_private;
      int ret;
-@@ -452,7 +459,11 @@
+@@ -453,7 +460,11 @@
      mutex_lock(&dev->master_mutex);
  
      if (!file_priv->is_master ||
@@ -43,7 +43,7 @@
      {
          goto done;
      }
-@@ -473,7 +484,11 @@
+@@ -474,7 +485,11 @@
       * NVKMS modeset ownership, because nvidia_drm_master_set()'s call to
       * grabOwnership() will fail.
       */
