@@ -8,9 +8,9 @@
 
 Name:          nvidia-kmod
 Epoch:         1
-Version:       367.35
+Version:       367.44
 # Taken over by kmodtool
-Release:       2%{?dist}
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -19,9 +19,7 @@ URL:           http://www.nvidia.com/
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        nv-linux-arm.patch
 Patch1:        nv-linux-arm2.patch
-Patch2:        nvidia-4.7_kernel-pt1.patch
-Patch3:        nvidia-4.7_kernel_pt2.patch
-Patch4:        nvidia-4.8_kernel.patch
+Patch2:        nvidia-4.8_kernel.patch
 
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -49,11 +47,7 @@ tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{versi
 # patch loop
 %patch0 -p1
 %patch1 -p1
-%ifarch x86_64
 %patch2 -p1
-%endif
-%patch3 -p1
-%patch4 -p1
 
 for kernel_version  in %{?kernel_versions} ; do
     cp -a kernel _kmod_build_${kernel_version%%___*}
@@ -85,6 +79,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Aug 24 2016 Leigh Scott <leigh123linux@googlemail.com> - 1:367.44-1
+- Update to 367.44
+
 * Wed Aug 10 2016 leigh scott <leigh123linux@googlemail.com> - 1:367.35-2
 - patch for 4.8rc kernel
 
