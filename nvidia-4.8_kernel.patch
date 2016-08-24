@@ -1,0 +1,81 @@
+--- a/kernel/nvidia-drm/nvidia-drm-drv.c
++++ b/kernel/nvidia-drm/nvidia-drm-drv.c
+@@ -22,6 +22,7 @@
+ 
+ #include "conftest.h" /* NV_DRM_AVAILABLE and NV_DRM_DRM_GEM_H_PRESENT */
+ 
++#include <linux/version.h>
+ #include "nvidia-drm-priv.h"
+ #include "nvidia-drm-drv.h"
+ #include "nvidia-drm-fb.h"
+@@ -36,7 +37,9 @@
+ #include "nvidia-drm-ioctl.h"
+ 
+ #include <drm/drmP.h>
+-
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 8, 0)
++#include <drm/drm_auth.h>
++#endif
+ #include <drm/drm_crtc_helper.h>
+ 
+ #if defined(NV_DRM_DRM_GEM_H_PRESENT)
+@@ -419,7 +422,11 @@
+ 
+ static
+ void nvidia_drm_master_drop(struct drm_device *dev,
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 8, 0)
++                            struct drm_file *file_priv)
++#else
+                             struct drm_file *file_priv, bool from_release)
++#endif
+ {
+     struct nvidia_drm_device *nv_dev = dev->dev_private;
+     int ret;
+@@ -452,7 +459,11 @@
+     mutex_lock(&dev->master_mutex);
+ 
+     if (!file_priv->is_master ||
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 8, 0)
++        !file_priv->master)
++#else
+         !file_priv->minor->master)
++#endif
+     {
+         goto done;
+     }
+@@ -473,7 +484,11 @@
+      * NVKMS modeset ownership, because nvidia_drm_master_set()'s call to
+      * grabOwnership() will fail.
+      */
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 8, 0)
++    drm_master_put(&file_priv->master);
++#else
+     drm_master_put(&file_priv->minor->master);
++#endif
+     file_priv->is_master = 0;
+ 
+     ret = 0;
+
+--- a/kernel/nvidia-drm/nvidia-drm-modeset.c
++++ b/kernel/nvidia-drm/nvidia-drm-modeset.c
+@@ -24,6 +24,7 @@
+ 
+ #if defined(NV_DRM_ATOMIC_MODESET_AVAILABLE)
+ 
++#include <linux/version.h>
+ #include "nvidia-drm-priv.h"
+ #include "nvidia-drm-modeset.h"
+ #include "nvidia-drm-crtc.h"
+@@ -675,7 +676,11 @@
+         goto failed;
+     }
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 8, 0)
++    drm_atomic_helper_swap_state(state, true);
++#else
+     drm_atomic_helper_swap_state(dev, state);
++#endif
+ 
+     nvidia_drm_update_head_mode_config(state, requested_config);
+ 
+
