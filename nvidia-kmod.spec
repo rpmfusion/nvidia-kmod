@@ -8,7 +8,7 @@
 
 Name:          nvidia-kmod
 Epoch:         1
-Version:       367.57
+Version:       375.26
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -19,7 +19,6 @@ URL:           http://www.nvidia.com/
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        nv-linux-arm.patch
 Patch1:        nv-linux-arm2.patch
-Patch2:        nvidia-4.8_kernel.patch
 
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -47,7 +46,6 @@ tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{versi
 # patch loop
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 for kernel_version  in %{?kernel_versions} ; do
     cp -a kernel _kmod_build_${kernel_version%%___*}
@@ -79,11 +77,20 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Sat Oct 15 2016 Leigh Scott <leigh123linux@googlemail.com> - 1:367.57-1
-- Update to 367.57
+* Wed Dec 14 2016 leigh scott <leigh123linux@googlemail.com> - 1:375.26-1
+- Update to 375.26
 
-* Wed Aug 24 2016 Leigh Scott <leigh123linux@googlemail.com> - 1:367.44-1
-- Update to 367.44
+* Fri Nov 18 2016 leigh scott <leigh123linux@googlemail.com> - 1:375.20-1
+- Update to 375.20
+
+* Sat Oct 22 2016 Leigh Scott <leigh123linux@googlemail.com> - 1:375.10-1
+- Update to 375.10 beta release
+
+* Fri Sep 09 2016 leigh scott <leigh123linux@googlemail.com> - 1:370.28-1
+- Update to 370.28
+
+* Fri Aug 19 2016 Leigh Scott <leigh123linux@googlemail.com> - 1:370.27-1
+- Update to 370.23 beta
 
 * Wed Aug 10 2016 leigh scott <leigh123linux@googlemail.com> - 1:367.35-2
 - patch for 4.8rc kernel

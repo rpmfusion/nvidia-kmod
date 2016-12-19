@@ -1,7 +1,7 @@
 diff -up nvidiapkg-armv7hl/kernel/common/inc/nv-linux.h.swf nvidiapkg-armv7hl/kernel/common/inc/nv-linux.h
 --- nvidiapkg-armv7hl/kernel/common/inc/nv-linux.h.swf	2015-07-22 02:40:54.000000000 +0200
 +++ nvidiapkg-armv7hl/kernel/common/inc/nv-linux.h	2015-07-29 14:07:14.866367595 +0200
-@@ -153,7 +153,7 @@ static inline uid_t __kuid_val(kuid_t ui
+@@ -156,7 +156,7 @@ static inline uid_t __kuid_val(kuid_t ui
  #include <linux/dma-mapping.h>
  #endif
  
