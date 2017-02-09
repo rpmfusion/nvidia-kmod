@@ -20,8 +20,6 @@ Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        nv-linux-arm.patch
 Patch1:        nv-linux-arm2.patch
 
-BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
 # needed for plague to make sure it builds for i586 and i686
 ExclusiveArch:  i686 x86_64 armv7hl
 
@@ -63,7 +61,6 @@ done
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
 for kernel_version in %{?kernel_versions}; do
     mkdir -p  $RPM_BUILD_ROOT/%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/
     install -D -m 0755 _kmod_build_${kernel_version%%___*}/nvidia*.ko \
@@ -71,9 +68,6 @@ for kernel_version in %{?kernel_versions}; do
 done
 %{?akmod_install}
 
-
-%clean
-rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
