@@ -10,7 +10,7 @@ Name:          nvidia-kmod
 Epoch:         1
 Version:       375.39
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -19,6 +19,7 @@ URL:           http://www.nvidia.com/
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        nv-linux-arm.patch
 Patch1:        nv-linux-arm2.patch
+Patch2:        kernel_4.10.patch
 
 # needed for plague to make sure it builds for i586 and i686
 ExclusiveArch:  i686 x86_64 armv7hl
@@ -44,6 +45,7 @@ tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{versi
 # patch loop
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 for kernel_version  in %{?kernel_versions} ; do
     cp -a kernel _kmod_build_${kernel_version%%___*}
@@ -71,6 +73,9 @@ done
 
 
 %changelog
+* Mon Feb 20 2017 Leigh Scott <leigh123linux@googlemail.com> - 1:375.39-2
+- patch for 4.10 kernel
+
 * Wed Feb 15 2017 Leigh Scott <leigh123linux@googlemail.com> - 1:375.39-1
 - Update to 375.39 release
 
