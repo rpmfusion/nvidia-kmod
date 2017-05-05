@@ -7,8 +7,8 @@
 %global debug_package %{nil}
 
 Name:          nvidia-kmod
-Epoch:         1
-Version:       381.09
+Epoch:         2
+Version:       375.66
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -73,6 +73,9 @@ done
 
 
 %changelog
+* Fri May 05 2017 Leigh Scott <leigh123linux@googlemail.com> - 2:375.66-1
+- Update to 375.66 release
+
 * Fri Apr 07 2017 Leigh Scott <leigh123linux@googlemail.com> - 1:381.09-1
 - Update to 381.09 beta
 
