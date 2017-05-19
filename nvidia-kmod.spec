@@ -10,7 +10,7 @@ Name:          nvidia-kmod
 Epoch:         2
 Version:       375.66
 # Taken over by kmodtool
-Release:       2%{?dist}
+Release:       3%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -19,7 +19,6 @@ URL:           http://www.nvidia.com/
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        nv-linux-arm.patch
 Patch1:        nv-linux-arm2.patch
-Patch2:        kernel_4.11.patch
 
 # needed for plague to make sure it builds for i586 and i686
 ExclusiveArch:  i686 x86_64 armv7hl
@@ -45,7 +44,6 @@ tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{versi
 # patch loop
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 for kernel_version  in %{?kernel_versions} ; do
     cp -a kernel _kmod_build_${kernel_version%%___*}
@@ -73,6 +71,9 @@ done
 
 
 %changelog
+* Fri May 19 2017 Leigh Scott <leigh123linux@googlemail.com> - 2:375.66-3
+- Drop 4.11 kernel patch, 4.11.1 kernel fixes the GPL symbols issue
+
 * Tue May 09 2017 Leigh Scott <leigh123linux@googlemail.com> - 2:375.66-2
 - Add epoch to kmod-nvidia-newest obsolete version
 
