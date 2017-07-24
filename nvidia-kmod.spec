@@ -8,9 +8,9 @@
 
 Name:          nvidia-kmod
 Epoch:         2
-Version:       375.66
+Version:       375.82
 # Taken over by kmodtool
-Release:       3%{?dist}
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -71,6 +71,9 @@ done
 
 
 %changelog
+* Mon Jul 24 2017 Leigh Scott <leigh123linux@googlemail.com> - 2:375.82-1
+- Update to 375.82 release
+
 * Fri May 19 2017 Leigh Scott <leigh123linux@googlemail.com> - 2:375.66-3
 - Drop 4.11 kernel patch, 4.11.1 kernel fixes the GPL symbols issue
 
