@@ -10,7 +10,7 @@ Name:          nvidia-kmod
 Epoch:         2
 Version:       384.59
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -71,6 +71,9 @@ done
 
 
 %changelog
+* Thu Aug 31 2017 RPM Fusion Release Engineering <kwizart@rpmfusion.org> - 2:384.59-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
+
 * Tue Jul 25 2017 Leigh Scott <leigh123linux@googlemail.com> - 2:384.59-1
 - Update to 384.59 release
 
