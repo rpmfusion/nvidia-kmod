@@ -1,0 +1,93 @@
+diff -uNrp a/kernel/nvidia/nv.c b/kernel/nvidia/nv.c
+--- a/kernel/nvidia/nv.c	2017-09-20 02:33:09.000000000 +0100
++++ b/kernel/nvidia/nv.c	2017-09-23 08:43:37.590119035 +0100
+@@ -38,8 +38,12 @@
+ 
+ #if (NV_BUILD_MODULE_INSTANCES != 0)
+ #if defined(MODULE_LICENSE)
++#if LINUX_VERSION_CODE > KERNEL_VERSION(4, 13, 0)
++MODULE_LICENSE("GPL");
++#else
+ MODULE_LICENSE("NVIDIA");
+ #endif
++#endif
+ #if defined(MODULE_INFO)
+ MODULE_INFO(supported, "external");
+ #endif
+diff -uNrp a/kernel/nvidia/nv-frontend.c b/kernel/nvidia/nv-frontend.c
+--- a/kernel/nvidia/nv-frontend.c	2017-09-20 02:33:10.000000000 +0100
++++ b/kernel/nvidia/nv-frontend.c	2017-09-23 08:46:59.087803132 +0100
+@@ -15,8 +15,12 @@
+ #include "nv-frontend.h"
+ 
+ #if defined(MODULE_LICENSE)
++#if LINUX_VERSION_CODE > KERNEL_VERSION(4, 13, 0)
++MODULE_LICENSE("GPL");
++#else
+ MODULE_LICENSE("NVIDIA");
+ #endif
++#endif
+ #if defined(MODULE_INFO)
+ MODULE_INFO(supported, "external");
+ #endif
+diff -uNrp a/kernel/nvidia-drm/nvidia-drm-linux.c b/kernel/nvidia-drm/nvidia-drm-linux.c
+--- a/kernel/nvidia-drm/nvidia-drm-linux.c	2017-09-20 02:33:13.000000000 +0100
++++ b/kernel/nvidia-drm/nvidia-drm-linux.c	2017-09-23 09:25:40.161980854 +0100
+@@ -23,6 +23,7 @@
+ #include <linux/module.h>
+ #include <linux/slab.h>
+ #include <linux/err.h>
++#include <linux/version.h>
+ 
+ #include "nvidia-drm-os-interface.h"
+ #include "nvidia-drm.h"
+@@ -185,8 +186,12 @@ module_init(nv_linux_drm_init);
+ module_exit(nv_linux_drm_exit);
+ 
+ #if defined(MODULE_LICENSE)
++#if LINUX_VERSION_CODE > KERNEL_VERSION(4, 13, 0)
++  MODULE_LICENSE("Dual MIT/GPL");
++#else
+   MODULE_LICENSE("MIT");
+ #endif
++#endif
+ #if defined(MODULE_INFO)
+   MODULE_INFO(supported, "external");
+ #endif
+diff -uNrp a/kernel/nvidia-modeset/nvidia-modeset-linux.c b/kernel/nvidia-modeset/nvidia-modeset-linux.c
+--- a/kernel/nvidia-modeset/nvidia-modeset-linux.c	2017-09-20 02:33:12.000000000 +0100
++++ b/kernel/nvidia-modeset/nvidia-modeset-linux.c	2017-09-23 09:03:19.673090364 +0100
+@@ -21,6 +21,7 @@
+ #include <linux/random.h>
+ #include <linux/file.h>
+ #include <linux/list.h>
++#include <linux/version.h>
+ 
+ #include "nvstatus.h"
+ 
+@@ -1309,8 +1310,12 @@ module_init(nvkms_init);
+ module_exit(nvkms_exit);
+ 
+ #if defined(MODULE_LICENSE)
++#if LINUX_VERSION_CODE > KERNEL_VERSION(4, 13, 0)
++  MODULE_LICENSE("GPL");
++#else
+   MODULE_LICENSE("NVIDIA");
+ #endif
++#endif
+ #if defined(MODULE_INFO)
+   MODULE_INFO(supported, "external");
+ #endif
+diff -uNrp a/kernel/nvidia-uvm/uvm_common.c b/kernel/nvidia-uvm/uvm_common.c
+--- a/kernel/nvidia-uvm/uvm_common.c	2017-09-20 02:33:10.000000000 +0100
++++ b/kernel/nvidia-uvm/uvm_common.c	2017-09-23 09:02:44.989610766 +0100
+@@ -388,5 +388,9 @@ module_param(uvm_enable_builtin_tests, i
+ MODULE_PARM_DESC(uvm_enable_builtin_tests,
+                  "Enable the UVM built-in tests. (This is a security risk)");
+ 
++#if LINUX_VERSION_CODE > KERNEL_VERSION(4, 13, 0)
++MODULE_LICENSE("Dual MIT/GPL");
++#else
+ MODULE_LICENSE("MIT");
++#endif
+ MODULE_INFO(supported, "external");
