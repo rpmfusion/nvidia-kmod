@@ -19,8 +19,7 @@ URL:           http://www.nvidia.com/
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        nv-linux-arm.patch
 Patch1:        nv-linux-arm2.patch
-Patch2:        4.13_hack_license_as_kernel_devs_hate_us-part1.patch
-Patch3:        4.13_hack_license_as_kernel_devs_hate_us-part2.patch
+Patch2:        4.13_hack_license_as_kernel_devs_hate_us.patch
 
 # needed for plague to make sure it builds for i586 and i686
 ExclusiveArch:  i686 x86_64 armv7hl
@@ -47,9 +46,6 @@ tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{versi
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%ifarch x86_64
-%patch3 -p1
-%endif
 
 for kernel_version  in %{?kernel_versions} ; do
     cp -a kernel _kmod_build_${kernel_version%%___*}
