@@ -8,9 +8,9 @@
 
 Name:          nvidia-kmod
 Epoch:         2
-Version:       384.90
+Version:       387.12
 # Taken over by kmodtool
-Release:       3%{?dist}
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -71,6 +71,9 @@ done
 
 
 %changelog
+* Wed Oct 04 2017 Leigh Scott <leigh123linux@googlemail.com> - 2:387.12-1
+- Update to 387.12 beta
+
 * Sat Sep 23 2017 Leigh Scott <leigh123linux@googlemail.com> - 2:384.90-3
 - revert last commit, it was caused by kernel debugging
 
