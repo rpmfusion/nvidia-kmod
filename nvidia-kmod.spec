@@ -8,7 +8,7 @@
 
 Name:          nvidia-kmod
 Epoch:         2
-Version:       387.12
+Version:       387.22
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -71,6 +71,9 @@ done
 
 
 %changelog
+* Mon Oct 30 2017 Leigh Scott <leigh123linux@googlemail.com> - 2:387.22-1
+- Update to 387.22 release
+
 * Wed Oct 04 2017 Leigh Scott <leigh123linux@googlemail.com> - 2:387.12-1
 - Update to 387.12 beta
 
