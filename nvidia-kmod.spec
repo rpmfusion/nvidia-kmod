@@ -7,10 +7,10 @@
 %global debug_package %{nil}
 
 Name:          nvidia-kmod
-Epoch:         2
+Epoch:         3
 Version:       390.25
 # Taken over by kmodtool
-Release:       2%{?dist}
+Release:       3%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -73,6 +73,9 @@ done
 
 
 %changelog
+* Fri Feb 16 2018 Leigh Scott <leigh123linux@googlemail.com> - 3:390.25-3
+- Bump epoch to prevent cuda repo from replacing packages
+
 * Sat Feb 10 2018 Leigh Scott <leigh123linux@googlemail.com> - 2:390.25-2
 - Patch for 4.15 kernel
 
