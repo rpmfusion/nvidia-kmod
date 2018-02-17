@@ -10,7 +10,7 @@ Name:          nvidia-kmod
 Epoch:         3
 Version:       390.25
 # Taken over by kmodtool
-Release:       3%{?dist}
+Release:       4%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -54,7 +54,7 @@ done
 %build
 for kernel_version in %{?kernel_versions}; do
   pushd _kmod_build_${kernel_version%%___*}/
-    make %{?_smp_mflags} \
+    make V=1 %{?_smp_mflags} \
         KERNEL_UNAME="${kernel_version%%___*}" SYSSRC="${kernel_version##*___}" \
         IGNORE_CC_MISMATCH=1 IGNORE_XEN_PRESENCE=1 IGNORE_PREEMPT_RT_PRESENCE=1 \
         module
@@ -73,6 +73,9 @@ done
 
 
 %changelog
+* Sat Feb 17 2018 Todd Zullinger <tmz@pobox.com> - 390.25-4
+- Enable verbose make (V=1)
+
 * Fri Feb 16 2018 Leigh Scott <leigh123linux@googlemail.com> - 3:390.25-3
 - Bump epoch to prevent cuda repo from replacing packages
 
