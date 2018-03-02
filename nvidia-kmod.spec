@@ -10,7 +10,7 @@ Name:          nvidia-kmod
 Epoch:         3
 Version:       390.25
 # Taken over by kmodtool
-Release:       4%{?dist}
+Release:       5%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -73,6 +73,9 @@ done
 
 
 %changelog
+* Fri Mar 02 2018 RPM Fusion Release Engineering <leigh123linux@googlemail.com> - 3:390.25-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
+
 * Sat Feb 17 2018 Todd Zullinger <tmz@pobox.com> - 390.25-4
 - Enable verbose make (V=1)
 
