@@ -1,0 +1,21 @@
+--- a/kernel/common/inc/nv-linux.h
++++ b/kernel/common/inc/nv-linux.h
+@@ -1209,6 +1209,8 @@
+ static inline NvBool nv_dma_maps_swiotlb(struct pci_dev *dev)
+ {
+     NvBool swiotlb_in_use = NV_FALSE;
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 16, 0)
++#if 0
+ #if defined(CONFIG_SWIOTLB)
+   #if defined(NV_DMA_OPS_PRESENT) || defined(NV_GET_DMA_OPS_PRESENT)
+     /*
+@@ -1251,6 +1253,8 @@
+     swiotlb_in_use = (swiotlb == 1);
+   #endif
+ #endif
++#endif
++#endif
+ 
+     return swiotlb_in_use;
+ }
+

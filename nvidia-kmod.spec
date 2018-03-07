@@ -10,7 +10,7 @@ Name:          nvidia-kmod
 Epoch:         3
 Version:       390.25
 # Taken over by kmodtool
-Release:       5%{?dist}
+Release:       6%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -20,6 +20,7 @@ Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        nv-linux-arm.patch
 Patch1:        nv-linux-arm2.patch
 Patch2:        kernel_4.15.patch
+Patch3:        kernel_4.16.patch
 
 # needed for plague to make sure it builds for i586 and i686
 ExclusiveArch:  i686 x86_64 armv7hl
@@ -46,6 +47,7 @@ tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{versi
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 for kernel_version  in %{?kernel_versions} ; do
     cp -a kernel _kmod_build_${kernel_version%%___*}
@@ -73,6 +75,9 @@ done
 
 
 %changelog
+* Tue Mar 06 2018 Leigh Scott <leigh123linux@googlemail.com> - 3:390.25-6
+- Patch for 4.16 kernel
+
 * Fri Mar 02 2018 RPM Fusion Release Engineering <leigh123linux@googlemail.com> - 3:390.25-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
 
