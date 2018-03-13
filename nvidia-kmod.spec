@@ -8,9 +8,9 @@
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       390.25
+Version:       390.42
 # Taken over by kmodtool
-Release:       6%{?dist}
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
@@ -75,6 +75,9 @@ done
 
 
 %changelog
+* Tue Mar 13 2018 Leigh Scott <leigh123linux@googlemail.com> - 3:390.42-1
+- Update to 390.42 release
+
 * Tue Mar 06 2018 Leigh Scott <leigh123linux@googlemail.com> - 3:390.25-6
 - Patch for 4.16 kernel
 
