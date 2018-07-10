@@ -8,7 +8,7 @@
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       390.48
+Version:       396.24
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -17,12 +17,9 @@ License:       Redistributable, no modification permitted
 URL:           http://www.nvidia.com/
 
 Source11:      nvidia-kmodtool-excludekernel-filterfile
-Patch0:        nv-linux-arm.patch
-Patch1:        nv-linux-arm2.patch
-Patch2:        kernel_4.16.patch
 
 # needed for plague to make sure it builds for i586 and i686
-ExclusiveArch:  i686 x86_64 armv7hl
+ExclusiveArch:  x86_64
 
 # get the needed BuildRequires (in parts depending on what we build for)
 %global AkmodsBuildRequires %{_bindir}/kmodtool, xorg-x11-drv-nvidia-kmodsrc >= %{epoch}:%{version}
@@ -43,9 +40,6 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 %setup -T -c
 tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{version}-%{_target_cpu}.tar.xz
 # patch loop
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
 
 for kernel_version  in %{?kernel_versions} ; do
     cp -a kernel _kmod_build_${kernel_version%%___*}
@@ -73,6 +67,9 @@ done
 
 
 %changelog
+* Fri May 04 2018 Leigh Scott <leigh123linux@googlemail.com> - 3:396.24-1
+- Update to 396.24 release
+
 * Thu Mar 29 2018 Leigh Scott <leigh123linux@googlemail.com> - 3:390.48-1
 - Update to 390.48 release
 
