@@ -12,7 +12,6 @@ Version:       410.57
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
-Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
 URL:           http://www.nvidia.com/
 
