@@ -7,21 +7,18 @@
 %global debug_package %{nil}
 
 Name:          nvidia-kmod
-Epoch:         2
-Version:       384.111
+Epoch:         3
+Version:       410.73
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
-Group:         System Environment/Kernel
 License:       Redistributable, no modification permitted
 URL:           http://www.nvidia.com/
 
 Source11:      nvidia-kmodtool-excludekernel-filterfile
-Patch0:        nv-linux-arm.patch
-Patch1:        nv-linux-arm2.patch
 
 # needed for plague to make sure it builds for i586 and i686
-ExclusiveArch:  i686 x86_64 armv7hl
+ExclusiveArch:  x86_64
 
 # get the needed BuildRequires (in parts depending on what we build for)
 %global AkmodsBuildRequires %{_bindir}/kmodtool, xorg-x11-drv-nvidia-kmodsrc >= %{epoch}:%{version}
@@ -42,8 +39,6 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 %setup -T -c
 tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{version}-%{_target_cpu}.tar.xz
 # patch loop
-%patch0 -p1
-%patch1 -p1
 
 for kernel_version  in %{?kernel_versions} ; do
     cp -a kernel _kmod_build_${kernel_version%%___*}
@@ -52,7 +47,7 @@ done
 %build
 for kernel_version in %{?kernel_versions}; do
   pushd _kmod_build_${kernel_version%%___*}/
-    make %{?_smp_mflags} \
+    make V=1 %{?_smp_mflags} \
         KERNEL_UNAME="${kernel_version%%___*}" SYSSRC="${kernel_version##*___}" \
         IGNORE_CC_MISMATCH=1 IGNORE_XEN_PRESENCE=1 IGNORE_PREEMPT_RT_PRESENCE=1 \
         module
@@ -71,11 +66,71 @@ done
 
 
 %changelog
-* Sat Jan 13 2018 Leigh Scott <leigh123linux@googlemail.com> - 2:384.111-1
-- Update to 384.111 release
+* Thu Oct 25 2018 Leigh Scott <leigh123linux@googlemail.com> - 3:410.73-1
+- Update to 410.73 release
 
-* Tue Nov 07 2017 Leigh Scott <leigh123linux@googlemail.com> - 2:384.98-1
-- Update to 384.98 release
+* Tue Oct 16 2018 Leigh Scott <leigh123linux@googlemail.com> - 3:410.66-1
+- Update to 410.66 release
+
+* Thu Sep 20 2018 Leigh Scott <leigh123linux@googlemail.com> - 3:410.57-1
+- Update to 410.57 beta
+
+* Wed Aug 22 2018 Leigh Scott <leigh123linux@googlemail.com> - 3:396.54-1
+- Update to 396.54 release
+
+* Sat Aug 04 2018 Leigh Scott <leigh123linux@googlemail.com> - 3:396.51-1
+- Update to 396.51 release
+
+* Fri Jul 27 2018 RPM Fusion Release Engineering <sergio@serjux.com> - 3:396.45-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
+
+* Fri Jul 20 2018 Leigh Scott <leigh123linux@googlemail.com> - 3:396.45-1
+- Update to 396.45 release
+
+* Fri May 04 2018 Leigh Scott <leigh123linux@googlemail.com> - 3:396.24-1
+- Update to 396.24 release
+
+* Thu Mar 29 2018 Leigh Scott <leigh123linux@googlemail.com> - 3:390.48-1
+- Update to 390.48 release
+
+* Tue Mar 13 2018 Leigh Scott <leigh123linux@googlemail.com> - 3:390.42-1
+- Update to 390.42 release
+
+* Tue Mar 06 2018 Leigh Scott <leigh123linux@googlemail.com> - 3:390.25-6
+- Patch for 4.16 kernel
+
+* Fri Mar 02 2018 RPM Fusion Release Engineering <leigh123linux@googlemail.com> - 3:390.25-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
+
+* Sat Feb 17 2018 Todd Zullinger <tmz@pobox.com> - 390.25-4
+- Enable verbose make (V=1)
+
+* Fri Feb 16 2018 Leigh Scott <leigh123linux@googlemail.com> - 3:390.25-3
+- Bump epoch to prevent cuda repo from replacing packages
+
+* Sat Feb 10 2018 Leigh Scott <leigh123linux@googlemail.com> - 2:390.25-2
+- Patch for 4.15 kernel
+
+* Mon Jan 29 2018 Leigh Scott <leigh123linux@googlemail.com> - 2:390.25-1
+- Update to 390.25 release
+
+* Wed Jan 10 2018 Leigh Scott <leigh123linux@googlemail.com> - 2:390.12-1
+- Update to 390.12 beta
+
+* Sun Nov 26 2017 Leigh Scott <leigh123linux@googlemail.com> - 2:387.34-1
+- Update to 387.34 release
+
+* Mon Oct 30 2017 Leigh Scott <leigh123linux@googlemail.com> - 2:387.22-1
+- Update to 387.22 release
+
+* Wed Oct 04 2017 Leigh Scott <leigh123linux@googlemail.com> - 2:387.12-1
+- Update to 387.12 beta
+
+* Sat Sep 23 2017 Leigh Scott <leigh123linux@googlemail.com> - 2:384.90-3
+- revert last commit, it was caused by kernel debugging
+
+* Sat Sep 23 2017 Leigh Scott <leigh123linux@googlemail.com> - 2:384.90-2
+- Patch for 4.13 kernel
 
 * Thu Sep 21 2017 Leigh Scott <leigh123linux@googlemail.com> - 2:384.90-1
 - Update to 384.90 release
