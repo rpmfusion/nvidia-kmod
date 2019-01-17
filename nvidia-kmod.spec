@@ -10,12 +10,13 @@ Name:          nvidia-kmod
 Epoch:         3
 Version:       415.27
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       3%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           http://www.nvidia.com/
 
 Source11:      nvidia-kmodtool-excludekernel-filterfile
+Patch0:        5.0_kernel.patch
 
 # needed for plague to make sure it builds for i586 and i686
 ExclusiveArch:  x86_64
@@ -39,6 +40,7 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 %setup -T -c
 tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{version}-%{_target_cpu}.tar.xz
 # patch loop
+%patch0 -p1
 
 for kernel_version  in %{?kernel_versions} ; do
     cp -a kernel _kmod_build_${kernel_version%%___*}
@@ -66,6 +68,9 @@ done
 
 
 %changelog
+* Thu Jan 17 2019 Leigh Scott <leigh123linux@googlemail.com> - 3:415.27-3
+- Patch for 5.0rc kernel
+
 * Wed Jan 16 2019 Leigh Scott <leigh123linux@googlemail.com> - 3:415.27-1
 - Update to 415.27 release
 
