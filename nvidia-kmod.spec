@@ -21,7 +21,7 @@ Source11:      nvidia-kmodtool-excludekernel-filterfile
 ExclusiveArch:  x86_64
 
 # get the needed BuildRequires (in parts depending on what we build for)
-%global AkmodsBuildRequires %{_bindir}/kmodtool, xorg-x11-drv-nvidia-kmodsrc >= %{epoch}:%{version}-%{release}
+%global AkmodsBuildRequires %{_bindir}/kmodtool, xorg-x11-drv-nvidia-kmodsrc >= %{epoch}:%{version}-1
 BuildRequires:  %{AkmodsBuildRequires}
 
 %{!?kernels:BuildRequires: buildsys-build-rpmfusion-kerneldevpkgs-%{?buildforkernels:%{buildforkernels}}%{!?buildforkernels:current}-%{_target_cpu} }
