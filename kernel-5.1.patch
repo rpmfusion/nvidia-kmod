@@ -122,33 +122,3 @@ diff -uNrp a/kernel/nvidia-drm/nvidia-drm-gem-nvkms-memory.c b/kernel/nvidia-drm
  {
      return __nv_drm_vma_fault(vmf->vma, vmf);
  }
-diff -uNrp kernel/nvidia-uvm/uvm8.c.rej kernel/nvidia-uvm/uvm8.c.rej
---- kernel/nvidia-uvm/uvm8.c.rej	1970-01-01 01:00:00.000000000 +0100
-+++ kernel/nvidia-uvm/uvm8.c.rej	2019-04-07 11:43:37.841351364 +0100
-@@ -0,0 +1,26 @@
-+--- nvidia-uvm/uvm8.c
-++++ nvidia-uvm/uvm8.c
-+@@ -172,7 +172,11 @@ static int uvm_vm_fault_sigbus(struct vm_area_struct *vma, struct vm_fault *vmf)
-+     return VM_FAULT_SIGBUS;
-+ }
-+ 
-++#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 1, 0)
-+ static int uvm_vm_fault_sigbus_wrapper(struct vm_fault *vmf)
-++#else
-++static vm_fault_t uvm_vm_fault_sigbus_wrapper(struct vm_fault *vmf)
-++#endif
-+ {
-+ #if defined(NV_VM_OPS_FAULT_REMOVED_VMA_ARG)
-+     return uvm_vm_fault_sigbus(vmf->vma, vmf);
-+@@ -507,7 +511,11 @@ convert_error:
-+     }
-+ }
-+ 
-++#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 1, 0)
-+ static int uvm_vm_fault_wrapper(struct vm_fault *vmf)
-++#else
-++static vm_fault_t uvm_vm_fault_wrapper(struct vm_fault *vmf)
-++#endif
-+ {
-+ #if defined(NV_VM_OPS_FAULT_REMOVED_VMA_ARG)
-+     return uvm_vm_fault(vmf->vma, vmf);
