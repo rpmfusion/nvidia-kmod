@@ -1,0 +1,154 @@
+diff -uNrp a/kernel/nvidia-drm/nvidia-drm-connector.c b/kernel/nvidia-drm/nvidia-drm-connector.c
+--- a/kernel/nvidia-drm/nvidia-drm-connector.c	2019-03-15 17:56:25.000000000 +0000
++++ b/kernel/nvidia-drm/nvidia-drm-connector.c	2019-04-07 11:43:30.533394595 +0100
+@@ -35,6 +35,8 @@
+ #include <drm/drm_atomic.h>
+ #include <drm/drm_atomic_helper.h>
+ 
++#include <linux/version.h>
++
+ static void nv_drm_connector_destroy(struct drm_connector *connector)
+ {
+     struct nv_drm_connector *nv_connector = to_nv_connector(connector);
+@@ -201,6 +203,12 @@ nv_drm_connector_detect(struct drm_conne
+     return __nv_drm_connector_detect_internal(connector);
+ }
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 1, 0)
++int drm_helper_probe_single_connector_modes(struct drm_connector
++                                            *connector, uint32_t maxX,
++                                            uint32_t maxY);
++#endif
++
+ static struct drm_connector_funcs nv_connector_funcs = {
+ #if defined NV_DRM_ATOMIC_HELPER_CONNECTOR_DPMS_PRESENT
+     .dpms                   = drm_atomic_helper_connector_dpms,
+diff -uNrp a/kernel/nvidia-drm/nvidia-drm-drv.c b/kernel/nvidia-drm/nvidia-drm-drv.c
+--- a/kernel/nvidia-drm/nvidia-drm-drv.c	2019-03-15 17:56:25.000000000 +0000
++++ b/kernel/nvidia-drm/nvidia-drm-drv.c	2019-04-07 11:43:30.534394589 +0100
+@@ -35,6 +35,15 @@
+ #include "nvidia-drm-gem-nvkms-memory.h"
+ #include "nvidia-drm-gem-user-memory.h"
+ 
++#include <linux/version.h>
++
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 1, 0)
++void drm_kms_helper_poll_init(struct drm_device *dev);
++void drm_kms_helper_poll_fini(struct drm_device *dev);
++bool drm_helper_hpd_irq_event(struct drm_device *dev);
++void drm_kms_helper_poll_disable(struct drm_device *dev);
++#endif
++
+ #if defined(NV_DRM_AVAILABLE)
+ 
+ #include "nvidia-drm-ioctl.h"
+diff -uNrp a/kernel/nvidia-drm/nvidia-drm-encoder.c b/kernel/nvidia-drm/nvidia-drm-encoder.c
+--- a/kernel/nvidia-drm/nvidia-drm-encoder.c	2019-03-15 17:56:25.000000000 +0000
++++ b/kernel/nvidia-drm/nvidia-drm-encoder.c	2019-04-07 11:43:30.534394589 +0100
+@@ -36,6 +36,12 @@
+ #include <drm/drm_atomic.h>
+ #include <drm/drm_atomic_helper.h>
+ 
++#include <linux/version.h>
++
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 1, 0)
++void drm_kms_helper_hotplug_event(struct drm_device *dev);
++#endif
++
+ static void nv_drm_encoder_destroy(struct drm_encoder *encoder)
+ {
+     struct nv_drm_encoder *nv_encoder = to_nv_encoder(encoder);
+@@ -152,6 +158,12 @@ nv_drm_encoder_new(struct drm_device *de
+     return &nv_encoder->base;
+ }
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 1, 0)
++int drm_helper_probe_single_connector_modes(struct drm_connector
++                                            *connector, uint32_t maxX,
++                                            uint32_t maxY);
++#endif
++
+ /*
+  * Add encoder for given NvKmsKapiDisplay
+  */
+diff -uNrp a/kernel/nvidia-uvm/uvm8.c b/kernel/nvidia-uvm/uvm8.c
+--- a/kernel/nvidia-uvm/uvm8.c	2019-03-15 17:56:25.000000000 +0000
++++ b/kernel/nvidia-uvm/uvm8.c	2019-04-07 11:42:24.584784717 +0100
+@@ -172,7 +172,11 @@ static int uvm_vm_fault_sigbus(struct vm
+     return VM_FAULT_SIGBUS;
+ }
+ 
++#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 1, 0)
+ static int uvm_vm_fault_sigbus_wrapper(struct vm_fault *vmf)
++#else
++static vm_fault_t uvm_vm_fault_sigbus_wrapper(struct vm_fault *vmf)
++#endif
+ {
+ #if defined(NV_VM_OPS_FAULT_REMOVED_VMA_ARG)
+     return uvm_vm_fault_sigbus(vmf->vma, vmf);
+@@ -507,7 +511,11 @@ convert_error:
+     }
+ }
+ 
++#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 1, 0)
+ static int uvm_vm_fault_wrapper(struct vm_fault *vmf)
++#else
++static vm_fault_t uvm_vm_fault_wrapper(struct vm_fault *vmf)
++#endif
+ {
+ #if defined(NV_VM_OPS_FAULT_REMOVED_VMA_ARG)
+     return uvm_vm_fault(vmf->vma, vmf);
+diff -uNrp a/kernel/nvidia-drm/nvidia-drm-gem-nvkms-memory.c b/kernel/nvidia-drm/nvidia-drm-gem-nvkms-memory.c
+--- a/kernel/nvidia-drm/nvidia-drm-gem-nvkms-memory.c	2019-03-15 17:56:25.000000000 +0000
++++ b/kernel/nvidia-drm/nvidia-drm-gem-nvkms-memory.c	2019-04-07 11:57:27.781244232 +0100
+@@ -29,6 +29,8 @@
+ 
+ #include "nv-mm.h"
+ 
++#include <linux/version.h>
++
+ static void __nv_drm_gem_nvkms_memory_free(struct nv_drm_gem_object *nv_gem)
+ {
+     struct nv_drm_device *nv_dev = nv_gem->nv_dev;
+@@ -377,7 +379,11 @@ static int __nv_drm_vma_fault(struct vm_
+  */
+ 
+ #if defined(NV_VM_OPS_FAULT_REMOVED_VMA_ARG)
++#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 1, 0)
+ static int nv_drm_vma_fault(struct vm_fault *vmf)
++#else
++static vm_fault_t nv_drm_vma_fault(struct vm_fault *vmf)
++#endif
+ {
+     return __nv_drm_vma_fault(vmf->vma, vmf);
+ }
+diff -uNrp kernel/nvidia-uvm/uvm8.c.rej kernel/nvidia-uvm/uvm8.c.rej
+--- kernel/nvidia-uvm/uvm8.c.rej	1970-01-01 01:00:00.000000000 +0100
++++ kernel/nvidia-uvm/uvm8.c.rej	2019-04-07 11:43:37.841351364 +0100
+@@ -0,0 +1,26 @@
++--- nvidia-uvm/uvm8.c
+++++ nvidia-uvm/uvm8.c
++@@ -172,7 +172,11 @@ static int uvm_vm_fault_sigbus(struct vm_area_struct *vma, struct vm_fault *vmf)
++     return VM_FAULT_SIGBUS;
++ }
++ 
+++#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 1, 0)
++ static int uvm_vm_fault_sigbus_wrapper(struct vm_fault *vmf)
+++#else
+++static vm_fault_t uvm_vm_fault_sigbus_wrapper(struct vm_fault *vmf)
+++#endif
++ {
++ #if defined(NV_VM_OPS_FAULT_REMOVED_VMA_ARG)
++     return uvm_vm_fault_sigbus(vmf->vma, vmf);
++@@ -507,7 +511,11 @@ convert_error:
++     }
++ }
++ 
+++#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 1, 0)
++ static int uvm_vm_fault_wrapper(struct vm_fault *vmf)
+++#else
+++static vm_fault_t uvm_vm_fault_wrapper(struct vm_fault *vmf)
+++#endif
++ {
++ #if defined(NV_VM_OPS_FAULT_REMOVED_VMA_ARG)
++     return uvm_vm_fault(vmf->vma, vmf);
