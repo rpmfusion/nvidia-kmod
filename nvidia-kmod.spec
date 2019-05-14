@@ -8,9 +8,9 @@
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       418.56
+Version:       418.74
 # Taken over by kmodtool
-Release:       2%{?dist}
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           http://www.nvidia.com/
@@ -66,6 +66,9 @@ done
 
 
 %changelog
+* Tue May 14 2019 Leigh Scott <leigh123linux@googlemail.com> - 3:418.74-1
+- Update to 418.74 release
+
 * Thu Mar 21 2019 Leigh Scott <leigh123linux@googlemail.com> - 3:418.56-2
 - Add release tag to akmod build requires and obsoletes
 
