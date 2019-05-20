@@ -3,7 +3,11 @@
 # "buildforkernels newest" macro for just that build; immediately after
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
+%if 0%{?fedora} || 0%{?rhel} < 8
 %global buildforkernels akmod
+%else
+%global buildforkernels current
+%endif
 %global debug_package %{nil}
 
 Name:          nvidia-kmod
