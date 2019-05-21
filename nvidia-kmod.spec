@@ -12,7 +12,7 @@ Name:          nvidia-kmod
 Epoch:         3
 Version:       430.14
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           http://www.nvidia.com/
@@ -26,7 +26,7 @@ ExclusiveArch:  x86_64
 %global AkmodsBuildRequires %{_bindir}/kmodtool, xorg-x11-drv-nvidia-kmodsrc >= %{epoch}:%{version}-1
 BuildRequires:  %{AkmodsBuildRequires}
 
-%{!?kernels:BuildRequires: buildsys-build-rpmfusion-kerneldevpkgs-%{?buildforkernels:%{buildforkernels}}%{!?buildforkernels:current}-%{_target_cpu} }
+%{!?kernels:BuildRequires: gcc, elfutils-libelf-devel, buildsys-build-rpmfusion-kerneldevpkgs-%{?buildforkernels:%{buildforkernels}}%{!?buildforkernels:current}-%{_target_cpu} }
 # kmodtool does its magic here
 %{expand:%(kmodtool --target %{_target_cpu} --repo rpmfusion --kmodname %{name} --filterfile %{SOURCE11} --obsolete-name nvidia-newest --obsolete-version "%{?epoch}:%{version}-%{release}" %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null) }
 
@@ -68,6 +68,9 @@ done
 
 
 %changelog
+* Tue May 21 2019 Leigh Scott <leigh123linux@googlemail.com> - 3:430.14-2
+- Add BuildRequires needed for current build
+
 * Tue May 14 2019 Leigh Scott <leigh123linux@gmail.com> - 3:430.14-1
 - Update to 430.14 release
 
