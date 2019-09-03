@@ -12,7 +12,7 @@ Name:          nvidia-kmod
 Epoch:         3
 Version:       430.40
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           http://www.nvidia.com/
@@ -68,6 +68,9 @@ done
 
 
 %changelog
+* Tue Sep 03 2019 Leigh Scott <leigh123linux@gmail.com> - 3:430.40-2
+- Rebuild for new el7 kernel
+
 * Mon Jul 29 2019 Leigh Scott <leigh123linux@googlemail.com> - 3:430.40-1
 - Update to 430.40 release
 
