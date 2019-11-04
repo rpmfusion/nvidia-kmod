@@ -10,7 +10,7 @@
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       440.26
+Version:       440.31
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -68,6 +68,9 @@ done
 
 
 %changelog
+* Mon Nov 04 2019 Leigh Scott <leigh123linux@gmail.com> - 3:440.31-1
+- Update to 440.31 release
+
 * Thu Oct 17 2019 Leigh Scott <leigh123linux@googlemail.com> - 3:440.26-1
 - Update to 440.26 beta
 
@@ -84,7 +87,7 @@ done
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
 
 * Mon Jul 29 2019 Leigh Scott <leigh123linux@googlemail.com> - 3:430.40-1
-- Update to 430.40 releasenvidia-kmod
+- Update to 430.40 release
 
 * Mon Jul 15 2019 Leigh Scott <leigh123linux@googlemail.com> - 3:430.34-1
 - Update to 430.34 release
