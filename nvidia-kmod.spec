@@ -10,7 +10,7 @@
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       440.31
+Version:       440.36
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -68,6 +68,9 @@ done
 
 
 %changelog
+* Fri Nov 22 2019 Leigh Scott <leigh123linux@googlemail.com> - 3:440.36-1
+- Update to 440.36 release
+
 * Mon Nov 04 2019 Leigh Scott <leigh123linux@gmail.com> - 3:440.31-1
 - Update to 440.31 release
 
