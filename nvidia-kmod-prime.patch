@@ -1,0 +1,138 @@
+diff --git a/kernel/conftest.sh b/kernel/conftest.sh
+index c9c2db3..6b677dd 100755
+--- a/kernel/conftest.sh
++++ b/kernel/conftest.sh
+@@ -130,6 +130,7 @@ test_headers() {
+     FILES="$FILES linux/sched/signal.h"
+     FILES="$FILES linux/sched/task.h"
+     FILES="$FILES linux/sched/task_stack.h"
++    FILES="$FILES linux/reservation.h"
+     FILES="$FILES xen/ioemu.h"
+     FILES="$FILES linux/fence.h"
+     FILES="$FILES soc/tegra/chip-id.h"
+diff --git a/kernel/nvidia-drm/nvidia-dma-fence-helper.h b/kernel/nvidia-drm/nvidia-dma-fence-helper.h
+index 0aa5a4f..04e1ebe 100644
+--- a/kernel/nvidia-drm/nvidia-dma-fence-helper.h
++++ b/kernel/nvidia-drm/nvidia-dma-fence-helper.h
+@@ -25,7 +25,9 @@
+ 
+ #include "nvidia-drm-conftest.h"
+ 
+-#if defined(NV_DRM_DRIVER_HAS_GEM_PRIME_RES_OBJ)
++#include <linux/version.h>
++
++#if defined(NV_DRM_DRIVER_HAS_GEM_PRIME_RES_OBJ) || LINUX_VERSION_CODE >= KERNEL_VERSION(5, 4, 0)
+ 
+ /*
+  * Fence headers are moved to file dma-fence.h and struct fence has
+@@ -40,7 +42,9 @@
+ #include <linux/dma-fence.h>
+ #endif
+ 
++#if defined(NV_LINUX_RESERVATION_H_PRESENT)
+ #include <linux/reservation.h>
++#endif
+ 
+ #if defined(NV_LINUX_FENCE_H_PRESENT)
+ typedef struct fence nv_dma_fence_t;
+diff --git a/kernel/nvidia-drm/nvidia-drm-drv.c b/kernel/nvidia-drm/nvidia-drm-drv.c
+index a66d3cc..1aeb807 100644
+--- a/kernel/nvidia-drm/nvidia-drm-drv.c
++++ b/kernel/nvidia-drm/nvidia-drm-drv.c
+@@ -634,7 +634,7 @@ static const struct drm_ioctl_desc nv_drm_ioctls[] = {
+                       nv_drm_get_dev_info_ioctl,
+                       DRM_RENDER_ALLOW|DRM_UNLOCKED),
+ 
+-#if defined(NV_DRM_DRIVER_HAS_GEM_PRIME_RES_OBJ)
++#if defined(NV_DRM_DRIVER_HAS_GEM_PRIME_RES_OBJ) || LINUX_VERSION_CODE >= KERNEL_VERSION(5, 4, 0)
+     DRM_IOCTL_DEF_DRV(NVIDIA_FENCE_SUPPORTED,
+                       nv_drm_fence_supported_ioctl,
+                       DRM_RENDER_ALLOW|DRM_UNLOCKED),
+diff --git a/kernel/nvidia-drm/nvidia-drm-gem.c b/kernel/nvidia-drm/nvidia-drm-gem.c
+index 7201ade..0fb76e0 100644
+--- a/kernel/nvidia-drm/nvidia-drm-gem.c
++++ b/kernel/nvidia-drm/nvidia-drm-gem.c
+@@ -47,6 +47,8 @@ void nv_drm_gem_free(struct drm_gem_object *gem)
+ 
+ #if defined(NV_DRM_DRIVER_HAS_GEM_PRIME_RES_OBJ)
+     reservation_object_fini(&nv_gem->resv);
++#elif LINUX_VERSION_CODE >= KERNEL_VERSION(5, 4, 0)
++    dma_resv_fini(&nv_gem->resv);
+ #endif
+ 
+     nv_gem->ops->free(nv_gem);
+diff --git a/kernel/nvidia-drm/nvidia-drm-gem.h b/kernel/nvidia-drm/nvidia-drm-gem.h
+index b621969..9469f01 100644
+--- a/kernel/nvidia-drm/nvidia-drm-gem.h
++++ b/kernel/nvidia-drm/nvidia-drm-gem.h
+@@ -32,7 +32,9 @@
+ #include <drm/drmP.h>
+ #include "nvkms-kapi.h"
+ 
+-#if defined(NV_DRM_DRIVER_HAS_GEM_PRIME_RES_OBJ)
++#include <linux/version.h>
++
++#if defined(NV_DRM_DRIVER_HAS_GEM_PRIME_RES_OBJ) || LINUX_VERSION_CODE >= KERNEL_VERSION(5, 4, 0)
+ 
+ #include "nvidia-dma-fence-helper.h"
+ 
+@@ -57,6 +59,8 @@ struct nv_drm_gem_object {
+ 
+ #if defined(NV_DRM_DRIVER_HAS_GEM_PRIME_RES_OBJ)
+     struct reservation_object resv;
++#elif LINUX_VERSION_CODE >= KERNEL_VERSION(5, 4, 0)
++    struct dma_resv resv;
+ #endif
+ };
+ 
+@@ -128,6 +132,8 @@ void nv_drm_gem_object_init(struct nv_drm_device *nv_dev,
+ 
+ #if defined(NV_DRM_DRIVER_HAS_GEM_PRIME_RES_OBJ)
+     reservation_object_init(&nv_gem->resv);
++#elif LINUX_VERSION_CODE >= KERNEL_VERSION(5, 4, 0)
++    dma_resv_init(&nv_gem->resv);
+ #endif
+ }
+ 
+diff --git a/kernel/nvidia-drm/nvidia-drm-prime-fence.c b/kernel/nvidia-drm/nvidia-drm-prime-fence.c
+index 1f10940..c2cac7c 100644
+--- a/kernel/nvidia-drm/nvidia-drm-prime-fence.c
++++ b/kernel/nvidia-drm/nvidia-drm-prime-fence.c
+@@ -29,7 +29,9 @@
+ #include "nvidia-drm-gem.h"
+ #include "nvidia-drm-prime-fence.h"
+ 
+-#if defined(NV_DRM_DRIVER_HAS_GEM_PRIME_RES_OBJ)
++#include <linux/version.h>
++
++#if defined(NV_DRM_DRIVER_HAS_GEM_PRIME_RES_OBJ) || LINUX_VERSION_CODE >= KERNEL_VERSION(5, 4, 0)
+ 
+ #include "nvidia-dma-fence-helper.h"
+ 
+@@ -518,7 +520,11 @@ int nv_drm_gem_fence_attach_ioctl(struct drm_device *dev,
+         goto fence_context_create_fence_failed;
+     }
+ 
++#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 4, 0)
+     reservation_object_add_excl_fence(&nv_gem->resv, fence);
++#else
++    dma_resv_add_excl_fence(&nv_gem->resv, fence);
++#endif
+ 
+     ret = 0;
+ 
+diff --git a/kernel/nvidia-drm/nvidia-drm-prime-fence.h b/kernel/nvidia-drm/nvidia-drm-prime-fence.h
+index 20da923..afe2510 100644
+--- a/kernel/nvidia-drm/nvidia-drm-prime-fence.h
++++ b/kernel/nvidia-drm/nvidia-drm-prime-fence.h
+@@ -29,7 +29,9 @@
+ 
+ #include <drm/drmP.h>
+ 
+-#if defined(NV_DRM_DRIVER_HAS_GEM_PRIME_RES_OBJ)
++#include <linux/version.h>
++
++#if defined(NV_DRM_DRIVER_HAS_GEM_PRIME_RES_OBJ) || LINUX_VERSION_CODE >= KERNEL_VERSION(5, 4, 0)
+ 
+ int nv_drm_fence_supported_ioctl(struct drm_device *dev,
+                                  void *data, struct drm_file *filep);
