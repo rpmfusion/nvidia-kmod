@@ -315,7 +315,8 @@ index b621969..326f810 100644
 +#include "nv-drm.h"
  #include "nvkms-kapi.h"
  
- #if defined(NV_DRM_DRIVER_HAS_GEM_PRIME_RES_OBJ)
+ #include <linux/version.h>
+
 diff --git a/kernel/nvidia-drm/nvidia-drm-helper.c b/kernel/nvidia-drm/nvidia-drm-helper.c
 index da602ac..e5d6daa 100644
 --- a/kernel/nvidia-drm/nvidia-drm-helper.c
@@ -379,8 +380,9 @@ index 20da923..f3cc2b4 100644
 -#include <drm/drmP.h>
 +#include "nv-drm.h"
  
- #if defined(NV_DRM_DRIVER_HAS_GEM_PRIME_RES_OBJ)
+ #include <linux/version.h>
  
+
 diff --git a/kernel/nvidia-drm/nvidia-drm-priv.h b/kernel/nvidia-drm/nvidia-drm-priv.h
 index 9076835..77a95f3 100644
 --- a/kernel/nvidia-drm/nvidia-drm-priv.h
