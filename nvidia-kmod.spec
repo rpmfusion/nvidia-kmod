@@ -12,16 +12,13 @@ Name:          nvidia-kmod
 Epoch:         3
 Version:       440.44
 # Taken over by kmodtool
-Release:       3%{?dist}
+Release:       4%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           http://www.nvidia.com/
 
 Source11:      nvidia-kmodtool-excludekernel-filterfile
-Patch0:        buildfix_kernel-5.5.patch
-Patch1:        https://raw.githubusercontent.com/negativo17/%{name}/master/%{name}-prime.patch
-
-
+Patch0:        nvidia_backport.patch
 
 # needed for plague to make sure it builds for i586 and i686
 ExclusiveArch:  x86_64
@@ -45,7 +42,6 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 %setup -T -c
 tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{version}-%{_target_cpu}.tar.xz
 # patch loop
-%patch1 -p1
 %patch0 -p1
 
 for kernel_version  in %{?kernel_versions} ; do
@@ -74,6 +70,9 @@ done
 
 
 %changelog
+* Sat Feb 01 2020 Leigh Scott <leigh123linux@gmail.com> - 3:440.44-4
+- Backport kernel 5.4 and 5.5 changes from vulkan development driver
+
 * Thu Jan 30 2020 Leigh Scott <leigh123linux@gmail.com> - 3:440.44-3
 - Add patch for kernel-5.4 prime issue
 
