@@ -10,15 +10,14 @@
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       440.44
+Version:       440.59
 # Taken over by kmodtool
-Release:       4%{?dist}
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           http://www.nvidia.com/
 
 Source11:      nvidia-kmodtool-excludekernel-filterfile
-Patch0:        nvidia_backport.patch
 
 # needed for plague to make sure it builds for i586 and i686
 ExclusiveArch:  x86_64
@@ -42,7 +41,6 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 %setup -T -c
 tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{version}-%{_target_cpu}.tar.xz
 # patch loop
-%patch0 -p1
 
 for kernel_version  in %{?kernel_versions} ; do
     cp -a kernel _kmod_build_${kernel_version%%___*}
@@ -70,6 +68,9 @@ done
 
 
 %changelog
+* Mon Feb 03 2020 Leigh Scott <leigh123linux@gmail.com> - 3:440.59-1
+- Update to 440.59 release
+
 * Sat Feb 01 2020 Leigh Scott <leigh123linux@gmail.com> - 3:440.44-4
 - Backport kernel 5.4 and 5.5 changes from vulkan development driver
 
