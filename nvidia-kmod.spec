@@ -12,10 +12,11 @@ Name:          nvidia-kmod
 Epoch:         3
 Version:       440.59
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           http://www.nvidia.com/
+Patch0:        kernel-5.6.patch
 
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 
@@ -41,6 +42,7 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 %setup -T -c
 tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{version}-%{_target_cpu}.tar.xz
 # patch loop
+%patch0 -p1
 
 for kernel_version  in %{?kernel_versions} ; do
     cp -a kernel _kmod_build_${kernel_version%%___*}
@@ -68,6 +70,9 @@ done
 
 
 %changelog
+* Fri Feb 28 2020 Leigh Scott <leigh123linux@gmail.com> - 3:440.59-2
+- Patch for 5.6 pre rc kernel
+
 * Mon Feb 03 2020 Leigh Scott <leigh123linux@gmail.com> - 3:440.59-1
 - Update to 440.59 release
 
