@@ -10,7 +10,7 @@
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       440.44
+Version:       440.64
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -68,6 +68,24 @@ done
 
 
 %changelog
+* Fri Feb 28 2020 leigh123linux <leigh123linux@googlemail.com> - 3:440.64-1
+- Update to 440.64 release
+
+* Fri Feb 28 2020 Leigh Scott <leigh123linux@gmail.com> - 3:440.59-2
+- Patch for 5.6 pre rc kernel
+
+* Mon Feb 03 2020 Leigh Scott <leigh123linux@gmail.com> - 3:440.59-1
+- Update to 440.59 release
+
+* Sat Feb 01 2020 Leigh Scott <leigh123linux@gmail.com> - 3:440.44-4
+- Backport kernel 5.4 and 5.5 changes from vulkan development driver
+
+* Thu Jan 30 2020 Leigh Scott <leigh123linux@gmail.com> - 3:440.44-3
+- Add patch for kernel-5.4 prime issue
+
+* Mon Dec 30 2019 Leigh Scott <leigh123linux@googlemail.com> - 3:440.44-2
+- Patch for 5.5rc kernel
+
 * Wed Dec 11 2019 Leigh Scott <leigh123linux@googlemail.com> - 3:440.44-1
 - Update to 440.44 release
 
