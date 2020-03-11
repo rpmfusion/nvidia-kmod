@@ -10,7 +10,7 @@
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       430.40
+Version:       440.64
 # Taken over by kmodtool
 Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -68,8 +68,47 @@ done
 
 
 %changelog
-* Tue Sep 03 2019 Leigh Scott <leigh123linux@gmail.com> - 3:430.40-2
-- Rebuild for new el7 kernel
+* Fri Feb 28 2020 leigh123linux <leigh123linux@googlemail.com> - 3:440.64-1
+- Update to 440.64 release
+
+* Fri Feb 28 2020 Leigh Scott <leigh123linux@gmail.com> - 3:440.59-2
+- Patch for 5.6 pre rc kernel
+
+* Mon Feb 03 2020 Leigh Scott <leigh123linux@gmail.com> - 3:440.59-1
+- Update to 440.59 release
+
+* Sat Feb 01 2020 Leigh Scott <leigh123linux@gmail.com> - 3:440.44-4
+- Backport kernel 5.4 and 5.5 changes from vulkan development driver
+
+* Thu Jan 30 2020 Leigh Scott <leigh123linux@gmail.com> - 3:440.44-3
+- Add patch for kernel-5.4 prime issue
+
+* Mon Dec 30 2019 Leigh Scott <leigh123linux@googlemail.com> - 3:440.44-2
+- Patch for 5.5rc kernel
+
+* Wed Dec 11 2019 Leigh Scott <leigh123linux@googlemail.com> - 3:440.44-1
+- Update to 440.44 release
+
+* Fri Nov 22 2019 Leigh Scott <leigh123linux@googlemail.com> - 3:440.36-1
+- Update to 440.36 release
+
+* Mon Nov 04 2019 Leigh Scott <leigh123linux@gmail.com> - 3:440.31-1
+- Update to 440.31 release
+
+* Thu Oct 17 2019 Leigh Scott <leigh123linux@googlemail.com> - 3:440.26-1
+- Update to 440.26 beta
+
+* Mon Sep 30 2019 Leigh Scott <leigh123linux@googlemail.com> - 3:435.21-2
+- Patch for 5.4 pre rc kernel
+
+* Fri Aug 30 2019 Leigh Scott <leigh123linux@googlemail.com> - 3:435.21-1
+- Update to 435.21 release
+
+* Tue Aug 13 2019 Leigh Scott <leigh123linux@googlemail.com> - 3:435.17-1
+- Update to 435.17 beta
+
+* Sat Aug 10 2019 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 3:430.40-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
 
 * Mon Jul 29 2019 Leigh Scott <leigh123linux@googlemail.com> - 3:430.40-1
 - Update to 430.40 release
