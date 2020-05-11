@@ -10,14 +10,15 @@
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       440.64
+Version:       440.82
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           http://www.nvidia.com/
 
 Source11:      nvidia-kmodtool-excludekernel-filterfile
+Patch0:        kernel-5.7.patch
 
 # needed for plague to make sure it builds for i586 and i686
 ExclusiveArch:  x86_64
@@ -41,6 +42,7 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 %setup -T -c
 tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{version}-%{_target_cpu}.tar.xz
 # patch loop
+%patch0 -p1
 
 for kernel_version  in %{?kernel_versions} ; do
     cp -a kernel _kmod_build_${kernel_version%%___*}
@@ -68,6 +70,15 @@ done
 
 
 %changelog
+* Wed Apr 15 2020 Leigh Scott <leigh123linux@gmail.com> - 3:440.82-2
+- Patch for kernel-5.7rc
+
+* Tue Apr 07 2020 leigh123linux <leigh123linux@googlemail.com> - 3:440.82-1
+- Update to 440.82 release
+
+* Sun Mar 01 2020 leigh123linux <leigh123linux@googlemail.com> - 3:440.64-2
+- Patch for 5.6 pre rc kernel
+
 * Fri Feb 28 2020 leigh123linux <leigh123linux@googlemail.com> - 3:440.64-1
 - Update to 440.64 release
 
