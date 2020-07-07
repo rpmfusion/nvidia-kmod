@@ -1,0 +1,103 @@
+diff -uNrp a/kernel/common/inc/nv-linux.h b/kernel/common/inc/nv-linux.h
+--- a/kernel/common/inc/nv-linux.h	2020-06-16 04:34:04.000000000 +0100
++++ b/kernel/common/inc/nv-linux.h	2020-07-07 09:57:20.583132487 +0100
+@@ -505,7 +505,13 @@ extern NvBool nvos_is_chipset_io_coheren
+ 
+ static inline void *nv_vmalloc(unsigned long size)
+ {
++#if NV_VMALLOC_ARGUMENT_COUNT_ARGUMENT_COUNT == 3
+     void *ptr = __vmalloc(size, GFP_KERNEL, PAGE_KERNEL);
++#elif NV_VMALLOC_ARGUMENT_COUNT_ARGUMENT_COUNT == 2
++    void *ptr = __vmalloc(size, GFP_KERNEL);
++#else
++#error "NV_VMALLOC_ARGUMENT_COUNT_ARGUMENT_COUNT value unrecognized!"
++#endif
+     if (ptr)
+         NV_MEMDBG_ADD(ptr, size);
+     return ptr;
+diff -uNrp a/kernel/common/inc/nv-mm.h b/kernel/common/inc/nv-mm.h
+--- a/kernel/common/inc/nv-mm.h	2020-06-16 04:34:04.000000000 +0100
++++ b/kernel/common/inc/nv-mm.h	2020-07-07 09:57:20.583132487 +0100
+@@ -25,6 +25,10 @@
+ 
+ #include "conftest.h"
+ 
++#if defined(NV_MM_STRUCT_HAS_MMAP_LOCK)
++#define mmap_sem mmap_lock
++#endif
++
+ #if !defined(NV_VM_FAULT_T_IS_PRESENT)
+ typedef int vm_fault_t;
+ #endif
+diff -uNrp a/kernel/conftest.sh b/kernel/conftest.sh
+--- a/kernel/conftest.sh	2020-06-12 12:58:59.000000000 +0100
++++ b/kernel/conftest.sh	2020-07-07 09:57:20.585132471 +0100
+@@ -2191,6 +2191,49 @@ compile_test() {
+             compile_check_conftest "$CODE" "NV_VZALLOC_PRESENT" "" "functions"
+         ;;
+ 
++        vmalloc_argument_count)
++            #
++            # Determine how many arguments __vmalloc takes.
++            #
++            # Changed by commit fc3af83c4fca ("mm: remove the pgprot argument
++            # to __vmalloc")
++            #
++            echo "$CONFTEST_PREAMBLE
++            #include <linux/mm.h>
++            #include <linux/vmalloc.h>
++            void conftest_vmalloc_argument_count(void) {
++                __vmalloc(0, GFP_KERNEL, PAGE_KERNEL);
++            }" > conftest$$.c
++
++            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
++            rm -f conftest$$.c
++
++            if [ -f conftest$$.o ]; then
++                echo "#define NV_VMALLOC_ARGUMENT_COUNT_ARGUMENT_COUNT 3" | append_conftest "functions"
++            else
++                echo "#define NV_VMALLOC_ARGUMENT_COUNT_ARGUMENT_COUNT 2" | append_conftest "functions"
++            fi
++
++            rm -f conftest$$.o
++        ;;
++
++        mm_struct_has_mmap_lock)
++            #
++            # Determine if the mm_struct structure has 'mmap_lock'.
++            #
++            # Changed by commit ea7b54944ef9 ("mmap locking API: rename mmap_sem
++            # to mmap_lock")
++            #
++            CODE="
++            #include <linux/mm.h>
++
++            int conftest_mm_struct_has_mmap_lock(void) {
++                return offsetof(struct mm_struct, mmap_lock);
++            }"
++
++            compile_check_conftest "$CODE" "NV_MM_STRUCT_HAS_MMAP_LOCK" "" "types"
++        ;;
++
+         drm_driver_has_set_busid)
+             #
+             # Determine if the drm_driver structure has a 'set_busid' callback
+diff -uNrp a/kernel/nvidia/nvidia.Kbuild b/kernel/nvidia/nvidia.Kbuild
+--- a/kernel/nvidia/nvidia.Kbuild	2020-06-16 04:30:02.000000000 +0100
++++ b/kernel/nvidia/nvidia.Kbuild	2020-07-07 09:57:20.585132471 +0100
+@@ -146,6 +146,7 @@ NV_CONFTEST_FUNCTION_COMPILE_TESTS += vm
+ NV_CONFTEST_FUNCTION_COMPILE_TESTS += jiffies_to_timespec
+ NV_CONFTEST_FUNCTION_COMPILE_TESTS += ktime_get_raw_ts64
+ NV_CONFTEST_FUNCTION_COMPILE_TESTS += ktime_get_real_ts64
++NV_CONFTEST_FUNCTION_COMPILE_TESTS += vmalloc_argument_count
+ 
+ NV_CONFTEST_SYMBOL_COMPILE_TESTS += is_export_symbol_gpl_of_node_to_nid
+ NV_CONFTEST_SYMBOL_COMPILE_TESTS += is_export_symbol_present_swiotlb_map_sg_attrs
+@@ -177,6 +178,7 @@ NV_CONFTEST_TYPE_COMPILE_TESTS += kmem_c
+ NV_CONFTEST_TYPE_COMPILE_TESTS += sysfs_slab_unlink
+ NV_CONFTEST_TYPE_COMPILE_TESTS += proc_ops
+ NV_CONFTEST_TYPE_COMPILE_TESTS += timeval
++NV_CONFTEST_TYPE_COMPILE_TESTS += mm_struct_has_mmap_lock
+ 
+ NV_CONFTEST_GENERIC_COMPILE_TESTS += dom0_kernel_present
+ NV_CONFTEST_GENERIC_COMPILE_TESTS += nvidia_vgpu_hyperv_available
