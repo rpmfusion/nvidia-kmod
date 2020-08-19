@@ -10,9 +10,9 @@
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       440.100
+Version:       450.66
 # Taken over by kmodtool
-Release:       2%{?dist}
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           http://www.nvidia.com/
@@ -68,11 +68,17 @@ done
 
 
 %changelog
-* Thu Jun 25 2020 Leigh Scott <leigh123linux@gmail.com> - 3:440.100-2
-- rebuilt
+* Wed Aug 19 2020 Leigh Scott <leigh123linux@gmail.com> - 3:450.66-1
+- Update to 450.66 release
 
-* Thu Jun 25 2020 Leigh Scott <leigh123linux@gmail.com> - 3:440.100-1
-- Update to 440.100 release
+* Thu Jul 09 2020 Leigh Scott <leigh123linux@gmail.com> - 3:450.57-1
+- Update to 450.57 release
+
+* Tue Jul 07 2020 Leigh Scott <leigh123linux@gmail.com> - 3:450.51-2
+- Patch for 5.8rc kernel
+
+* Wed Jun 24 2020 Leigh Scott <leigh123linux@gmail.com> - 3:450.51-1
+- Update to 450.51 beta
 
 * Wed Apr 15 2020 Leigh Scott <leigh123linux@gmail.com> - 3:440.82-2
 - Patch for kernel-5.7rc
