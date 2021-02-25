@@ -10,7 +10,7 @@
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       460.39
+Version:       460.56
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -75,6 +75,12 @@ done
 
 
 %changelog
+* Thu Feb 25 2021 Leigh Scott <leigh123linux@gmail.com> - 3:460.56-1
+- Update to 460.56 release
+
+* Thu Feb 04 2021 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 3:460.39-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
+
 * Tue Jan 26 2021 Leigh Scott <leigh123linux@gmail.com> - 3:460.39-1
 - Update to 460.39 release
 
