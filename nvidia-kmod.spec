@@ -12,13 +12,14 @@ Name:          nvidia-kmod
 Epoch:         3
 Version:       510.39.01
 # Taken over by kmodtool
-Release:       2%{?dist}
+Release:       3%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           http://www.nvidia.com/
 
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        nvidia-kmod-pci-request-regions.patch
+Patch1:        nvidia-kmod-simpledrm.patch
 
 # needed for plague to make sure it builds for i586 and i686
 ExclusiveArch:  x86_64
@@ -43,6 +44,7 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{version}-%{_target_cpu}.tar.xz
 # patch loop
 %patch0 -p0
+%patch1 -p1
 
 for kernel_version  in %{?kernel_versions} ; do
     cp -a kernel _kmod_build_${kernel_version%%___*}
@@ -77,6 +79,9 @@ done
 
 
 %changelog
+* Sat Jan 22 2022 Leigh Scott <leigh123linux@gmail.com> - 3:510.39.01-3
+- Add fix to remove existing generic drivers
+
 * Wed Jan 19 2022 Nicolas Chauvet <kwizart@gmail.com> - 3:510.39.01-2
 - Add fix for FB
 
