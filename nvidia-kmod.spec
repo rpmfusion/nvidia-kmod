@@ -12,7 +12,7 @@ Name:          nvidia-kmod
 Epoch:         3
 Version:       510.47.03
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           http://www.nvidia.com/
@@ -43,8 +43,10 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 %setup -T -c
 tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{version}-%{_target_cpu}.tar.xz
 # patch loop
+%if 0%{?fedora} && 0%{?fedora} > 35
 %patch0 -p0
 %patch1 -p1
+%endif
 
 for kernel_version  in %{?kernel_versions} ; do
     cp -a kernel _kmod_build_${kernel_version%%___*}
@@ -79,6 +81,9 @@ done
 
 
 %changelog
+* Sun Feb 06 2022 Leigh Scott <leigh123linux@gmail.com> - 3:510.47.03-2
+- Only use simpledrm patches for F36+
+
 * Tue Feb 01 2022 Leigh Scott <leigh123linux@gmail.com> - 3:510.47.03-1
 - Update to 510.47.03 release
 
