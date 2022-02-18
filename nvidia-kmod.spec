@@ -12,7 +12,7 @@ Name:          nvidia-kmod
 Epoch:         3
 Version:       510.54
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           http://www.nvidia.com/
@@ -81,6 +81,10 @@ done
 
 
 %changelog
+* Fri Feb 18 2022 Nicolas Chauvet <kwizart@gmail.com> - 3:510.54-2
+- Update simpledrm patch
+- Add a conditional switch to disabled patch application.
+
 * Tue Feb 15 2022 Nicolas Chauvet <kwizart@gmail.com> - 3:510.54-1
 - Update to 510.54
 
