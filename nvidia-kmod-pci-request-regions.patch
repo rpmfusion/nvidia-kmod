@@ -1,6 +1,6 @@
-diff -up kernel/nvidia/linux_nvswitch.c.orig kernel/nvidia/linux_nvswitch.c
---- kernel/nvidia/linux_nvswitch.c.orig	2021-12-31 13:53:49.000000000 +0100
-+++ kernel/nvidia/linux_nvswitch.c	2022-01-19 13:17:53.955709286 +0100
+diff -up kernel-open/nvidia/linux_nvswitch.c.orig kernel-open/nvidia/linux_nvswitch.c
+--- kernel-open/nvidia/linux_nvswitch.c.orig	2021-12-31 13:53:49.000000000 +0100
++++ kernel-open/nvidia/linux_nvswitch.c	2022-01-19 13:17:53.955709286 +0100
 @@ -1320,6 +1320,9 @@ nvswitch_probe
  
      pci_set_master(pci_dev);

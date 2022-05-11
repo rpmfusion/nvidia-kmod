@@ -16,13 +16,13 @@ early fbdev (i.e: simpledrm) to the one registered by the real DRM drivers.
 
 Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
 ---
- kernel/nvidia-drm/nvidia-drm-drv.c | 16 ++++++++++++++++
+ kernel-open/nvidia-drm/nvidia-drm-drv.c | 16 ++++++++++++++++
  1 file changed, 16 insertions(+)
 
-diff --git a/kernel/nvidia-drm/nvidia-drm-drv.c b/kernel/nvidia-drm/nvidia-drm-drv.c
+diff --git a/kernel-open/nvidia-drm/nvidia-drm-drv.c b/kernel-open/nvidia-drm/nvidia-drm-drv.c
 index 0d29d1d6bf4d..9149f87b6244 100644
---- a/kernel/nvidia-drm/nvidia-drm-drv.c
-+++ b/kernel/nvidia-drm/nvidia-drm-drv.c
+--- a/kernel-open/nvidia-drm/nvidia-drm-drv.c
++++ b/kernel-open/nvidia-drm/nvidia-drm-drv.c
 @@ -60,6 +60,8 @@
  #include <drm/drm_ioctl.h>
  #endif
