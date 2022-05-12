@@ -12,7 +12,7 @@ Name:          nvidia-kmod
 Epoch:         3
 Version:       515.43.04
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           http://www.nvidia.com/
@@ -49,7 +49,7 @@ tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{versi
 %endif
 
 for kernel_version  in %{?kernel_versions} ; do
-    cp -a kernel-open _kmod_build_${kernel_version%%___*}
+    cp -a kernel _kmod_build_${kernel_version%%___*}
 done
 
 %build
@@ -81,6 +81,9 @@ done
 
 
 %changelog
+* Thu May 12 2022 Leigh Scott <leigh123linux@gmail.com> - 3:515.43.04-2
+- kernel-open isn't ready for main stream use
+
 * Wed May 11 2022 Leigh Scott <leigh123linux@gmail.com> - 3:515.43.04-1
 - Update to 515.43.04 beta
 
