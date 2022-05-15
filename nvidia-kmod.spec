@@ -10,7 +10,7 @@
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       495.44
+Version:       510.68.02
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -18,6 +18,8 @@ License:       Redistributable, no modification permitted
 URL:           http://www.nvidia.com/
 
 Source11:      nvidia-kmodtool-excludekernel-filterfile
+Patch0:        nvidia-kmod-pci-request-regions.patch
+Patch1:        nvidia-kmod-simpledrm.patch
 
 # needed for plague to make sure it builds for i586 and i686
 ExclusiveArch:  x86_64
@@ -41,6 +43,10 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 %setup -T -c
 tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{version}-%{_target_cpu}.tar.xz
 # patch loop
+%if 0%{!?_without_nvidia_kmod_patches:1}
+%patch0 -p0
+%patch1 -p1
+%endif
 
 for kernel_version  in %{?kernel_versions} ; do
     cp -a kernel _kmod_build_${kernel_version%%___*}
@@ -75,6 +81,37 @@ done
 
 
 %changelog
+* Tue Apr 26 2022 Nicolas Chauvet <kwizart@gmail.com> - 3:510.68.02-1
+- Update to 510.68.02
+
+* Wed Mar 23 2022 Leigh Scott <leigh123linux@gmail.com> - 3:510.60.02-1
+- Update to 510.60.02 release
+
+* Fri Feb 18 2022 Nicolas Chauvet <kwizart@gmail.com> - 3:510.54-2
+- Update simpledrm patch
+- Add a conditional switch to disabled patch application.
+
+* Tue Feb 15 2022 Nicolas Chauvet <kwizart@gmail.com> - 3:510.54-1
+- Update to 510.54
+
+* Sun Feb 06 2022 Leigh Scott <leigh123linux@gmail.com> - 3:510.47.03-2
+- Only use simpledrm patches for F36+
+
+* Tue Feb 01 2022 Leigh Scott <leigh123linux@gmail.com> - 3:510.47.03-1
+- Update to 510.47.03 release
+
+* Sat Jan 22 2022 Leigh Scott <leigh123linux@gmail.com> - 3:510.39.01-3
+- Add fix to remove existing generic drivers
+
+* Wed Jan 19 2022 Nicolas Chauvet <kwizart@gmail.com> - 3:510.39.01-2
+- Add fix for FB
+
+* Wed Jan 12 2022 Leigh Scott <leigh123linux@gmail.com> - 3:510.39.01-1
+- Update to 510.39.01 beta
+
+* Tue Dec 14 2021 Leigh Scott <leigh123linux@gmail.com> - 3:495.46-1
+- Update to 495.46 release
+
 * Tue Oct 26 2021 Leigh Scott <leigh123linux@gmail.com> - 3:495.44-1
 - Update to 495.44 release
 
