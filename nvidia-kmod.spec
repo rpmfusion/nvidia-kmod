@@ -44,8 +44,10 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{version}-%{_target_cpu}.tar.xz
 # patch loop
 %if 0%{!?_without_nvidia_kmod_patches:1}
+%if 0%{?fedora}
 %patch0 -p0
 %patch1 -p1
+%endif
 %endif
 
 for kernel_version  in %{?kernel_versions} ; do
