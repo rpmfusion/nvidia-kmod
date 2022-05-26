@@ -12,7 +12,7 @@ Name:          nvidia-kmod
 Epoch:         3
 Version:       515.43.04
 # Taken over by kmodtool
-Release:       3%{?dist}
+Release:       4%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           http://www.nvidia.com/
@@ -48,7 +48,7 @@ mv kernel kernel-closed
 mv kernel-open kernel
 %endif
 # patch loop
-%if 0%{!?_without_nvidia_kmod_patches:1}
+%if 0%{?_with_nvidia_kmod_patches:1}
 %if 0%{?fedora}
 %patch0 -p0
 %patch1 -p1
@@ -88,6 +88,9 @@ done
 
 
 %changelog
+* Thu May 26 2022 Leigh Scott <leigh123linux@gmail.com> - 3:515.43.04-4
+- Disable simpledrm patches
+
 * Sun May 15 2022 Nicolas Chauvet <kwizart@gmail.com> - 3:515.43.04-3
 - Add --with kmod-nvidia-open conditional
 
