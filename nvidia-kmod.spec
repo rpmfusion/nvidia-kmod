@@ -10,16 +10,14 @@
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       515.43.04
+Version:       515.48.07
 # Taken over by kmodtool
-Release:       4%{?dist}
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
-URL:           http://www.nvidia.com/
+URL:           https://www.nvidia.com/
 
 Source11:      nvidia-kmodtool-excludekernel-filterfile
-Patch0:        nvidia-kmod-pci-request-regions.patch
-Patch1:        nvidia-kmod-simpledrm.patch
 
 # needed for plague to make sure it builds for i586 and i686
 ExclusiveArch:  x86_64
@@ -48,12 +46,6 @@ mv kernel kernel-closed
 mv kernel-open kernel
 %endif
 # patch loop
-%if 0%{?_with_nvidia_kmod_patches:1}
-%if 0%{?fedora}
-%patch0 -p0
-%patch1 -p1
-%endif
-%endif
 
 for kernel_version  in %{?kernel_versions} ; do
     cp -a kernel _kmod_build_${kernel_version%%___*}
@@ -88,6 +80,9 @@ done
 
 
 %changelog
+* Wed Jun 01 2022 Leigh Scott <leigh123linux@gmail.com> - 3:515.48.07-1
+- Update to 515.48.07
+
 * Thu May 26 2022 Leigh Scott <leigh123linux@gmail.com> - 3:515.43.04-4
 - Disable simpledrm patches
 
