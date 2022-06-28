@@ -10,16 +10,14 @@
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       510.68.02
+Version:       515.57
 # Taken over by kmodtool
-Release:       2%{?dist}
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
-URL:           http://www.nvidia.com/
+URL:           https://www.nvidia.com/
 
 Source11:      nvidia-kmodtool-excludekernel-filterfile
-Patch0:        nvidia-kmod-pci-request-regions.patch
-Patch1:        nvidia-kmod-simpledrm.patch
 
 # needed for plague to make sure it builds for i586 and i686
 ExclusiveArch:  x86_64
@@ -42,13 +40,12 @@ The nvidia %{version} display driver kernel module for kernel %{kversion}.
 kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterfile %{SOURCE11} --obsolete-name nvidia-newest --obsolete-version "%{?epoch}:%{version}-%{release}" %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 %setup -T -c
 tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{version}-%{_target_cpu}.tar.xz
+# Switch to kernel or kernel-open
+%if 0%{?_with_kmod_nvidia_open:1}
+mv kernel kernel-closed
+mv kernel-open kernel
+%endif
 # patch loop
-%if 0%{?_without_nvidia_kmod_patches:1}
-%if 0%{?fedora}
-%patch0 -p0
-%patch1 -p1
-%endif
-%endif
 
 for kernel_version  in %{?kernel_versions} ; do
     cp -a kernel _kmod_build_${kernel_version%%___*}
@@ -83,8 +80,23 @@ done
 
 
 %changelog
-* Thu May 26 2022 Leigh Scott <leigh123linux@gmail.com> - 3:510.68.02-2
+* Tue Jun 28 2022 Leigh Scott <leigh123linux@gmail.com> - 3:515.57-1
+- Update to 515.57
+
+* Wed Jun 01 2022 Leigh Scott <leigh123linux@gmail.com> - 3:515.48.07-1
+- Update to 515.48.07
+
+* Thu May 26 2022 Leigh Scott <leigh123linux@gmail.com> - 3:515.43.04-4
 - Disable simpledrm patches
+
+* Sun May 15 2022 Nicolas Chauvet <kwizart@gmail.com> - 3:515.43.04-3
+- Add --with kmod-nvidia-open conditional
+
+* Thu May 12 2022 Leigh Scott <leigh123linux@gmail.com> - 3:515.43.04-2
+- kernel-open isn't ready for main stream use
+
+* Wed May 11 2022 Leigh Scott <leigh123linux@gmail.com> - 3:515.43.04-1
+- Update to 515.43.04 beta
 
 * Tue Apr 26 2022 Nicolas Chauvet <kwizart@gmail.com> - 3:510.68.02-1
 - Update to 510.68.02
