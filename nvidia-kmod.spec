@@ -12,7 +12,7 @@ Name:          nvidia-kmod
 Epoch:         3
 Version:       515.65.01
 # Taken over by kmodtool
-Release:       2%{?dist}
+Release:       3%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           https://www.nvidia.com/
@@ -80,6 +80,9 @@ done
 
 
 %changelog
+* Tue Aug 16 2022 Nicolas Chauvet <kwizart@gmail.com> - 3:515.65.01-3
+- Restore --with kmod_nvidia_open
+
 * Mon Aug 08 2022 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 3:515.65.01-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild and ffmpeg
   5.1
