@@ -5,8 +5,8 @@
 # a new akmod package will only get build when a new one is actually needed
 %if 0%{?fedora}
 %global buildforkernels akmod
-%global debug_package %{nil}
 %endif
+%global debug_package %{nil}
 
 Name:          nvidia-kmod
 Epoch:         3
