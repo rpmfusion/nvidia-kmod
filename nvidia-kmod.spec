@@ -12,12 +12,14 @@ Name:          nvidia-kmod
 Epoch:         3
 Version:       515.65.01
 # Taken over by kmodtool
-Release:       3%{?dist}
+Release:       4%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           https://www.nvidia.com/
 
 Source11:      nvidia-kmodtool-excludekernel-filterfile
+# https://github.com/NVIDIA/open-gpu-kernel-modules/pull/350
+Patch0:        add_missing_include.patch
 
 # needed for plague to make sure it builds for i586 and i686
 ExclusiveArch:  x86_64
@@ -46,6 +48,8 @@ mv kernel kernel-closed
 mv kernel-open kernel
 %endif
 # patch loop
+ls
+%patch0 -p1
 
 for kernel_version  in %{?kernel_versions} ; do
     cp -a kernel _kmod_build_${kernel_version%%___*}
@@ -80,6 +84,9 @@ done
 
 
 %changelog
+* Fri Aug 26 2022 Leigh Scott <leigh123linux@gmail.com> - 3:515.65.01-4
+- Fix kernel-6.0rc build issue
+
 * Tue Aug 16 2022 Nicolas Chauvet <kwizart@gmail.com> - 3:515.65.01-3
 - Restore --with kmod_nvidia_open
 
