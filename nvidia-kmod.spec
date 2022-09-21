@@ -5,12 +5,12 @@
 # a new akmod package will only get build when a new one is actually needed
 %if 0%{?fedora}
 %global buildforkernels akmod
-%global debug_package %{nil}
 %endif
+%global debug_package %{nil}
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       515.65.01
+Version:       515.76
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -40,6 +40,11 @@ The nvidia %{version} display driver kernel module for kernel %{kversion}.
 kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterfile %{SOURCE11} --obsolete-name nvidia-newest --obsolete-version "%{?epoch}:%{version}-%{release}" %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 %setup -T -c
 tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{version}-%{_target_cpu}.tar.xz
+# Switch to kernel or kernel-open
+%if 0%{?_with_kmod_nvidia_open:1}
+mv kernel kernel-closed
+mv kernel-open kernel
+%endif
 # patch loop
 
 for kernel_version  in %{?kernel_versions} ; do
@@ -75,6 +80,19 @@ done
 
 
 %changelog
+* Wed Sep 21 2022 Leigh Scott <leigh123linux@gmail.com> - 3:515.76-1
+- Update to 515.76
+
+* Fri Aug 26 2022 Leigh Scott <leigh123linux@gmail.com> - 3:515.65.01-4
+- Fix kernel-6.0rc build issue
+
+* Tue Aug 16 2022 Nicolas Chauvet <kwizart@gmail.com> - 3:515.65.01-3
+- Restore --with kmod_nvidia_open
+
+* Mon Aug 08 2022 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 3:515.65.01-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild and ffmpeg
+  5.1
+
 * Thu Aug 04 2022 Leigh Scott <leigh123linux@gmail.com> - 3:515.65.01-1
 - Update to 515.65.01
 
