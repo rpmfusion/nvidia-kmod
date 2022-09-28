@@ -10,7 +10,7 @@
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       515.49.15
+Version:       515.49.18
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -80,6 +80,9 @@ done
 
 
 %changelog
+* Wed Sep 28 2022 Nicolas Chauvet <kwizart@gmail.com> - 3:515.49.18-1
+- Update to 515.49.18
+
 * Thu Sep 22 2022 Nicolas Chauvet <kwizart@gmail.com> - 3:515.49.15-1
 - Update to 515.49.15
 
