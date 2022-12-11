@@ -10,9 +10,9 @@
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       515.65.01
+Version:       525.60.11
 # Taken over by kmodtool
-Release:       4%{?dist}
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           https://www.nvidia.com/
@@ -20,7 +20,7 @@ URL:           https://www.nvidia.com/
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 
 # needed for plague to make sure it builds for i586 and i686
-ExclusiveArch:  x86_64
+ExclusiveArch:  x86_64 aarch64
 
 # get the needed BuildRequires (in parts depending on what we build for)
 %global AkmodsBuildRequires %{_bindir}/kmodtool, xorg-x11-drv-nvidia-kmodsrc >= %{epoch}:%{version}-1
@@ -80,8 +80,23 @@ done
 
 
 %changelog
-* Thu Nov 17 2022 Nicolas Chauvet <kwizart@gmail.com> - 3:515.65.01-4
-- rebuilt
+* Mon Nov 28 2022 Leigh Scott <leigh123linux@gmail.com> - 3:525.60.11-1
+- Update to 525.60.11
+
+* Thu Nov 10 2022 Leigh Scott <leigh123linux@gmail.com> - 3:525.53-1
+- Update to 525.53 beta
+
+* Thu Oct 13 2022 Leigh Scott <leigh123linux@gmail.com> - 3:520.56.06-1
+- Update to 520.56.06
+
+* Sun Sep 25 2022 Dennnis Gilmore <dennis@ausil.us> - 3:515.76-2
+- add aarch64 support
+
+* Wed Sep 21 2022 Leigh Scott <leigh123linux@gmail.com> - 3:515.76-1
+- Update to 515.76
+
+* Fri Aug 26 2022 Leigh Scott <leigh123linux@gmail.com> - 3:515.65.01-4
+- Fix kernel-6.0rc build issue
 
 * Tue Aug 16 2022 Nicolas Chauvet <kwizart@gmail.com> - 3:515.65.01-3
 - Restore --with kmod_nvidia_open
