@@ -1,0 +1,13 @@
+--- a/kernel/nvidia-drm/nvidia-drm-linux.c
++++ b/kernel/nvidia-drm/nvidia-drm-linux.c
+@@ -41,8 +41,8 @@
+ 
+ MODULE_PARM_DESC(
+     modeset,
+-    "Enable atomic kernel modesetting (1 = enable, 0 = disable (default))");
+-bool nv_drm_modeset_module_param = false;
++    "Enable atomic kernel modesetting (1 = enable (default), 0 = disable)");
++bool nv_drm_modeset_module_param = true;
+ module_param_named(modeset, nv_drm_modeset_module_param, bool, 0400);
+ 
+ void *nv_drm_calloc(size_t nmemb, size_t size)
