@@ -47,7 +47,12 @@ mv kernel kernel-closed
 mv kernel-open kernel
 %endif
 # patch loop
+%if 0%{?_with_nvidia_defaults:1}
+echo "Using original nvidia defaults"
+%else
+echo "Set nvidia to fbdev=1 modeset=1"
 %patch -P0 -p1
+%endif
 
 for kernel_version  in %{?kernel_versions} ; do
     cp -a kernel _kmod_build_${kernel_version%%___*}
