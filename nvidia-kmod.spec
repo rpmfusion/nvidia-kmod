@@ -10,7 +10,7 @@
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       535.129.03
+Version:       545.29.06
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -47,7 +47,12 @@ mv kernel kernel-closed
 mv kernel-open kernel
 %endif
 # patch loop
+%if 0%{?_with_nvidia_defaults:1}
+echo "Using original nvidia defaults"
+%else
+echo "Set nvidia to fbdev=1 modeset=1"
 %patch -P0 -p1
+%endif
 
 for kernel_version  in %{?kernel_versions} ; do
     cp -a kernel _kmod_build_${kernel_version%%___*}
@@ -82,8 +87,14 @@ done
 
 
 %changelog
-* Wed Nov 01 2023 Leigh Scott <leigh123linux@gmail.com> - 3:535.129.03-1
-- Update to 535.129.03
+* Wed Nov 22 2023 Leigh Scott <leigh123linux@gmail.com> - 3:545.29.06-1
+- Update to 545.29.06 release
+
+* Tue Oct 31 2023 Leigh Scott <leigh123linux@gmail.com> - 3:545.29.02-1
+- Update to 545.29.02 release
+
+* Tue Oct 17 2023 Leigh Scott <leigh123linux@gmail.com> - 3:545.23.06-1
+- Update to 545.23.06 beta
 
 * Fri Sep 22 2023 Leigh Scott <leigh123linux@gmail.com> - 3:535.113.01-1
 - Update to 535.113.01
