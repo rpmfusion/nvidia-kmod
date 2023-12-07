@@ -1,0 +1,13 @@
+diff --git a/kernel/nvidia-drm/nvidia-drm-drv.c b/kernel/nvidia-drm/nvidia-drm-drv.c
+index e0ddb6c..42d24f8 100644
+--- a/kernel/nvidia-drm/nvidia-drm-drv.c
++++ b/kernel/nvidia-drm/nvidia-drm-drv.c
+@@ -747,7 +747,7 @@ static int nv_drm_get_dev_info_ioctl(struct drm_device *dev,
+ 
+         if (nv_dev->semsurf_stride != 0) {
+             params->supports_semsurf = true;
+-#if defined(NV_SYNC_FILE_GET_FENCE_PRESENT)
++#if 0
+             params->supports_sync_fd = true;
+ #endif /* defined(NV_SYNC_FILE_GET_FENCE_PRESENT) */
+         }

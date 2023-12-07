@@ -12,13 +12,16 @@ Name:          nvidia-kmod
 Epoch:         3
 Version:       545.29.06
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           https://www.nvidia.com/
 
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        make_modeset_default.patch
+# Temporary fix for Vulkan+PRIME on Wayland. Remove it for driver v550!
+# See https://github.com/NVIDIA/egl-wayland/issues/72#issuecomment-1843446296
+Patch1:        fix_vulkan_on_wayland_prime.patch
 
 # needed for plague to make sure it builds for i586 and i686
 ExclusiveArch:  x86_64 aarch64
@@ -52,6 +55,7 @@ echo "Using original nvidia defaults"
 %else
 echo "Set nvidia to fbdev=1 modeset=1"
 %patch -P0 -p1
+%patch -P1 -p1
 %endif
 
 for kernel_version  in %{?kernel_versions} ; do
