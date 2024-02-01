@@ -12,7 +12,7 @@ Name:          nvidia-kmod
 Epoch:         3
 Version:       550.40.07
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           https://www.nvidia.com/
@@ -90,6 +90,9 @@ done
 
 
 %changelog
+* Thu Feb 01 2024 Leigh Scott <leigh123linux@gmail.com> - 3:550.40.07-2
+- fix build with gcc-14 ad kernel-6.7.3
+
 * Wed Jan 24 2024 Leigh Scott <leigh123linux@gmail.com> - 3:550.40.07-1
 - Update to 550.40.07 beta
 
