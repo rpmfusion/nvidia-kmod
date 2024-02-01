@@ -12,7 +12,7 @@ Name:          nvidia-kmod
 Epoch:         3
 Version:       545.29.06
 # Taken over by kmodtool
-Release:       2%{?dist}
+Release:       3%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           https://www.nvidia.com/
@@ -93,6 +93,9 @@ done
 
 
 %changelog
+* Thu Feb 01 2024 Leigh Scott <leigh123linux@gmail.com> - 3:545.29.06-3
+- fix build with gcc-14 ad kernel-6.7.3
+
 * Wed Dec 27 2023 Leigh Scott <leigh123linux@gmail.com> - 3:545.29.06-2
 - Add fix for 'Flip event timeout' (rfbz6808)
 
