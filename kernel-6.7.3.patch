@@ -1,0 +1,68 @@
+diff -uNrp a/kernel/common/inc/nv-linux.h b/kernel/common/inc/nv-linux.h
+--- a/kernel/common/inc/nv-linux.h	2024-01-18 08:06:58.000000000 +0000
++++ b/kernel/common/inc/nv-linux.h	2024-02-01 22:27:07.734667760 +0000
+@@ -2036,4 +2036,25 @@ typedef enum
+ #include <linux/clk-provider.h>
+ #endif
+ 
++#if defined(CONFIG_HAVE_ARCH_PFN_VALID) || LINUX_VERSION_CODE < KERNEL_VERSION(6,1,76)
++#  define nv_pfn_valid pfn_valid
++#else
++/* pre-6.1.76 kernel pfn_valid version without GPL rcu_read_lock/unlock() */
++static inline int nv_pfn_valid(unsigned long pfn)
++{
++        struct mem_section *ms;
++
++        if (PHYS_PFN(PFN_PHYS(pfn)) != pfn)
++                return 0;
++
++        if (pfn_to_section_nr(pfn) >= NR_MEM_SECTIONS)
++                return 0;
++
++        ms = __pfn_to_section(pfn);
++        if (!valid_section(ms))
++                return 0;
++
++        return early_section(ms) || pfn_section_valid(ms, pfn);
++}
++#endif
+ #endif  /* _NV_LINUX_H_ */
+diff -uNrp a/kernel/nvidia/nv-mmap.c b/kernel/nvidia/nv-mmap.c
+--- a/kernel/nvidia/nv-mmap.c	2024-01-18 08:06:58.000000000 +0000
++++ b/kernel/nvidia/nv-mmap.c	2024-02-01 22:29:13.752956449 +0000
+@@ -577,12 +577,12 @@ int nvidia_mmap_helper(
+             //
+             // This path is similar to the sysmem mapping code.
+             // TODO: Refactor is needed as part of bug#2001704.
+-            // Use pfn_valid to determine whether the physical address has
++            // Use nv_pfn_valid to determine whether the physical address has
+             // backing struct page. This is used to isolate P8 from P9.
+             //
+             if ((nv_get_numa_status(nvl) == NV_NUMA_STATUS_ONLINE) &&
+                 !IS_REG_OFFSET(nv, access_start, access_len) &&
+-                (pfn_valid(PFN_DOWN(mmap_start))))
++                (nv_pfn_valid(PFN_DOWN(mmap_start))))
+             {
+                 ret = nvidia_mmap_numa(vma, mmap_context);
+                 if (ret)
+diff -uNrp a/kernel/nvidia/os-mlock.c b/kernel/nvidia/os-mlock.c
+--- a/kernel/nvidia/os-mlock.c	2024-01-18 08:06:58.000000000 +0000
++++ b/kernel/nvidia/os-mlock.c	2024-02-01 22:29:48.584574014 +0000
+@@ -113,7 +113,7 @@ static NV_STATUS get_io_pages(struct vm_
+     for (i = 0; i < page_count; i++)
+     {
+         if ((nv_follow_pfn(vma, (start + (i * PAGE_SIZE)), &pfn) < 0) ||
+-            (!pfn_valid(pfn)))
++            (!nv_pfn_valid(pfn)))
+         {
+             rmStatus = NV_ERR_INVALID_ADDRESS;
+             break;
+@@ -187,7 +187,7 @@ NV_STATUS NV_API_CALL os_lookup_user_io_
+         goto done;
+     }
+ 
+-    if (pfn_valid(pfn))
++    if (nv_pfn_valid(pfn))
+     {
+         rmStatus = get_io_pages(vma, start, page_count, (struct page **)result_array);
+         if (rmStatus == NV_OK)
