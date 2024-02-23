@@ -1,6 +1,7 @@
 --- a/kernel/conftest.sh
 +++ b/kernel/conftest.sh
-@@ -5155,6 +5155,11 @@
+@@ -5154,8 +5154,13 @@
+             #
              CODE="
              #include <drm/drm_gem.h>
 +            #if defined(NV_LINUX_IOSYS_MAP_H_PRESENT)
@@ -13,3 +14,4 @@
 +                    struct drm_gem_object *obj, nv_sysio_map_t *map) {
                  return obj->funcs->vmap(obj, map);
              }"
+ 
