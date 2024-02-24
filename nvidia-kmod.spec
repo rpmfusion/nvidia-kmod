@@ -10,17 +10,16 @@
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       545.29.06
+Version:       550.54.14
 # Taken over by kmodtool
-Release:       2%{?dist}
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           https://www.nvidia.com/
 
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        make_modeset_default.patch
-# https://forums.developer.nvidia.com/t/545-29-06-18-1-flip-event-timeout-error-on-startup-shutdown-and-sometimes-suspend-wayland-unusable/274788/21
-Patch1:        nvidia-drm-hotplug-workqueue.patch
+Patch1:        gcc14.patch
 
 # needed for plague to make sure it builds for i586 and i686
 ExclusiveArch:  x86_64 aarch64
@@ -89,6 +88,15 @@ done
 
 
 %changelog
+* Fri Feb 23 2024 Leigh Scott <leigh123linux@gmail.com> - 3:550.54.14-1
+- Update to 550.54.14 release
+
+* Thu Feb 01 2024 Leigh Scott <leigh123linux@gmail.com> - 3:550.40.07-2
+- fix build with gcc-14 ad kernel-6.7.3
+
+* Wed Jan 24 2024 Leigh Scott <leigh123linux@gmail.com> - 3:550.40.07-1
+- Update to 550.40.07 beta
+
 * Wed Dec 27 2023 Leigh Scott <leigh123linux@gmail.com> - 3:545.29.06-2
 - Add fix for 'Flip event timeout' (rfbz6808)
 
