@@ -12,7 +12,7 @@ Name:          nvidia-kmod
 Epoch:         3
 Version:       550.54.14
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           https://www.nvidia.com/
@@ -20,6 +20,7 @@ URL:           https://www.nvidia.com/
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        make_modeset_default.patch
 Patch1:        gcc14.patch
+Patch2:        nvidia-drm-take-modeset-ownership-earlier.patch
 
 # needed for plague to make sure it builds for i586 and i686
 ExclusiveArch:  x86_64 aarch64
@@ -55,6 +56,7 @@ echo "Set nvidia to fbdev=1 modeset=1"
 %patch -P0 -p1
 %endif
 %patch -P1 -p1
+%patch -P2 -p1
 for kernel_version  in %{?kernel_versions} ; do
     cp -a kernel _kmod_build_${kernel_version%%___*}
 done
@@ -88,6 +90,9 @@ done
 
 
 %changelog
+* Mon Mar 04 2024 Leigh Scott <leigh123linux@gmail.com> - 3:550.54.14-2
+- Add fix for 'Flip event'
+
 * Fri Feb 23 2024 Leigh Scott <leigh123linux@gmail.com> - 3:550.54.14-1
 - Update to 550.54.14 release
 
