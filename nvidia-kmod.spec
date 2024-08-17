@@ -12,7 +12,7 @@ Name:          nvidia-kmod
 Epoch:         3
 Version:       560.31.02
 # Taken over by kmodtool
-Release:       2%{?dist}
+Release:       3%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           https://www.nvidia.com/
@@ -88,7 +88,7 @@ done
 
 
 %changelog
-* Sat Aug 17 2024 Leigh Scott <leigh123linux@gmail.com> - 3:560.31.02-1
+* Sat Aug 17 2024 Leigh Scott <leigh123linux@gmail.com> - 3:560.31.02-3
 - Fix nvidia framebuffer with 6.11rc
 
 * Tue Aug 06 2024 Leigh Scott <leigh123linux@gmail.com> - 3:560.31.02-1
