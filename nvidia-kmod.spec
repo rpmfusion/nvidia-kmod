@@ -89,7 +89,7 @@ done
 
 %changelog
 * Sat Aug 17 2024 Leigh Scott <leigh123linux@gmail.com> - 3:560.31.02-1
-- rebuilt
+- Fix nvidia framebuffer with 6.11rc
 
 * Tue Aug 06 2024 Leigh Scott <leigh123linux@gmail.com> - 3:560.31.02-1
 - Update to 560.31.02 beta
