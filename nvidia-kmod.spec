@@ -21,7 +21,6 @@ Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        make_modeset_default.patch
 Patch1:        kernel-611-framebuffer.patch
 
-# needed for plague to make sure it builds for i586 and i686
 ExclusiveArch:  x86_64 aarch64
 
 # get the needed BuildRequires (in parts depending on what we build for)
