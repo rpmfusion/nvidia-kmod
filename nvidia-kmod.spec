@@ -10,7 +10,7 @@
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       555.58.02
+Version:       560.35.03
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -19,8 +19,8 @@ URL:           https://www.nvidia.com/
 
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        make_modeset_default.patch
+Patch1:        kernel-611-framebuffer.patch
 
-# needed for plague to make sure it builds for i586 and i686
 ExclusiveArch:  x86_64 aarch64
 
 # get the needed BuildRequires (in parts depending on what we build for)
@@ -52,6 +52,7 @@ echo "Using original nvidia defaults"
 %else
 echo "Set nvidia to fbdev=1 modeset=1"
 %patch -P0 -p1
+%patch -P1 -p1 -d kernel/
 %endif
 for kernel_version  in %{?kernel_versions} ; do
     cp -a kernel _kmod_build_${kernel_version%%___*}
@@ -67,7 +68,7 @@ export NV_EXCLUDE_KERNEL_MODULES="${NV_EXCLUDE_KERNEL_MODULES} nvidia_modeset "
 
 for kernel_version in %{?kernel_versions}; do
   pushd _kmod_build_${kernel_version%%___*}/
-    make V=1 %{?_smp_mflags} \
+    %make_build \
         KERNEL_UNAME="${kernel_version%%___*}" SYSSRC="${kernel_version##*___}" \
         IGNORE_CC_MISMATCH=1 IGNORE_XEN_PRESENCE=1 IGNORE_PREEMPT_RT_PRESENCE=1 \
         module
@@ -86,6 +87,21 @@ done
 
 
 %changelog
+* Wed Aug 21 2024 Leigh Scott <leigh123linux@gmail.com> - 3:560.35.03-1
+- Update to 560.35.03 Release
+
+* Sat Aug 17 2024 Leigh Scott <leigh123linux@gmail.com> - 3:560.31.02-3
+- Fix nvidia framebuffer with 6.11rc
+
+* Tue Aug 06 2024 Leigh Scott <leigh123linux@gmail.com> - 3:560.31.02-1
+- Update to 560.31.02 beta
+
+* Sat Aug 03 2024 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 3:560.28.03-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
+
+* Tue Jul 23 2024 Leigh Scott <leigh123linux@gmail.com> - 3:560.28.03-1
+- Update to 560.28.03 beta
+
 * Tue Jul 02 2024 Leigh Scott <leigh123linux@gmail.com> - 3:555.58.02-1
 - Update to 555.58.02
 
