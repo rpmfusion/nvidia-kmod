@@ -10,17 +10,15 @@
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       560.35.03
+Version:       565.57.01
 # Taken over by kmodtool
-Release:       2%{?dist}
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           https://www.nvidia.com/
 
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        make_modeset_default.patch
-Patch1:        kernel-611-framebuffer.patch
-Patch2:        kernel-612-buildfix.patch
 
 ExclusiveArch:  x86_64 aarch64
 
@@ -54,8 +52,6 @@ echo "Using original nvidia defaults"
 echo "Set nvidia to fbdev=1 modeset=1"
 %patch -P0 -p1
 %endif
-%patch -P1 -p1 -d kernel/
-%patch -P2 -p1
 
 for kernel_version  in %{?kernel_versions} ; do
     cp -a kernel _kmod_build_${kernel_version%%___*}
@@ -90,6 +86,9 @@ done
 
 
 %changelog
+* Tue Oct 22 2024 Leigh Scott <leigh123linux@gmail.com> - 3:565.57.01-1
+- Update to 565.57.01 beta
+
 * Thu Oct 03 2024 Leigh Scott <leigh123linux@gmail.com> - 3:560.35.03-2
 - Patch for 6.12rc kernel
 
