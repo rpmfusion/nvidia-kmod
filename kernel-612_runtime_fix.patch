@@ -1,0 +1,14 @@
+diff -uNrp a/kernel/nvidia-drm/nvidia-drm-drv.c b/kernel/nvidia-drm/nvidia-drm-drv.c
+--- a/kernel/nvidia-drm/nvidia-drm-drv.c	2024-10-10 12:58:12.000000000 +0100
++++ b/kernel/nvidia-drm/nvidia-drm-drv.c	2024-11-19 13:34:31.798764897 +0000
+@@ -1711,6 +1711,10 @@ static const struct file_operations nv_d
+     .read           = drm_read,
+ 
+     .llseek         = noop_llseek,
++  
++#if defined(FOP_UNSIGNED_OFFSET)
++    .fop_flags   = FOP_UNSIGNED_OFFSET,
++#endif
+ };
+ 
+ static const struct drm_ioctl_desc nv_drm_ioctls[] = {
