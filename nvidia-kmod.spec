@@ -10,7 +10,7 @@
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       560.35.03
+Version:       565.77
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -19,7 +19,6 @@ URL:           https://www.nvidia.com/
 
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        make_modeset_default.patch
-Patch1:        kernel-611-framebuffer.patch
 
 ExclusiveArch:  x86_64 aarch64
 
@@ -52,8 +51,8 @@ echo "Using original nvidia defaults"
 %else
 echo "Set nvidia to fbdev=1 modeset=1"
 %patch -P0 -p1
-%patch -P1 -p1 -d kernel/
 %endif
+
 for kernel_version  in %{?kernel_versions} ; do
     cp -a kernel _kmod_build_${kernel_version%%___*}
 done
@@ -87,6 +86,18 @@ done
 
 
 %changelog
+* Thu Dec 05 2024 Leigh Scott <leigh123linux@gmail.com> - 3:565.77-1
+- Update to 565.77 release
+
+* Tue Nov 19 2024 Leigh Scott <leigh123linux@gmail.com> - 3:565.57.01-2
+- Patch for 6.12 kernel
+
+* Tue Oct 22 2024 Leigh Scott <leigh123linux@gmail.com> - 3:565.57.01-1
+- Update to 565.57.01 beta
+
+* Thu Oct 03 2024 Leigh Scott <leigh123linux@gmail.com> - 3:560.35.03-2
+- Patch for 6.12rc kernel
+
 * Wed Aug 21 2024 Leigh Scott <leigh123linux@gmail.com> - 3:560.35.03-1
 - Update to 560.35.03 Release
 
@@ -130,7 +141,7 @@ done
 - Update to 550.54.14 release
 
 * Thu Feb 01 2024 Leigh Scott <leigh123linux@gmail.com> - 3:550.40.07-2
-- fix build with gcc-14 ad kernel-6.7.3
+- fix build with gcc-14 and kernel-6.7.3
 
 * Wed Jan 24 2024 Leigh Scott <leigh123linux@gmail.com> - 3:550.40.07-1
 - Update to 550.40.07 beta
