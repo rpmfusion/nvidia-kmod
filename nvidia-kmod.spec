@@ -49,7 +49,7 @@ mv kernel-open kernel
 %if 0%{?_with_nvidia_defaults:1}
 echo "Using original nvidia defaults"
 %else
-echo "Set nvidia to fbdev=1 modeset=1"
+echo "Set nvidia to modeset=1"
 %patch -P0 -p1
 %endif
 
