@@ -12,7 +12,7 @@ Name:          nvidia-kmod
 Epoch:         3
 Version:       570.86.16
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           https://www.nvidia.com/
@@ -58,6 +58,7 @@ for kernel_version  in %{?kernel_versions} ; do
 done
 
 %build
+export CC+=" -std=gnu17"
 %if 0%{?_without_nvidia_uvm:1}
 export NV_EXCLUDE_KERNEL_MODULES="${NV_EXCLUDE_KERNEL_MODULES} nvidia_uvm "
 %endif
@@ -86,6 +87,9 @@ done
 
 
 %changelog
+* Sat Feb 08 2025 Leigh Scott <leigh123linux@gmail.com> - 3:570.86.16-2
+- Force build to use std=gnu17
+
 * Thu Jan 30 2025 Leigh Scott <leigh123linux@gmail.com> - 3:570.86.16-1
 - Update to 570.86.16 beta
 
