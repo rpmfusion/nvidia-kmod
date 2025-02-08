@@ -12,13 +12,14 @@ Name:          nvidia-kmod
 Epoch:         3
 Version:       570.86.16
 # Taken over by kmodtool
-Release:       2%{?dist}
+Release:       3%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           https://www.nvidia.com/
 
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        make_modeset_default.patch
+Patch1:        remove_unused_date.patch
 
 ExclusiveArch:  x86_64 aarch64
 
@@ -52,6 +53,7 @@ echo "Using original nvidia defaults"
 echo "Set nvidia to modeset=1"
 %patch -P0 -p1
 %endif
+%patch -P1 -p1
 
 for kernel_version  in %{?kernel_versions} ; do
     cp -a kernel _kmod_build_${kernel_version%%___*}
@@ -87,6 +89,9 @@ done
 
 
 %changelog
+* Sat Feb 08 2025 Leigh Scott <leigh123linux@gmail.com> - 3:570.86.16-3
+- Remove unused date
+
 * Sat Feb 08 2025 Leigh Scott <leigh123linux@gmail.com> - 3:570.86.16-2
 - Force build to use std=gnu17
 

@@ -1,0 +1,11 @@
+diff -uNrp a/kernel/nvidia-drm/nvidia-drm-drv.c b/kernel/nvidia-drm/nvidia-drm-drv.c
+--- a/kernel/nvidia-drm/nvidia-drm-drv.c	2025-01-24 20:50:25.000000000 +0000
++++ b/kernel/nvidia-drm/nvidia-drm-drv.c	2025-02-08 10:17:24.485305841 +0000
+@@ -1915,7 +1915,6 @@ static struct drm_driver nv_drm_driver =
+     .name                   = "nvidia-drm",
+ 
+     .desc                   = "NVIDIA DRM driver",
+-    .date                   = "20160202",
+ 
+ #if defined(NV_DRM_DRIVER_HAS_DEVICE_LIST)
+     .device_list            = LIST_HEAD_INIT(nv_drm_driver.device_list),
