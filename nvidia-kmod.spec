@@ -10,15 +10,16 @@
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       565.77
+Version:       570.86.16
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       3%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           https://www.nvidia.com/
 
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        make_modeset_default.patch
+Patch1:        remove_unused_date.patch
 
 ExclusiveArch:  x86_64 aarch64
 
@@ -49,15 +50,17 @@ mv kernel-open kernel
 %if 0%{?_with_nvidia_defaults:1}
 echo "Using original nvidia defaults"
 %else
-echo "Set nvidia to fbdev=1 modeset=1"
+echo "Set nvidia to modeset=1"
 %patch -P0 -p1
 %endif
+%patch -P1 -p1
 
 for kernel_version  in %{?kernel_versions} ; do
     cp -a kernel _kmod_build_${kernel_version%%___*}
 done
 
 %build
+export CC+=" -std=gnu17"
 %if 0%{?_without_nvidia_uvm:1}
 export NV_EXCLUDE_KERNEL_MODULES="${NV_EXCLUDE_KERNEL_MODULES} nvidia_uvm "
 %endif
@@ -86,6 +89,18 @@ done
 
 
 %changelog
+* Sat Feb 08 2025 Leigh Scott <leigh123linux@gmail.com> - 3:570.86.16-3
+- Remove unused date
+
+* Sat Feb 08 2025 Leigh Scott <leigh123linux@gmail.com> - 3:570.86.16-2
+- Force build to use std=gnu17
+
+* Thu Jan 30 2025 Leigh Scott <leigh123linux@gmail.com> - 3:570.86.16-1
+- Update to 570.86.16 beta
+
+* Fri Jan 24 2025 Leigh Scott <leigh123linux@gmail.com> - 3:570.86.10-1
+- Update to 570.86.10 cuda release
+
 * Thu Dec 05 2024 Leigh Scott <leigh123linux@gmail.com> - 3:565.77-1
 - Update to 565.77 release
 
