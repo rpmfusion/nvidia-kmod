@@ -7,9 +7,7 @@
 %global buildforkernels akmod
 %endif
 %global debug_package %{nil}
-%if 0%{?fedora} > 41
 %global _kmodtool_zipmodules 0
-%endif
 
 Name:          nvidia-kmod
 Epoch:         3
