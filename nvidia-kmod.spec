@@ -7,10 +7,11 @@
 %global buildforkernels akmod
 %endif
 %global debug_package %{nil}
+%global _kmodtool_zipmodules 0
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       570.124.04
+Version:       570.133.07
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -87,6 +88,12 @@ done
 
 
 %changelog
+* Tue Mar 18 2025 Leigh Scott <leigh123linux@gmail.com> - 3:570.133.07-1
+- Update to 570.133.07 release
+
+* Thu Mar 06 2025 Leigh Scott <leigh123linux@gmail.com> - 3:570.124.04-2
+- Disable module compression for f42+
+
 * Thu Feb 27 2025 Leigh Scott <leigh123linux@gmail.com> - 3:570.124.04-1
 - Update to 570.124.04 release
 
