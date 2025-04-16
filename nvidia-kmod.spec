@@ -11,7 +11,7 @@
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       570.133.07
+Version:       575.51.02
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -20,6 +20,7 @@ URL:           https://www.nvidia.com/
 
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        make_modeset_default.patch
+Patch1:        nvidia-kernel-ccflags-y.patch
 
 ExclusiveArch:  x86_64 aarch64
 
@@ -53,13 +54,13 @@ echo "Using original nvidia defaults"
 echo "Set nvidia to modeset=1"
 %patch -P0 -p1
 %endif
+%patch -P1 -p1
 
 for kernel_version  in %{?kernel_versions} ; do
     cp -a kernel _kmod_build_${kernel_version%%___*}
 done
 
 %build
-export CC+=" -std=gnu17"
 %if 0%{?_without_nvidia_uvm:1}
 export NV_EXCLUDE_KERNEL_MODULES="${NV_EXCLUDE_KERNEL_MODULES} nvidia_uvm "
 %endif
@@ -88,6 +89,9 @@ done
 
 
 %changelog
+* Wed Apr 16 2025 Leigh Scott <leigh123linux@gmail.com> - 3:575.51.02-1
+- Update to 575.51.02 beta
+
 * Tue Mar 18 2025 Leigh Scott <leigh123linux@gmail.com> - 3:570.133.07-1
 - Update to 570.133.07 release
 
