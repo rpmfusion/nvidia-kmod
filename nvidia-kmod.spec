@@ -13,14 +13,14 @@ Name:          nvidia-kmod
 Epoch:         3
 Version:       575.51.02
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           https://www.nvidia.com/
 
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        make_modeset_default.patch
-Patch1:        nvidia-kernel-ccflags-y.patch
+Patch1:        nvidia-kernel-6.15.patch
 
 ExclusiveArch:  x86_64 aarch64
 
@@ -89,6 +89,9 @@ done
 
 
 %changelog
+* Sat Apr 19 2025 Leigh Scott <leigh123linux@gmail.com> - 3:575.51.02-2
+- Patch for 6.15rc kernel
+
 * Wed Apr 16 2025 Leigh Scott <leigh123linux@gmail.com> - 3:575.51.02-1
 - Update to 575.51.02 beta
 
