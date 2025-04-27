@@ -13,7 +13,7 @@ Name:          nvidia-kmod
 Epoch:         3
 Version:       575.51.02
 # Taken over by kmodtool
-Release:       2%{?dist}
+Release:       3%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           https://www.nvidia.com/
@@ -89,7 +89,7 @@ done
 
 
 %changelog
-* Sun Apr 27 2025 Leigh Scott <leigh123linux@gmail.com> - 3:575.51.02-2
+* Sun Apr 27 2025 Leigh Scott <leigh123linux@gmail.com> - 3:575.51.02-3
 - Fix build for open module with 6.15rc kernel
 
 * Sat Apr 19 2025 Leigh Scott <leigh123linux@gmail.com> - 3:575.51.02-2
