@@ -22,6 +22,9 @@ Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        make_modeset_default.patch
 Patch1:        kernel-6.15_buildfix.patch
 
+Source100:     nvidia-kmod-noopen-pciids.txt
+Source101:     nvidia-kmod-noopen-checks
+
 ExclusiveArch:  x86_64 aarch64
 
 # get the needed BuildRequires (in parts depending on what we build for)
@@ -47,6 +50,13 @@ tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{versi
 %if 0%{?_with_kmod_nvidia_open:1}
 mv kernel kernel-closed
 mv kernel-open kernel
+%elif 0%{!?_without_kmod_nvidia_detect:1}
+echo "Runtime detection of kmod_nvidia_open"
+if [ -f nvidiapkg/supported-gpus/nvidia-kmod-noopen-pciids.txt ] ; then
+  bash "%{SOURCE100}" nvidiapkg/supported-gpus/nvidia-kmod-noopen-pciids.txt
+else
+  bash "%{SOURCE100}" "%{SOURCE101}"
+fi
 %endif
 # patch loop
 %if 0%{?_with_nvidia_defaults:1}
