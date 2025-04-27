@@ -13,7 +13,7 @@ diff -uNrp a/kernel/nvidia-drm/nvidia-drm-linux.c b/kernel/nvidia-drm/nvidia-drm
 diff -uNrp a/kernel/nvidia-drm/nvidia-drm-os-interface.c b/kernel/nvidia-drm/nvidia-drm-os-interface.c
 --- a/kernel/nvidia-drm/nvidia-drm-os-interface.c	2025-01-16 03:13:56.000000000 +0000
 +++ b/kernel/nvidia-drm/nvidia-drm-os-interface.c	2025-01-24 15:15:16.192929239 +0000
-@@ -41,7 +41,7 @@
+@@ -42,7 +42,7 @@
  #include <drm/drmP.h>
  #endif
  

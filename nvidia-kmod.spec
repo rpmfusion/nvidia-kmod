@@ -13,14 +13,14 @@ Name:          nvidia-kmod
 Epoch:         3
 Version:       575.51.02
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           https://www.nvidia.com/
 
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        make_modeset_default.patch
-Patch1:        nvidia-kernel-ccflags-y.patch
+Patch1:        kernel-6.15_buildfix.patch
 
 ExclusiveArch:  x86_64 aarch64
 
@@ -42,6 +42,7 @@ The nvidia %{version} display driver kernel module for kernel %{kversion}.
 kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterfile %{SOURCE11} --obsolete-name nvidia-newest --obsolete-version "%{?epoch}:%{version}-%{release}" %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 %setup -T -c
 tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{version}-%{_target_cpu}.tar.xz
+%patch -P1 -p1
 # Switch to kernel or kernel-open
 %if 0%{?_with_kmod_nvidia_open:1}
 mv kernel kernel-closed
@@ -54,7 +55,6 @@ echo "Using original nvidia defaults"
 echo "Set nvidia to modeset=1"
 %patch -P0 -p1
 %endif
-%patch -P1 -p1
 
 for kernel_version  in %{?kernel_versions} ; do
     cp -a kernel _kmod_build_${kernel_version%%___*}
@@ -89,6 +89,12 @@ done
 
 
 %changelog
+* Sun Apr 27 2025 Leigh Scott <leigh123linux@gmail.com> - 3:575.51.02-2
+- Fix build for open module with 6.15rc kernel
+
+* Sat Apr 19 2025 Leigh Scott <leigh123linux@gmail.com> - 3:575.51.02-2
+- Patch for 6.15rc kernel
+
 * Wed Apr 16 2025 Leigh Scott <leigh123linux@gmail.com> - 3:575.51.02-1
 - Update to 575.51.02 beta
 
