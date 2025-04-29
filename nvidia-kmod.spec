@@ -52,8 +52,8 @@ mv kernel kernel-closed
 mv kernel-open kernel
 %elif 0%{!?_without_kmod_nvidia_detect:1}
 echo "Runtime detection of kmod_nvidia_open"
-if [ -f nvidiapkg/supported-gpus/nvidia-kmod-noopen-pciids.txt ] ; then
-  bash "%{SOURCE100}" nvidiapkg/supported-gpus/nvidia-kmod-noopen-pciids.txt
+if [ -f supported-gpus/nvidia-kmod-noopen-pciids.txt ] ; then
+  bash "%{SOURCE100}" supported-gpus/nvidia-kmod-noopen-pciids.txt
 else
   bash "%{SOURCE100}" "%{SOURCE101}"
 fi
