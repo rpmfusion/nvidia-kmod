@@ -22,8 +22,8 @@ Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        make_modeset_default.patch
 Patch1:        kernel-6.15_buildfix.patch
 
-Source100:     nvidia-kmod-noopen-pciids.txt
-Source101:     nvidia-kmod-noopen-checks
+Source100:     nvidia-kmod-noopen-checks
+Source101:     nvidia-kmod-noopen-pciids.txt
 
 ExclusiveArch:  x86_64 aarch64
 
