@@ -59,7 +59,6 @@ for kernel_version  in %{?kernel_versions} ; do
 done
 
 %build
-export CC+=" -std=gnu17"
 %if 0%{?_without_nvidia_uvm:1}
 export NV_EXCLUDE_KERNEL_MODULES="${NV_EXCLUDE_KERNEL_MODULES} nvidia_uvm "
 %endif
