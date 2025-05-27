@@ -13,13 +13,14 @@ Name:          nvidia-kmod
 Epoch:         3
 Version:       570.153.02
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           https://www.nvidia.com/
 
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        make_modeset_default.patch
+Patch1:        Workaround-nv_vm_flags_-calling-GPL-only-code.patch
 
 ExclusiveArch:  x86_64 aarch64
 
@@ -41,6 +42,7 @@ The nvidia %{version} display driver kernel module for kernel %{kversion}.
 kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterfile %{SOURCE11} --obsolete-name nvidia-newest --obsolete-version "%{?epoch}:%{version}-%{release}" %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 %setup -T -c
 tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{version}-%{_target_cpu}.tar.xz
+%patch -P1 -p1
 # Switch to kernel or kernel-open
 %if 0%{?_with_kmod_nvidia_open:1}
 mv kernel kernel-closed
@@ -87,6 +89,9 @@ done
 
 
 %changelog
+* Tue May 27 2025 Leigh Scott <leigh123linux@gmail.com> - 3:570.153.02-2
+- Fix GPL-only issue with closed source module
+
 * Mon May 19 2025 Leigh Scott <leigh123linux@gmail.com> - 3:570.153.02-1
 - Update to 570.153.02 release
 
