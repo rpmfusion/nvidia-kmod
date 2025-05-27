@@ -13,7 +13,7 @@ Name:          nvidia-kmod
 Epoch:         3
 Version:       575.51.02
 # Taken over by kmodtool
-Release:       4%{?dist}
+Release:       5%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           https://www.nvidia.com/
@@ -21,6 +21,7 @@ URL:           https://www.nvidia.com/
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        make_modeset_default.patch
 Patch1:        kernel-6.15_buildfix.patch
+Patch2:        Workaround-nv_vm_flags_-calling-GPL-only-code.patch
 
 Source100:     nvidia-kmod-noopen-checks
 Source101:     nvidia-kmod-noopen-pciids.txt
@@ -46,6 +47,7 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 %setup -T -c
 tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{version}-%{_target_cpu}.tar.xz
 %patch -P1 -p1
+%patch -P2 -p1
 # Switch to kernel or kernel-open
 %if 0%{?_with_kmod_nvidia_open:1}
 mv kernel kernel-closed
@@ -99,6 +101,9 @@ done
 
 
 %changelog
+* Tue May 27 2025 Leigh Scott <leigh123linux@gmail.com> - 3:575.51.02-5
+- Fix GPL-only issue with closed source module
+
 * Tue Apr 29 2025 Nicolas Chauvet <kwizart@gmail.com> - 3:575.51.02-4
 - Add nvidia-open auto-detection script
 
