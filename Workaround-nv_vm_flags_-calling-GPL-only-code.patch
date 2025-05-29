@@ -68,7 +68,11 @@ index a9c182f82..bfec14dc0 100644
  #include "uvm_api.h"
  #include "uvm_global.h"
  #include "uvm_gpu_replayable_faults.h"
+<<<<<<< HEAD
 @@ -40,6 +42,11 @@
+=======
+@@ -42,6 +44,11 @@
+>>>>>>> master
  
  #define NVIDIA_UVM_DEVICE_NAME          "nvidia-uvm"
  

@@ -11,7 +11,7 @@
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       570.153.02
+Version:       575.57.08
 # Taken over by kmodtool
 Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -21,6 +21,9 @@ URL:           https://www.nvidia.com/
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        make_modeset_default.patch
 Patch1:        Workaround-nv_vm_flags_-calling-GPL-only-code.patch
+
+Source100:     nvidia-kmod-noopen-checks
+Source101:     nvidia-kmod-noopen-pciids.txt
 
 ExclusiveArch:  x86_64 aarch64
 
@@ -47,6 +50,13 @@ tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{versi
 %if 0%{?_with_kmod_nvidia_open:1}
 mv kernel kernel-closed
 mv kernel-open kernel
+%elif 0%{!?_without_kmod_nvidia_detect:1}
+echo "Runtime detection of kmod_nvidia_open"
+if [ -f supported-gpus/nvidia-kmod-noopen-pciids.txt ] ; then
+  bash "%{SOURCE100}" supported-gpus/nvidia-kmod-noopen-pciids.txt
+else
+  bash "%{SOURCE100}" "%{SOURCE101}"
+fi
 %endif
 # patch loop
 %if 0%{?_with_nvidia_defaults:1}
@@ -89,14 +99,23 @@ done
 
 
 %changelog
-* Tue May 27 2025 Leigh Scott <leigh123linux@gmail.com> - 3:570.153.02-2
+* Thu May 29 2025 Leigh Scott <leigh123linux@gmail.com> - 3:575.57.08-1
+- Update to 575.57.08 release
+
+* Tue May 27 2025 Leigh Scott <leigh123linux@gmail.com> - 3:575.51.02-5
 - Fix GPL-only issue with closed source module
 
-* Mon May 19 2025 Leigh Scott <leigh123linux@gmail.com> - 3:570.153.02-1
-- Update to 570.153.02 release
+* Tue Apr 29 2025 Nicolas Chauvet <kwizart@gmail.com> - 3:575.51.02-4
+- Add nvidia-open auto-detection script
 
-* Sat Apr 19 2025 Leigh Scott <leigh123linux@gmail.com> - 3:570.144-1
-- Update to 570.144 release
+* Sun Apr 27 2025 Leigh Scott <leigh123linux@gmail.com> - 3:575.51.02-3
+- Fix build for open module with 6.15rc kernel
+
+* Sat Apr 19 2025 Leigh Scott <leigh123linux@gmail.com> - 3:575.51.02-2
+- Patch for 6.15rc kernel
+
+* Wed Apr 16 2025 Leigh Scott <leigh123linux@gmail.com> - 3:575.51.02-1
+- Update to 575.51.02 beta
 
 * Tue Mar 18 2025 Leigh Scott <leigh123linux@gmail.com> - 3:570.133.07-1
 - Update to 570.133.07 release
