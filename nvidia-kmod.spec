@@ -7,10 +7,11 @@
 %global buildforkernels akmod
 %endif
 %global debug_package %{nil}
+%global _kmodtool_zipmodules 0
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       550.144.03
+Version:       570.169
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -20,7 +21,6 @@ URL:           https://www.nvidia.com/
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        make_modeset_default.patch
 
-# needed for plague to make sure it builds for i586 and i686
 ExclusiveArch:  x86_64 aarch64
 
 # get the needed BuildRequires (in parts depending on what we build for)
@@ -50,9 +50,10 @@ mv kernel-open kernel
 %if 0%{?_with_nvidia_defaults:1}
 echo "Using original nvidia defaults"
 %else
-echo "Set nvidia to fbdev=1 modeset=1"
+echo "Set nvidia to modeset=1"
 %patch -P0 -p1
 %endif
+
 for kernel_version  in %{?kernel_versions} ; do
     cp -a kernel _kmod_build_${kernel_version%%___*}
 done
@@ -67,7 +68,7 @@ export NV_EXCLUDE_KERNEL_MODULES="${NV_EXCLUDE_KERNEL_MODULES} nvidia_modeset "
 
 for kernel_version in %{?kernel_versions}; do
   pushd _kmod_build_${kernel_version%%___*}/
-    make V=1 %{?_smp_mflags} \
+    %make_build \
         KERNEL_UNAME="${kernel_version%%___*}" SYSSRC="${kernel_version##*___}" \
         IGNORE_CC_MISMATCH=1 IGNORE_XEN_PRESENCE=1 IGNORE_PREEMPT_RT_PRESENCE=1 \
         module
@@ -86,17 +87,74 @@ done
 
 
 %changelog
-* Thu Jan 30 2025 Nicolas Chauvet <kwizart@gmail.com> - 3:550.144.03-1
-- Update to 550.144.03
+* Tue Jun 24 2025 Nicolas Chauvet <kwizart@gmail.com> - 3:570.169-1
+- Update to 570.169
 
-* Wed Oct 30 2024 Nicolas Chauvet <kwizart@gmail.com> - 3:550.127.05-1
-- Update to 550.127.05
+* Mon May 19 2025 Leigh Scott <leigh123linux@gmail.com> - 3:570.153.02-1
+- Update to 570.153.02 release
 
-* Fri Aug 30 2024 Nicolas Chauvet <kwizart@gmail.com> - 3:550.107.02-1
-- Update to 550.107.02
+* Sat Apr 19 2025 Leigh Scott <leigh123linux@gmail.com> - 3:570.144-1
+- Update to 570.144 release
 
-* Fri Jul 19 2024 Nicolas Chauvet <kwizart@gmail.com> - 3:550.100-1
-- Update to 550.100
+* Tue Mar 18 2025 Leigh Scott <leigh123linux@gmail.com> - 3:570.133.07-1
+- Update to 570.133.07 release
+
+* Thu Mar 06 2025 Leigh Scott <leigh123linux@gmail.com> - 3:570.124.04-2
+- Disable module compression for f42+
+
+* Thu Feb 27 2025 Leigh Scott <leigh123linux@gmail.com> - 3:570.124.04-1
+- Update to 570.124.04 release
+
+* Sat Feb 08 2025 Leigh Scott <leigh123linux@gmail.com> - 3:570.86.16-3
+- Remove unused date
+
+* Sat Feb 08 2025 Leigh Scott <leigh123linux@gmail.com> - 3:570.86.16-2
+- Force build to use std=gnu17
+
+* Thu Jan 30 2025 Leigh Scott <leigh123linux@gmail.com> - 3:570.86.16-1
+- Update to 570.86.16 beta
+
+* Fri Jan 24 2025 Leigh Scott <leigh123linux@gmail.com> - 3:570.86.10-1
+- Update to 570.86.10 cuda release
+
+* Thu Dec 05 2024 Leigh Scott <leigh123linux@gmail.com> - 3:565.77-1
+- Update to 565.77 release
+
+* Tue Nov 19 2024 Leigh Scott <leigh123linux@gmail.com> - 3:565.57.01-2
+- Patch for 6.12 kernel
+
+* Tue Oct 22 2024 Leigh Scott <leigh123linux@gmail.com> - 3:565.57.01-1
+- Update to 565.57.01 beta
+
+* Thu Oct 03 2024 Leigh Scott <leigh123linux@gmail.com> - 3:560.35.03-2
+- Patch for 6.12rc kernel
+
+* Wed Aug 21 2024 Leigh Scott <leigh123linux@gmail.com> - 3:560.35.03-1
+- Update to 560.35.03 Release
+
+* Sat Aug 17 2024 Leigh Scott <leigh123linux@gmail.com> - 3:560.31.02-3
+- Fix nvidia framebuffer with 6.11rc
+
+* Tue Aug 06 2024 Leigh Scott <leigh123linux@gmail.com> - 3:560.31.02-1
+- Update to 560.31.02 beta
+
+* Sat Aug 03 2024 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 3:560.28.03-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
+
+* Tue Jul 23 2024 Leigh Scott <leigh123linux@gmail.com> - 3:560.28.03-1
+- Update to 560.28.03 beta
+
+* Tue Jul 02 2024 Leigh Scott <leigh123linux@gmail.com> - 3:555.58.02-1
+- Update to 555.58.02
+
+* Thu Jun 27 2024 Leigh Scott <leigh123linux@gmail.com> - 3:555.58-1
+- Update to 555.58 release
+
+* Thu Jun 06 2024 Leigh Scott <leigh123linux@gmail.com> - 3:555.52.04-1
+- Update to 555.52.04 beta
+
+* Tue May 21 2024 Leigh Scott <leigh123linux@gmail.com> - 3:555.42.02-1
+- Update to 555.42.02 beta
 
 * Fri Apr 26 2024 Leigh Scott <leigh123linux@gmail.com> - 3:550.78-1
 - Update to 550.78 release
@@ -114,7 +172,7 @@ done
 - Update to 550.54.14 release
 
 * Thu Feb 01 2024 Leigh Scott <leigh123linux@gmail.com> - 3:550.40.07-2
-- fix build with gcc-14 ad kernel-6.7.3
+- fix build with gcc-14 and kernel-6.7.3
 
 * Wed Jan 24 2024 Leigh Scott <leigh123linux@gmail.com> - 3:550.40.07-1
 - Update to 550.40.07 beta
