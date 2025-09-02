@@ -20,7 +20,6 @@ URL:           https://www.nvidia.com/
 
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        make_modeset_default.patch
-Patch1:        kernel-617-buildfix.patch
 
 Source100:     nvidia-kmod-noopen-checks
 Source101:     nvidia-kmod-noopen-pciids.txt
@@ -64,7 +63,6 @@ echo "Using original nvidia defaults"
 echo "Set nvidia to modeset=1"
 %patch -P0 -p1
 %endif
-%patch -P1 -p1
 
 for kernel_version  in %{?kernel_versions} ; do
     cp -a kernel _kmod_build_${kernel_version%%___*}
