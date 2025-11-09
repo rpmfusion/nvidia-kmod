@@ -13,13 +13,14 @@ Name:          nvidia-kmod
 Epoch:         3
 Version:       580.105.08
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           https://www.nvidia.com/
 
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        make_modeset_default.patch
+Patch1:        buildfix_kernel-618.patch
 
 Source100:     nvidia-kmod-noopen-checks
 Source101:     nvidia-kmod-noopen-pciids.txt
@@ -44,6 +45,7 @@ The nvidia %{version} display driver kernel module for kernel %{kversion}.
 kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterfile %{SOURCE11} --obsolete-name nvidia-newest --obsolete-version "%{?epoch}:%{version}-%{release}" %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 %setup -T -c
 tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{version}-%{_target_cpu}.tar.xz
+%patch -P1 -p1
 # Switch to kernel or kernel-open
 %if 0%{?_with_kmod_nvidia_open:1}
 mv kernel kernel-closed
@@ -97,6 +99,9 @@ done
 
 
 %changelog
+* Sun Nov 09 2025 Leigh Scott <leigh123linux@gmail.com> - 3:580.105.08-2
+- Add patch for 6.18rc kernel
+
 * Sun Nov 09 2025 Leigh Scott <leigh123linux@gmail.com> - 3:580.105.08-1
 - Update to 580.105.08 release
 
@@ -1163,7 +1168,7 @@ done
 * Thu Jun 17 2010 Nicolas Chaubvet <kwizart@gmail.com> - 1:195.36.31-1
 - Update to 195.36.31
 - Fix acpi_walk_namespace call with kernel 2.6.33 and later.
-  http://bugs.gentoo.org/show_bug.cgi?id=301318 
+  http://bugs.gentoo.org/show_bug.cgi?id=301318
 
 * Sun Jun 13 2010 Nicolas Chauvet <kwizart@gmail.com> - 1:195.36.24-2
 - Backport IOMMU - http://www.nvnews.net/vbulletin/showthread.php?t=151791
@@ -1178,7 +1183,7 @@ done
 - Bump Epoch - Fan problem in recent release
 
 * Mon Mar 08 2010 Nicolas Chauvet <kwizart@fedoraproject.org> - 1:190.53-2
-- Revert to 190.53 version 
+- Revert to 190.53 version
   http://www.nvnews.net/vbulletin/announcement.php?f=14
 
 * Sat Feb 27 2010 Nicolas Chauvet <kwizart@fedoraproject.org> - 195.36.08-1
@@ -1498,7 +1503,7 @@ done
 * Tue Oct 09 2007 Thorsten Leemhuis <fedora[AT]leemhuis[DOT]info> 100.14.19-5
 - rebuilt for latest kernels
 
-* Sun Oct 07 2007 Thorsten Leemhuis <fedora AT leemhuis DOT info> 
+* Sun Oct 07 2007 Thorsten Leemhuis <fedora AT leemhuis DOT info>
 - build for rawhide kernels as of today
 
 * Thu Oct 04 2007 Thorsten Leemhuis <fedora AT leemhuis DOT info> - 100.14.19-3
@@ -1583,7 +1588,7 @@ done
 - include xen patch (thx to Bob Richmond)
 
 * Wed Nov 01 2006 Thorsten Leemhuis <fedora AT leemhuis DOT info> - 1.0.9626-2
-- include patch from 
+- include patch from
   http://www.nvnews.net/vbulletin/showpost.php?p=996233&postcount=20
 
 * Sun Oct 22 2006 Stewart Adam <s.adam AT diffingo DOT com> - 1.0.9626-1
