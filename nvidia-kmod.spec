@@ -11,16 +11,15 @@
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       580.105.08
+Version:       590.44.01
 # Taken over by kmodtool
-Release:       2%{?dist}
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           https://www.nvidia.com/
 
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        make_modeset_default.patch
-Patch1:        buildfix_kernel-618.patch
 
 Source100:     nvidia-kmod-noopen-checks
 Source101:     nvidia-kmod-noopen-pciids.txt
@@ -45,7 +44,6 @@ The nvidia %{version} display driver kernel module for kernel %{kversion}.
 kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterfile %{SOURCE11} --obsolete-name nvidia-newest --obsolete-version "%{?epoch}:%{version}-%{release}" %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 %setup -T -c
 tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{version}-%{_target_cpu}.tar.xz
-%patch -P1 -p1
 # Switch to kernel or kernel-open
 %if 0%{?_with_kmod_nvidia_open:1}
 mv kernel kernel-closed
@@ -99,6 +97,9 @@ done
 
 
 %changelog
+* Wed Dec 03 2025 Leigh Scott <leigh123linux@gmail.com> - 3:590.44.01-1
+- Update to 590.44.01 beta
+
 * Sun Nov 09 2025 Leigh Scott <leigh123linux@gmail.com> - 3:580.105.08-2
 - Add patch for 6.18rc kernel
 
