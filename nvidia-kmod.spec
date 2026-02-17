@@ -7,7 +7,6 @@
 %global buildforkernels akmod
 %endif
 %global debug_package %{nil}
-%global _kmodtool_zipmodules 0
 
 Name:          nvidia-kmod
 Epoch:         3
