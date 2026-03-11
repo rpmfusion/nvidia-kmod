@@ -23,3 +23,27 @@ diff -uNrp a/kernel/nvidia/os-interface.c b/kernel/nvidia/os-interface.c
      const int flags = O_TMPFILE | O_LARGEFILE | O_RDWR;
      const char *path = NVreg_TemporaryFilePath;
  
+diff -uNrp a/kernel-open/nvidia/nv-reg.h b/kernel-open/nvidia/nv-reg.h
+--- a/kernel-open/nvidia/nv-reg.h	2026-02-27 17:30:14.000000000 +0000
++++ b/kernel-open/nvidia/nv-reg.h	2026-03-11 23:50:04.847097147 +0000
+@@ -1087,7 +1087,7 @@ NV_DEFINE_REG_ENTRY_GLOBAL(__NV_CREATE_I
+ NV_DEFINE_REG_ENTRY_GLOBAL(__NV_GRDMA_PCI_TOPO_CHECK_OVERRIDE,
+                            NV_REG_GRDMA_PCI_TOPO_CHECK_OVERRIDE_DEFAULT);
+ NV_DEFINE_REG_ENTRY_GLOBAL(__NV_ENABLE_SYSTEM_MEMORY_POOLS, NV_ENABLE_SYSTEM_MEMORY_POOLS_DEFAULT);
+-NV_DEFINE_REG_ENTRY_GLOBAL(__NV_USE_KERNEL_SUSPEND_NOTIFIERS, 0);
++NV_DEFINE_REG_ENTRY_GLOBAL(__NV_USE_KERNEL_SUSPEND_NOTIFIERS, 1);
+ 
+ /*
+  *----------------registry database definition----------------------
+diff -uNrp a/kernel-open/nvidia/os-interface.c b/kernel-open/nvidia/os-interface.c
+--- a/kernel-open/nvidia/os-interface.c	2026-02-27 17:30:11.000000000 +0000
++++ b/kernel-open/nvidia/os-interface.c	2026-03-11 23:53:09.842740948 +0000
+@@ -1851,7 +1851,7 @@ NV_STATUS NV_API_CALL os_open_temporary_
+ #if NV_FILESYSTEM_ACCESS_AVAILABLE
+ #if defined(O_TMPFILE)
+     struct file *file;
+-    const char *default_path = "/tmp";
++    const char *default_path = "/var/tmp";
+     const int flags = O_TMPFILE | O_LARGEFILE | O_RDWR;
+     const char *path = NVreg_TemporaryFilePath;
+ 
