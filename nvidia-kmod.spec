@@ -12,7 +12,7 @@ Name:          nvidia-kmod
 Epoch:         3
 Version:       595.45.04
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           https://www.nvidia.com/
@@ -20,6 +20,8 @@ URL:           https://www.nvidia.com/
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 Source100:     nvidia-kmod-noopen-checks
 Source101:     nvidia-kmod-noopen-pciids.txt
+
+Patch0:        set_prop_driver_defaults.patch
 
 ExclusiveArch:  x86_64 aarch64
 
@@ -41,6 +43,7 @@ The nvidia %{version} display driver kernel module for kernel %{kversion}.
 kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterfile %{SOURCE11} --obsolete-name nvidia-newest --obsolete-version "%{?epoch}:%{version}-%{release}" %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 %setup -T -c
 tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{version}-%{_target_cpu}.tar.xz
+%patch -P0 -p1
 # Switch to kernel or kernel-open
 %if 0%{?_with_kmod_nvidia_open:1}
 mv kernel kernel-closed
@@ -88,6 +91,11 @@ done
 
 
 %changelog
+* Wed Mar 11 2026 Leigh Scott <leigh123linux@gmail.com> - 3:595.45.04-2
+- Set defaults for proprietary driver for
+  NVreg_PreserveVideoMemoryAllocations
+  NVreg_TemporaryFilePath
+
 * Thu Mar 05 2026 Leigh Scott <leigh123linux@gmail.com> - 3:595.45.04-1
 - Update to 595.45.04 beta
 

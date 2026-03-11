@@ -1,0 +1,25 @@
+diff -uNrp a/kernel/nvidia/nv-reg.h b/kernel/nvidia/nv-reg.h
+--- a/kernel/nvidia/nv-reg.h	2026-02-27 18:14:34.000000000 +0000
++++ b/kernel/nvidia/nv-reg.h	2026-03-11 15:39:45.680986401 +0000
+@@ -1046,8 +1046,7 @@ NV_DEFINE_REG_ENTRY(__NV_ENABLE_PCIE_GEN
+ NV_DEFINE_REG_ENTRY(__NV_ENABLE_MSI, 1);
+ NV_DEFINE_REG_ENTRY(__NV_ENABLE_STREAM_MEMOPS, 0);
+ NV_DEFINE_REG_ENTRY(__NV_RM_PROFILING_ADMIN_ONLY_PARAMETER, 1);
+-NV_DEFINE_REG_ENTRY(__NV_PRESERVE_VIDEO_MEMORY_ALLOCATIONS,
+-                    NV_REG_PRESERVE_VIDEO_MEMORY_ALLOCATIONS_AUTO);
++NV_DEFINE_REG_ENTRY(__NV_PRESERVE_VIDEO_MEMORY_ALLOCATIONS, 1);
+ NV_DEFINE_REG_ENTRY(__NV_ENABLE_S0IX_POWER_MANAGEMENT, 0);
+ NV_DEFINE_REG_ENTRY(__NV_S0IX_POWER_MANAGEMENT_VIDEO_MEMORY_THRESHOLD, 256);
+ NV_DEFINE_REG_ENTRY(__NV_DYNAMIC_POWER_MANAGEMENT, 3);
+diff -uNrp a/kernel/nvidia/os-interface.c b/kernel/nvidia/os-interface.c
+--- a/kernel/nvidia/os-interface.c	2026-02-27 18:14:30.000000000 +0000
++++ b/kernel/nvidia/os-interface.c	2026-03-11 15:43:46.351299747 +0000
+@@ -1762,7 +1762,7 @@ NV_STATUS NV_API_CALL os_open_temporary_
+ #if NV_FILESYSTEM_ACCESS_AVAILABLE
+ #if defined(O_TMPFILE)
+     struct file *file;
+-    const char *default_path = "/tmp";
++    const char *default_path = "/var/tmp";
+     const int flags = O_TMPFILE | O_LARGEFILE | O_RDWR;
+     const char *path = NVreg_TemporaryFilePath;
+ 
