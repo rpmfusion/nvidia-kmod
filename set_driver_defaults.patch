@@ -43,7 +43,7 @@ diff -uNrp a/kernel-open/nvidia/os-interface.c b/kernel-open/nvidia/os-interface
  #if defined(O_TMPFILE)
      struct file *file;
 -    const char *default_path = "/tmp";
-+    const char *default_path = "/var/tmp";
++    const char *default_path = "/var/lib/systemd/sleep";
      const int flags = O_TMPFILE | O_LARGEFILE | O_RDWR;
      const char *path = NVreg_TemporaryFilePath;
  
