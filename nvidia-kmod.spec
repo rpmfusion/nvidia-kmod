@@ -43,7 +43,13 @@ The nvidia %{version} display driver kernel module for kernel %{kversion}.
 kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterfile %{SOURCE11} --obsolete-name nvidia-newest --obsolete-version "%{?epoch}:%{version}-%{release}" %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 %setup -T -c
 tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{version}-%{_target_cpu}.tar.xz
+# patch loop
+%if 0%{?_with_nvidia_defaults:1}
+echo "Using original nvidia defaults"
+%else
+echo "Set nvidia to notifiers=1 and memoryallocations=1"
 %patch -P0 -p1
+%endif
 # Switch to kernel or kernel-open
 %if 0%{?_with_kmod_nvidia_open:1}
 mv kernel kernel-closed
