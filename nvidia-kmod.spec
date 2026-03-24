@@ -10,9 +10,9 @@
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       595.45.04
+Version:       595.58.03
 # Taken over by kmodtool
-Release:       4%{?dist}
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           https://www.nvidia.com/
@@ -97,6 +97,9 @@ done
 
 
 %changelog
+* Tue Mar 24 2026 Leigh Scott <leigh123linux@gmail.com> - 3:595.58.03-1
+- Update to 595.58.03 release
+
 * Fri Mar 20 2026 Nicolas Chauvet <kwizart@gmail.com> - 3:595.45.04-4
 - Change the default path for kernel-open - rfbz#7428
 
