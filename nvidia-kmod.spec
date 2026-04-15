@@ -12,7 +12,7 @@ Name:          nvidia-kmod
 Epoch:         3
 Version:       595.58.03
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           https://www.nvidia.com/
@@ -26,7 +26,7 @@ Patch0:        set_driver_defaults.patch
 ExclusiveArch:  x86_64 aarch64
 
 # get the needed BuildRequires (in parts depending on what we build for)
-%global AkmodsBuildRequires %{_bindir}/kmodtool, xorg-x11-drv-nvidia-kmodsrc = %{epoch}:%{version}
+%global AkmodsBuildRequires %{_bindir}/kmodtool, %{_bindir}/lspci, xorg-x11-drv-nvidia-kmodsrc = %{epoch}:%{version}
 BuildRequires:  %{AkmodsBuildRequires}
 
 %{!?kernels:BuildRequires: gcc, elfutils-libelf-devel, buildsys-build-rpmfusion-kerneldevpkgs-%{?buildforkernels:%{buildforkernels}}%{!?buildforkernels:current}-%{_target_cpu} }
@@ -97,6 +97,9 @@ done
 
 
 %changelog
+* Wed Apr 15 2026 Leigh Scott <leigh123linux@gmail.com> - 3:595.58.03-2
+- Add build requires lspci
+
 * Tue Mar 24 2026 Leigh Scott <leigh123linux@gmail.com> - 3:595.58.03-1
 - Update to 595.58.03 release
 
