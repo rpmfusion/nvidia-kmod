@@ -7,19 +7,19 @@
 %global buildforkernels akmod
 %endif
 %global debug_package %{nil}
-%global _kmodtool_zipmodules 0
 
 Name:          nvidia-kmod
 Epoch:         3
 Version:       580.142
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           https://www.nvidia.com/
 
 Source11:      nvidia-kmodtool-excludekernel-filterfile
 Patch0:        make_modeset_default.patch
+Patch1:        fix-hardware-cursor-crash.patch
 
 Source100:     nvidia-kmod-noopen-checks
 Source101:     nvidia-kmod-noopen-pciids.txt
@@ -61,7 +61,7 @@ fi
 echo "Using original nvidia defaults"
 %else
 echo "Set nvidia to modeset=1"
-%patch -P0 -p1
+%autopatch -p1
 %endif
 
 for kernel_version  in %{?kernel_versions} ; do
@@ -97,6 +97,9 @@ done
 
 
 %changelog
+* Wed Apr 15 2026 Sérgio Basto <sergio@serjux.com> - 3:580.142-2
+- Add fix-hardware-cursor-crash.patch
+
 * Wed Mar 18 2026 Sérgio Basto <sergio@serjux.com> - 3:580.142-1
 - Update nvidia-kmod to 580.142
 
