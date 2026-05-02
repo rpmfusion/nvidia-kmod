@@ -10,9 +10,9 @@
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       580.142
+Version:       580.159.03
 # Taken over by kmodtool
-Release:       2%{?dist}
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           https://www.nvidia.com/
@@ -97,6 +97,9 @@ done
 
 
 %changelog
+* Sat May 02 2026 Sérgio Basto <sergio@serjux.com> - 3:580.159.03-1
+- Update nvidia-kmod to 580.159.03
+
 * Wed Apr 15 2026 Sérgio Basto <sergio@serjux.com> - 3:580.142-2
 - Add fix-hardware-cursor-crash.patch
 
