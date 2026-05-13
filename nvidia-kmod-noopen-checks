@@ -11,8 +11,20 @@ PCIIDS_FILE="${1:-nvidia-kmod-noopen-pciids.txt}"
 # Read the target PCI IDs from the file
 TARGET_PCIIDS=($(cat "$PCIIDS_FILE"))
 
-# Get the PCI IDs of the graphics controllers present on the system
-SYSTEM_PCIIDS=($(lspci -nn | grep -E 'VGA compatible controller|3D controller' | grep -oP '\[\K[0-9a-fA-F:]+\b'))
+# Get the PCI IDs of graphics controllers present on the system via sysfs
+SYSTEM_PCIIDS=()
+for dev in /sys/bus/pci/devices/*/; do
+    class_file="${dev}class"
+    [[ -f "$class_file" ]] || continue
+    class=$(cat "$class_file")
+    if [[ "$class" == "0x030000" || "$class" == "0x030200" ]]; then
+        vendor=$(cat "${dev}vendor")
+        device=$(cat "${dev}device")
+        vendor=${vendor#0x}
+        device=${device#0x}
+        SYSTEM_PCIIDS+=("${vendor}:${device}")
+    fi
+done
 
 # Check for the presence of target PCI IDs in the system PCI IDs
 for PCIID in "${TARGET_PCIIDS[@]}"; do
