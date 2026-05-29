@@ -1,7 +1,7 @@
 diff -uNrp a/kernel/nvidia/nv-reg.h b/kernel/nvidia/nv-reg.h
---- a/kernel/nvidia/nv-reg.h	2026-02-27 18:14:34.000000000 +0000
-+++ b/kernel/nvidia/nv-reg.h	2026-03-11 15:39:45.680986401 +0000
-@@ -1046,8 +1046,7 @@ NV_DEFINE_REG_ENTRY(__NV_ENABLE_PCIE_GEN
+--- a/kernel/nvidia/nv-reg.h	2026-05-21 20:55:45.000000000 +0100
++++ b/kernel/nvidia/nv-reg.h	2026-05-29 12:54:39.448186224 +0100
+@@ -1027,8 +1027,7 @@ NV_DEFINE_REG_ENTRY(__NV_ENABLE_PCIE_GEN
  NV_DEFINE_REG_ENTRY(__NV_ENABLE_MSI, 1);
  NV_DEFINE_REG_ENTRY(__NV_ENABLE_STREAM_MEMOPS, 0);
  NV_DEFINE_REG_ENTRY(__NV_RM_PROFILING_ADMIN_ONLY_PARAMETER, 1);
@@ -12,8 +12,8 @@ diff -uNrp a/kernel/nvidia/nv-reg.h b/kernel/nvidia/nv-reg.h
  NV_DEFINE_REG_ENTRY(__NV_S0IX_POWER_MANAGEMENT_VIDEO_MEMORY_THRESHOLD, 256);
  NV_DEFINE_REG_ENTRY(__NV_DYNAMIC_POWER_MANAGEMENT, 3);
 diff -uNrp a/kernel/nvidia/os-interface.c b/kernel/nvidia/os-interface.c
---- a/kernel/nvidia/os-interface.c	2026-02-27 18:14:30.000000000 +0000
-+++ b/kernel/nvidia/os-interface.c	2026-03-11 15:43:46.351299747 +0000
+--- a/kernel/nvidia/os-interface.c	2026-05-21 20:55:41.000000000 +0100
++++ b/kernel/nvidia/os-interface.c	2026-05-29 12:54:39.448689219 +0100
 @@ -1762,7 +1762,7 @@ NV_STATUS NV_API_CALL os_open_temporary_
  #if NV_FILESYSTEM_ACCESS_AVAILABLE
  #if defined(O_TMPFILE)
@@ -24,11 +24,11 @@ diff -uNrp a/kernel/nvidia/os-interface.c b/kernel/nvidia/os-interface.c
      const char *path = NVreg_TemporaryFilePath;
  
 diff -uNrp a/kernel-open/nvidia/nv-reg.h b/kernel-open/nvidia/nv-reg.h
---- a/kernel-open/nvidia/nv-reg.h	2026-02-27 17:30:14.000000000 +0000
-+++ b/kernel-open/nvidia/nv-reg.h	2026-03-11 23:50:04.847097147 +0000
-@@ -1087,7 +1087,7 @@ NV_DEFINE_REG_ENTRY_GLOBAL(__NV_CREATE_I
- NV_DEFINE_REG_ENTRY_GLOBAL(__NV_GRDMA_PCI_TOPO_CHECK_OVERRIDE,
-                            NV_REG_GRDMA_PCI_TOPO_CHECK_OVERRIDE_DEFAULT);
+--- a/kernel-open/nvidia/nv-reg.h	2026-05-21 20:22:10.000000000 +0100
++++ b/kernel-open/nvidia/nv-reg.h	2026-05-29 12:55:40.557074208 +0100
+@@ -1066,7 +1066,7 @@ NV_DEFINE_REG_ENTRY(__NV_RM_NVLINK_BW_LI
+ NV_DEFINE_REG_ENTRY_GLOBAL(__NV_IMEX_CHANNEL_COUNT, 2048);
+ NV_DEFINE_REG_ENTRY_GLOBAL(__NV_CREATE_IMEX_CHANNEL_0, 0);
  NV_DEFINE_REG_ENTRY_GLOBAL(__NV_ENABLE_SYSTEM_MEMORY_POOLS, NV_ENABLE_SYSTEM_MEMORY_POOLS_DEFAULT);
 -NV_DEFINE_REG_ENTRY_GLOBAL(__NV_USE_KERNEL_SUSPEND_NOTIFIERS, 0);
 +NV_DEFINE_REG_ENTRY_GLOBAL(__NV_USE_KERNEL_SUSPEND_NOTIFIERS, 1);
@@ -36,8 +36,8 @@ diff -uNrp a/kernel-open/nvidia/nv-reg.h b/kernel-open/nvidia/nv-reg.h
  /*
   *----------------registry database definition----------------------
 diff -uNrp a/kernel-open/nvidia/os-interface.c b/kernel-open/nvidia/os-interface.c
---- a/kernel-open/nvidia/os-interface.c	2026-02-27 17:30:11.000000000 +0000
-+++ b/kernel-open/nvidia/os-interface.c	2026-03-11 23:53:09.842740948 +0000
+--- a/kernel-open/nvidia/os-interface.c	2026-05-21 20:22:05.000000000 +0100
++++ b/kernel-open/nvidia/os-interface.c	2026-05-29 12:54:39.449186255 +0100
 @@ -1851,7 +1851,7 @@ NV_STATUS NV_API_CALL os_open_temporary_
  #if NV_FILESYSTEM_ACCESS_AVAILABLE
  #if defined(O_TMPFILE)
