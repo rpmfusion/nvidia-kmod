@@ -25,11 +25,16 @@ Patch0:        set_driver_defaults.patch
 
 ExclusiveArch:  x86_64 aarch64
 
-# get the needed BuildRequires (in parts depending on what we build for)
+# BR that are inherited in the akmod-nvidia sub-package requirements.
 %global AkmodsBuildRequires %{_bindir}/kmodtool, %{_bindir}/lspci, xorg-x11-drv-nvidia-kmodsrc = %{epoch}:%{version}
-BuildRequires:  %{AkmodsBuildRequires}
+# BR for building for some kernels
+%if "%buildforkernels" != "akmod"
+BuildRequires: %{AkmodsBuildRequires}
+BuildRequires: gcc, elfutils-libelf-devel
+%endif
+BuildRequires: %{_bindir}/kmodtool
+BuildRequires: buildsys-build-rpmfusion-kerneldevpkgs-%{?buildforkernels:%{buildforkernels}}%{!?buildforkernels:current}-%{_target_cpu}
 
-%{!?kernels:BuildRequires: gcc, elfutils-libelf-devel, buildsys-build-rpmfusion-kerneldevpkgs-%{?buildforkernels:%{buildforkernels}}%{!?buildforkernels:current}-%{_target_cpu} }
 # kmodtool does its magic here
 %{expand:%(kmodtool --target %{_target_cpu} --repo rpmfusion --kmodname %{name} --filterfile %{SOURCE11} --obsolete-name nvidia-newest --obsolete-version "%{?epoch}:%{version}-%{release}" %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null) }
 
@@ -42,6 +47,8 @@ The nvidia %{version} display driver kernel module for kernel %{kversion}.
 # print kmodtool output for debugging purposes:
 kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterfile %{SOURCE11} --obsolete-name nvidia-newest --obsolete-version "%{?epoch}:%{version}-%{release}" %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 %setup -T -c
+# Nothing to prep if not building for any kernel
+%{!?kernel_versions:exit 0}
 tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{version}-%{_target_cpu}.tar.xz
 # patch loop
 %if 0%{?_with_nvidia_defaults:1}
