@@ -10,7 +10,7 @@
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       580.173.02
+Version:       580.178.04
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -97,6 +97,9 @@ done
 
 
 %changelog
+* Wed Aug 05 2026 Leigh Scott <leigh123linux@gmail.com> - 3:580.178.04-1
+- Update to 580.178.04 release
+
 * Mon Jun 29 2026 Sérgio Basto <sergio@serjux.com> - 3:580.173.02-1
 - Update nvidia-kmod to 580.173.02
 
