@@ -101,7 +101,8 @@ done
 
 %changelog
 * Tue Aug 18 2026 Leigh Scott <leigh123linux@gmail.com> - 3:610.57.04-2
-- rebuilt
+- Disable autoset build flags
+- Add requires /usr/bin/pahole to silence build warning
 
 * Mon Aug 03 2026 Leigh Scott <leigh123linux@gmail.com> - 3:610.57.04-1
 - Update to 610.57.04 release
