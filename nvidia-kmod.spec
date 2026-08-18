@@ -8,11 +8,14 @@
 %endif
 %global debug_package %{nil}
 
+# Build flags are inherited from the kernel
+%undefine _auto_set_build_flags
+
 Name:          nvidia-kmod
 Epoch:         3
 Version:       610.57.04
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           https://www.nvidia.com/
@@ -26,7 +29,7 @@ Patch0:        set_driver_defaults.patch
 ExclusiveArch:  x86_64 aarch64
 
 # get the needed BuildRequires (in parts depending on what we build for)
-%global AkmodsBuildRequires %{_bindir}/kmodtool, %{_bindir}/lspci, xorg-x11-drv-nvidia-kmodsrc = %{epoch}:%{version}
+%global AkmodsBuildRequires %{_bindir}/kmodtool, %{_bindir}/lspci, %{_bindir}/pahole, xorg-x11-drv-nvidia-kmodsrc = %{epoch}:%{version}
 BuildRequires:  %{AkmodsBuildRequires}
 
 %{!?kernels:BuildRequires: gcc, elfutils-libelf-devel, buildsys-build-rpmfusion-kerneldevpkgs-%{?buildforkernels:%{buildforkernels}}%{!?buildforkernels:current}-%{_target_cpu} }
@@ -97,6 +100,9 @@ done
 
 
 %changelog
+* Tue Aug 18 2026 Leigh Scott <leigh123linux@gmail.com> - 3:610.57.04-2
+- rebuilt
+
 * Mon Aug 03 2026 Leigh Scott <leigh123linux@gmail.com> - 3:610.57.04-1
 - Update to 610.57.04 release
 
