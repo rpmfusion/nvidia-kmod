@@ -13,9 +13,9 @@
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       610.57.04
+Version:       615.71.09
 # Taken over by kmodtool
-Release:       2%{?dist}
+Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           https://www.nvidia.com/
@@ -100,6 +100,9 @@ done
 
 
 %changelog
+* Thu Sep 10 2026 Leigh Scott <leigh123linux@gmail.com> - 3:615.71.09-1
+- Update to 615.71.09 release
+
 * Tue Aug 18 2026 Leigh Scott <leigh123linux@gmail.com> - 3:610.57.04-2
 - Disable autoset build flags
 - Add requires /usr/bin/pahole to silence build warning
