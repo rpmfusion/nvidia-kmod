@@ -1,7 +1,7 @@
 diff -uNrp a/kernel/nvidia/nv-reg.h b/kernel/nvidia/nv-reg.h
---- a/kernel/nvidia/nv-reg.h	2026-05-19 13:09:24.000000000 +0100
-+++ b/kernel/nvidia/nv-reg.h	2026-05-26 16:32:52.828506331 +0100
-@@ -1032,8 +1032,7 @@ NV_DEFINE_REG_ENTRY(__NV_ENABLE_PCIE_GEN
+--- a/kernel/nvidia/nv-reg.h	2026-09-05 00:27:59.000000000 +0100
++++ b/kernel/nvidia/nv-reg.h	2026-09-10 06:51:23.515663470 +0100
+@@ -1057,8 +1057,7 @@ NV_DEFINE_REG_ENTRY(__NV_ENABLE_PCIE_GEN
  NV_DEFINE_REG_ENTRY(__NV_ENABLE_MSI, 1);
  NV_DEFINE_REG_ENTRY(__NV_ENABLE_STREAM_MEMOPS, 0);
  NV_DEFINE_REG_ENTRY(__NV_RM_PROFILING_ADMIN_ONLY_PARAMETER, 1);
@@ -12,36 +12,25 @@ diff -uNrp a/kernel/nvidia/nv-reg.h b/kernel/nvidia/nv-reg.h
  NV_DEFINE_REG_ENTRY(__NV_S0IX_POWER_MANAGEMENT_VIDEO_MEMORY_THRESHOLD, 256);
  NV_DEFINE_REG_ENTRY(__NV_DYNAMIC_POWER_MANAGEMENT, 3);
 diff -uNrp a/kernel/nvidia/os-interface.c b/kernel/nvidia/os-interface.c
---- a/kernel/nvidia/os-interface.c	2026-05-19 13:09:20.000000000 +0100
-+++ b/kernel/nvidia/os-interface.c	2026-05-26 16:32:52.828840708 +0100
-@@ -1757,7 +1757,7 @@ NV_STATUS NV_API_CALL os_open_temporary_
+--- a/kernel/nvidia/os-interface.c	2026-09-05 00:27:53.000000000 +0100
++++ b/kernel/nvidia/os-interface.c	2026-09-10 06:52:45.421338188 +0100
+@@ -1889,7 +1889,7 @@ NV_STATUS NV_API_CALL os_allocate_tempor
+ {
+     struct file *file = ERR_PTR(-EOPNOTSUPP);
  #if NV_FILESYSTEM_ACCESS_AVAILABLE
- #if defined(O_TMPFILE)
-     struct file *file;
 -    const char *default_path = "/tmp";
 +    const char *default_path = "/var/tmp";
      const int flags = O_TMPFILE | O_LARGEFILE | O_RDWR;
      const char *path = NVreg_TemporaryFilePath;
  
-diff -uNrp a/kernel-open/nvidia/nv-reg.h b/kernel-open/nvidia/nv-reg.h
---- a/kernel-open/nvidia/nv-reg.h	2026-05-19 12:24:37.000000000 +0100
-+++ b/kernel-open/nvidia/nv-reg.h	2026-05-26 16:35:19.097819584 +0100
-@@ -1072,7 +1072,7 @@ NV_DEFINE_REG_ENTRY_GLOBAL(__NV_IMEX_CHA
- NV_DEFINE_REG_ENTRY_GLOBAL(__NV_CREATE_IMEX_CHANNEL_0, 0);
- NV_DEFINE_REG_ENTRY_GLOBAL(__NV_ENABLE_SYSTEM_MEMORY_POOLS, NV_ENABLE_SYSTEM_MEMORY_POOLS_DEFAULT);
- NV_DEFINE_REG_ENTRY_GLOBAL(__NV_OS_ENABLE_CXL_SUPPORT, 1);
--NV_DEFINE_REG_ENTRY_GLOBAL(__NV_USE_KERNEL_SUSPEND_NOTIFIERS, 0);
-+NV_DEFINE_REG_ENTRY_GLOBAL(__NV_USE_KERNEL_SUSPEND_NOTIFIERS, 1);
- NV_DEFINE_REG_ENTRY(__NV_ENABLE_NON_PREEMTABLE_DEBUGGER_SESSION, 0);
- /*
-  *----------------registry database definition----------------------
+
 diff -uNrp a/kernel-open/nvidia/os-interface.c b/kernel-open/nvidia/os-interface.c
---- a/kernel-open/nvidia/os-interface.c	2026-05-19 12:24:33.000000000 +0100
-+++ b/kernel-open/nvidia/os-interface.c	2026-05-26 16:32:52.829160397 +0100
-@@ -1855,7 +1855,7 @@ NV_STATUS NV_API_CALL os_open_temporary_
+--- a/kernel-open/nvidia/os-interface.c	2026-09-04 23:33:41.000000000 +0100
++++ b/kernel-open/nvidia/os-interface.c	2026-09-10 06:39:56.650284848 +0100
+@@ -1985,7 +1985,7 @@ NV_STATUS NV_API_CALL os_allocate_tempor
+ {
+     struct file *file = ERR_PTR(-EOPNOTSUPP);
  #if NV_FILESYSTEM_ACCESS_AVAILABLE
- #if defined(O_TMPFILE)
-     struct file *file;
 -    const char *default_path = "/tmp";
 +    const char *default_path = "/var/lib/systemd/sleep";
      const int flags = O_TMPFILE | O_LARGEFILE | O_RDWR;
