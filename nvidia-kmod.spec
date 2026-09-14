@@ -50,7 +50,8 @@ tar --use-compress-program xz -xf %{_datadir}/%{name}-%{version}/%{name}-%{versi
 %if 0%{?_with_nvidia_defaults:1}
 echo "Using original nvidia defaults"
 %else
-echo "Set nvidia to notifiers=1 and memoryallocations=1"
+echo "Set nvidia to preserve_memory_allocation=1 and NVreg_TemporaryFilePath=/var/tmp"
+echo "Set nvidia-open to use shmem_kernel_file_setup https://github.com/fedora-selinux/selinux-policy/pull/3087#issuecomment-5660164633"
 %patch -P0 -p1
 %endif
 # Switch to kernel or kernel-open
