@@ -25,8 +25,16 @@ diff -uNrp a/kernel/nvidia/os-interface.c b/kernel/nvidia/os-interface.c
  
 diff -uNrp a/kernel-open/nvidia/os-interface.c b/kernel-open/nvidia/os-interface.c
 --- a/kernel-open/nvidia/os-interface.c	2026-09-04 23:33:41.000000000 +0100
-+++ b/kernel-open/nvidia/os-interface.c	2026-09-14 09:04:25.719450110 +0100
-@@ -1992,9 +1992,9 @@ NV_STATUS NV_API_CALL os_allocate_tempor
++++ b/kernel-open/nvidia/os-interface.c	2026-09-14 08:52:04.168771929 +0100
+@@ -1985,16 +1985,16 @@ NV_STATUS NV_API_CALL os_allocate_tempor
+ {
+     struct file *file = ERR_PTR(-EOPNOTSUPP);
+ #if NV_FILESYSTEM_ACCESS_AVAILABLE
+-    const char *default_path = "/tmp";
++    const char *default_path = "/var/lib/systemd/sleep";
+     const int flags = O_TMPFILE | O_LARGEFILE | O_RDWR;
+     const char *path = NVreg_TemporaryFilePath;
+ 
      if (!path)
      {
  #if defined(mk_vma_flags)
