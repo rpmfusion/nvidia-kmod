@@ -15,7 +15,7 @@ Name:          nvidia-kmod
 Epoch:         3
 Version:       615.71.09
 # Taken over by kmodtool
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       NVIDIA display driver kernel module
 License:       Redistributable, no modification permitted
 URL:           https://www.nvidia.com/
@@ -100,6 +100,9 @@ done
 
 
 %changelog
+* Mon Sep 14 2026 Leigh Scott <leigh123linux@gmail.com> - 3:615.71.09-2
+- Add patch to driver to bypass SELinux!
+
 * Thu Sep 10 2026 Leigh Scott <leigh123linux@gmail.com> - 3:615.71.09-1
 - Update to 615.71.09 release
 

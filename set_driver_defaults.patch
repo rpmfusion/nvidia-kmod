@@ -1,6 +1,6 @@
 diff -uNrp a/kernel/nvidia/nv-reg.h b/kernel/nvidia/nv-reg.h
 --- a/kernel/nvidia/nv-reg.h	2026-09-05 00:27:59.000000000 +0100
-+++ b/kernel/nvidia/nv-reg.h	2026-09-10 06:51:23.515663470 +0100
++++ b/kernel/nvidia/nv-reg.h	2026-09-14 08:51:22.878931080 +0100
 @@ -1057,8 +1057,7 @@ NV_DEFINE_REG_ENTRY(__NV_ENABLE_PCIE_GEN
  NV_DEFINE_REG_ENTRY(__NV_ENABLE_MSI, 1);
  NV_DEFINE_REG_ENTRY(__NV_ENABLE_STREAM_MEMOPS, 0);
@@ -13,7 +13,7 @@ diff -uNrp a/kernel/nvidia/nv-reg.h b/kernel/nvidia/nv-reg.h
  NV_DEFINE_REG_ENTRY(__NV_DYNAMIC_POWER_MANAGEMENT, 3);
 diff -uNrp a/kernel/nvidia/os-interface.c b/kernel/nvidia/os-interface.c
 --- a/kernel/nvidia/os-interface.c	2026-09-05 00:27:53.000000000 +0100
-+++ b/kernel/nvidia/os-interface.c	2026-09-10 06:52:45.421338188 +0100
++++ b/kernel/nvidia/os-interface.c	2026-09-14 08:51:22.879181938 +0100
 @@ -1889,7 +1889,7 @@ NV_STATUS NV_API_CALL os_allocate_tempor
  {
      struct file *file = ERR_PTR(-EOPNOTSUPP);
@@ -23,11 +23,10 @@ diff -uNrp a/kernel/nvidia/os-interface.c b/kernel/nvidia/os-interface.c
      const int flags = O_TMPFILE | O_LARGEFILE | O_RDWR;
      const char *path = NVreg_TemporaryFilePath;
  
-
 diff -uNrp a/kernel-open/nvidia/os-interface.c b/kernel-open/nvidia/os-interface.c
 --- a/kernel-open/nvidia/os-interface.c	2026-09-04 23:33:41.000000000 +0100
-+++ b/kernel-open/nvidia/os-interface.c	2026-09-10 06:39:56.650284848 +0100
-@@ -1985,7 +1985,7 @@ NV_STATUS NV_API_CALL os_allocate_tempor
++++ b/kernel-open/nvidia/os-interface.c	2026-09-14 08:52:04.168771929 +0100
+@@ -1985,16 +1985,16 @@ NV_STATUS NV_API_CALL os_allocate_tempor
  {
      struct file *file = ERR_PTR(-EOPNOTSUPP);
  #if NV_FILESYSTEM_ACCESS_AVAILABLE
@@ -36,3 +35,14 @@ diff -uNrp a/kernel-open/nvidia/os-interface.c b/kernel-open/nvidia/os-interface
      const int flags = O_TMPFILE | O_LARGEFILE | O_RDWR;
      const char *path = NVreg_TemporaryFilePath;
  
+     if (!path)
+     {
+ #if defined(mk_vma_flags)
+-        file = shmem_file_setup("nvidia-tmp", 0, mk_vma_flags(VMA_NORESERVE_BIT));
++        file = shmem_kernel_file_setup("nvidia-tmp", 0, mk_vma_flags(VMA_NORESERVE_BIT));
+ #else
+-        file = shmem_file_setup("nvidia-tmp", 0, VM_NORESERVE);
++        file = shmem_kernel_file_setup("nvidia-tmp", 0, VM_NORESERVE);
+ #endif
+         if (!IS_ERR(file))
+         {
