@@ -4,7 +4,7 @@
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
 %if 0%{?fedora}
-%global buildforkernels akmod
+%global buildforkernels current
 %endif
 %global debug_package %{nil}
 
@@ -13,7 +13,7 @@
 
 Name:          nvidia-kmod
 Epoch:         3
-Version:       615.78.08
+Version:       620.70.06
 # Taken over by kmodtool
 Release:       1%{?dist}
 Summary:       NVIDIA display driver kernel module
@@ -101,6 +101,9 @@ done
 
 
 %changelog
+* Thu Nov 05 2026 Leigh Scott <leigh123linux@gmail.com> - 3:620.70.06-1
+- Update to 620.70.06 release
+
 * Thu Oct 08 2026 Leigh Scott <leigh123linux@gmail.com> - 3:615.78.08-1
 - Update to 615.78.08 release
 
