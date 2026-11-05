@@ -4,7 +4,7 @@
 # queuing that build enable the macro again for subsequent builds; that way
 # a new akmod package will only get build when a new one is actually needed
 %if 0%{?fedora}
-%global buildforkernels current
+%global buildforkernels akmod
 %endif
 %global debug_package %{nil}
 
